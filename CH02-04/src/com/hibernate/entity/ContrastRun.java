@@ -9,6 +9,28 @@ import org.hibernate.query.Query;
 import com.hibernate.util.HibernateUtil;
 
 public class ContrastRun {
+    
+    public Contrast getContrastByRealName(String realName){
+        Session session = null;
+        Transaction tran = null;
+        Contrast contrast = null;
+
+        try {
+            session = HibernateUtil.openSession();
+            tran = session.beginTransaction();
+            String sql = "select * from contrast where realname = '"+realName+"'";
+            contrast = (Contrast)session.createSQLQuery(sql).addEntity(Contrast.class).getResultList().get(0);
+            tran.commit();
+
+        } catch (Exception e) {
+            tran.rollback();
+        } finally {
+            session.close();
+        }
+
+        return contrast;
+    }
+    
      public void save(Contrast Contrast) {
          Session session = null;
          Transaction tran = null;

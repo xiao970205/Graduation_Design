@@ -1,4 +1,4 @@
- package com.hibernate.entity;
+package com.hibernate.entity;
 
 import java.util.List;
 
@@ -9,26 +9,26 @@ import org.hibernate.query.Query;
 import com.hibernate.util.HibernateUtil;
 
 public class SpaceRun {
-     public void save(Space space) {
-         Session session = null;
-         Transaction tran = null;
+    public void save(Space space) {
+        Session session = null;
+        Transaction tran = null;
 
-         try {
-             session = HibernateUtil.openSession();
-             tran = session.beginTransaction();
+        try {
+            session = HibernateUtil.openSession();
+            tran = session.beginTransaction();
 
-             session.save(space);
+            session.save(space);
 
-             tran.commit();
+            tran.commit();
 
-         } catch (Exception e) {
-             tran.rollback();
-         } finally {
-             session.close();
-         }
-     }
+        } catch (Exception e) {
+            tran.rollback();
+        } finally {
+            session.close();
+        }
+    }
 
-     public Space get(String id) {
+    public Space getCrk(String cRk){
          Session session = null;
          Transaction tran = null;
          Space space = null;
@@ -36,8 +36,21 @@ public class SpaceRun {
          try {
              session = HibernateUtil.openSession();
              tran = session.beginTransaction();
-
-             space = session.get(Space.class, id);
+             String sql = "SELECT "
+                 + "s.id,"
+                 + "s.x,"
+                 + "s.y,"
+                 + "s.z,"
+                 + "s.nature,"
+                 + "s.carid "
+                 + "FROM space s,contrast c "
+                 + "WHERE "
+                 + "s.nature = c.id "
+                 + "AND "
+                 + "c.realname = '"
+                 + cRk
+                 + "'";
+             space = (Space)session.createSQLQuery(sql).addEntity(Space.class).getResultList().get(0);
              tran.commit();
 
          } catch (Exception e) {
@@ -48,61 +61,107 @@ public class SpaceRun {
 
          return space;
      }
+    
+    public Space getSaveSpace(){
+        Session session = null;
+        Transaction tran = null;
+        Space space = null;
 
-     public void Update(Space space) {
-         Session session = null;
-         Transaction tran = null;
+        try {
+            session = HibernateUtil.openSession();
+            tran = session.beginTransaction();
+            String sql = "select * "
+                + "from space "
+                + "where "
+                + "ISNULL(carid) "
+                + "ORDER BY z,y,x DESC";
+            space = (Space)session.createSQLQuery(sql).addEntity(Space.class).getResultList().get(0);
+            tran.commit();
 
-         try {
-             session = HibernateUtil.openSession();
-             tran = session.beginTransaction();
+        } catch (Exception e) {
+            tran.rollback();
+        } finally {
+            session.close();
+        }
 
-             session.update(space);
+        return space;
+    }
+    
+    public Space get(String id) {
+        Session session = null;
+        Transaction tran = null;
+        Space space = null;
 
-             tran.commit();
+        try {
+            session = HibernateUtil.openSession();
+            tran = session.beginTransaction();
 
-         } catch (Exception e) {
-             tran.rollback();
-         } finally {
-             session.close();
-         }
-     }
+            space = session.get(Space.class, id);
+            tran.commit();
 
-     public void delete(String id) {
-         Session session = null;
-         Transaction tran = null;
+        } catch (Exception e) {
+            tran.rollback();
+        } finally {
+            session.close();
+        }
 
-         try {
-             session = HibernateUtil.openSession();
-             tran = session.beginTransaction();
-             Space space = session.get(Space.class, id);
-             session.delete(space);
-             tran.commit();
+        return space;
+    }
 
-         } catch (Exception e) {
-             tran.rollback();
-         } finally {
-             session.close();
-         }
-     }
-     
-     public List<Space> gets(){
-         Session session = null;
-         Transaction tran = null;
-         List<Space> spaces = null;
-         try {
-             session = HibernateUtil.openSession();
-             tran = session.beginTransaction();
-             Query query =session.createQuery("from Space",Space.class);
-             spaces = query.getResultList();
-             tran.commit();
+    public void Update(Space space) {
+        Session session = null;
+        Transaction tran = null;
 
-         } catch (Exception e) {
-             tran.rollback();
-         } finally {
-             session.close();
-         }
-         
-         return spaces;
-     }
+        try {
+            session = HibernateUtil.openSession();
+            tran = session.beginTransaction();
+
+            session.update(space);
+
+            tran.commit();
+
+        } catch (Exception e) {
+            tran.rollback();
+        } finally {
+            session.close();
+        }
+    }
+
+    public void delete(String id) {
+        Session session = null;
+        Transaction tran = null;
+
+        try {
+            session = HibernateUtil.openSession();
+            tran = session.beginTransaction();
+            Space space = session.get(Space.class, id);
+            session.delete(space);
+            tran.commit();
+
+        } catch (Exception e) {
+            tran.rollback();
+        } finally {
+            session.close();
+        }
+    }
+
+    public List<Space> gets() {
+        Session session = null;
+        Transaction tran = null;
+        List<Space> spaces = null;
+        try {
+            session = HibernateUtil.openSession();
+            tran = session.beginTransaction();
+            Query query = session.createQuery("from Space", Space.class);
+            spaces = query.getResultList();
+            tran.commit();
+
+        } catch (Exception e) {
+            tran.rollback();
+        } finally {
+            session.close();
+        }
+
+        return spaces;
+    }
 }

@@ -18,12 +18,12 @@ public class Parking {
     private String id;
     private String userId;
     private String carId;
-    private String orginalSpace;
-    private String nowSpace;
-    private String fetureSpace;
+    private String orginalSpaceId;
+    private String nowSpaceId;
+    private String fetureSpaceId;
     private Date inTime;
     private Date outTime;
-    private String Way;
+    private String nature;
 
     @Id
     public String getId() {
@@ -50,28 +50,28 @@ public class Parking {
         this.carId = carId;
     }
 
-    public String getOrginalSpace() {
-        return orginalSpace;
+    public String getOrginalSpaceId() {
+        return orginalSpaceId;
     }
 
-    public void setOrginalSpace(String orginalSpace) {
-        this.orginalSpace = orginalSpace;
+    public void setOrginalSpaceId(String orginalSpaceId) {
+        this.orginalSpaceId = orginalSpaceId;
     }
 
-    public String getNowSpace() {
-        return nowSpace;
+    public String getNowSpaceId() {
+        return nowSpaceId;
     }
 
-    public void setNowSpace(String nowSpace) {
-        this.nowSpace = nowSpace;
+    public void setNowSpaceId(String nowSpaceId) {
+        this.nowSpaceId = nowSpaceId;
     }
 
-    public String getFetureSpace() {
-        return fetureSpace;
+    public String getFetureSpaceId() {
+        return fetureSpaceId;
     }
 
-    public void setFetureSpace(String fetureSpace) {
-        this.fetureSpace = fetureSpace;
+    public void setFetureSpaceId(String fetureSpaceId) {
+        this.fetureSpaceId = fetureSpaceId;
     }
 
     public Date getInTime() {
@@ -90,11 +90,12 @@ public class Parking {
         this.outTime = outTime;
     }
 
-    public String getWay() {
-        return Way;
+    public String getNature() {
+        return nature;
     }
 
-    public void setWay(String way) {
-        Way = way;
+    public void setNature(String nature) {
+        this.nature = nature;
     }
+
 }
