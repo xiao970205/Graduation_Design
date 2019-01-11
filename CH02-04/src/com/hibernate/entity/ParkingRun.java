@@ -137,7 +137,7 @@ public class ParkingRun {
              tran = session.beginTransaction();
              Query query =session.createQuery("from Parking where nature = '"+nature+"'",Parking.class);
              parkings = query.getResultList();
-             tran.commit();
+             tran.commit(); 
 
          } catch (Exception e) {
              tran.rollback();
