@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2019-01-11 17:40:56
+Date: 2019-01-15 10:20:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,6 +32,8 @@ CREATE TABLE `car` (
 INSERT INTO `car` VALUES ('6f0f4516ec04414f90c3cc72e25f6d47', '642880079c2b4c7eb9b2a58780e2a957', '保时捷Panamera');
 INSERT INTO `car` VALUES ('7050f26ee0fa4e7b8571ad3f43a83884', '642880079c2b4c7eb9b2a58780e2a957', '道奇蝰蛇');
 INSERT INTO `car` VALUES ('721799c190734042a0329c6ddacc1040', '642880079c2b4c7eb9b2a58780e2a957', '玛莎拉蒂');
+INSERT INTO `car` VALUES ('9aafff25567b4a5b8f429ba2b6de5494', '642880079c2b4c7eb9b2a58780e2a957', '迈巴赫');
+INSERT INTO `car` VALUES ('a79f4d9a52ae4acda5d361306464f7af', '642880079c2b4c7eb9b2a58780e2a957', '劳斯莱斯');
 
 -- ----------------------------
 -- Table structure for contrast
@@ -71,8 +73,8 @@ CREATE TABLE `parking` (
   `orginalspaceid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `nowspaceid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `feturespaceid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `intime` datetime DEFAULT NULL,
-  `outtime` datetime DEFAULT NULL,
+  `intime` datetime(6) DEFAULT NULL,
+  `outtime` datetime(6) DEFAULT NULL,
   `nature` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '性质：存车中，停车中，取车中',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -80,8 +82,6 @@ CREATE TABLE `parking` (
 -- ----------------------------
 -- Records of parking
 -- ----------------------------
-INSERT INTO `parking` VALUES ('871d2cc21b0d418aa5ac3c6380419828', '642880079c2b4c7eb9b2a58780e2a957', '7050f26ee0fa4e7b8571ad3f43a83884', '7c88168e2c584336a08c7bca50878d16', '7c88168e2c584336a08c7bca50878d16', 'cfab11fe021042f8a113c97233b538b9', '2019-01-11 17:10:16', '2019-02-13 17:10:14', '351cc2cdda6547528e20c6444e4a3bbd');
-INSERT INTO `parking` VALUES ('fba76719405447cdbccd1eab55961ead', '642880079c2b4c7eb9b2a58780e2a957', '6f0f4516ec04414f90c3cc72e25f6d47', '7c88168e2c584336a08c7bca50878d16', '7c88168e2c584336a08c7bca50878d16', '97de8407ad0544c18abc65a388f2320b', '2019-01-11 17:14:36', null, '351cc2cdda6547528e20c6444e4a3bbd');
 
 -- ----------------------------
 -- Table structure for space
@@ -668,7 +668,7 @@ INSERT INTO `space` VALUES ('96f48c7fb9534e438cc54042f5a071ab', '10', '6', '3', 
 INSERT INTO `space` VALUES ('96fac6edfab84ef69bee66e3551e33f8', '14', '5', '3', '920005b52e54468ca653be0b593e6025', null);
 INSERT INTO `space` VALUES ('97834eeec5f74ab8922994fcee60b7fb', '2', '2', '5', '920005b52e54468ca653be0b593e6025', null);
 INSERT INTO `space` VALUES ('97b8c664411741d99284cab9a0c00837', '11', '9', '4', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
-INSERT INTO `space` VALUES ('97de8407ad0544c18abc65a388f2320b', '21', '1', '1', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', '6f0f4516ec04414f90c3cc72e25f6d47');
+INSERT INTO `space` VALUES ('97de8407ad0544c18abc65a388f2320b', '21', '1', '1', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('981c71d63162499691292f2854171a21', '16', '4', '1', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('98c33475940a44c79942d9a9a7f5aa6a', '21', '5', '5', '920005b52e54468ca653be0b593e6025', null);
 INSERT INTO `space` VALUES ('992d6e90ac404136a47886e8ab04fa24', '10', '7', '5', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
@@ -905,7 +905,7 @@ INSERT INTO `space` VALUES ('cec03e132955402fa5d9be36e8f5a520', '19', '5', '2', 
 INSERT INTO `space` VALUES ('cedd4e6f311c47cd843951d7493405b0', '22', '5', '5', '920005b52e54468ca653be0b593e6025', null);
 INSERT INTO `space` VALUES ('cf7297768f00430c9855f01822928ce9', '5', '5', '4', '920005b52e54468ca653be0b593e6025', null);
 INSERT INTO `space` VALUES ('cf77042c5183429eb6b36ad3ba68e7f0', '2', '6', '3', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
-INSERT INTO `space` VALUES ('cfab11fe021042f8a113c97233b538b9', '22', '1', '1', '729352f0e3b74fee91bf15baa7187e58', '7050f26ee0fa4e7b8571ad3f43a83884');
+INSERT INTO `space` VALUES ('cfab11fe021042f8a113c97233b538b9', '22', '1', '1', '729352f0e3b74fee91bf15baa7187e58', null);
 INSERT INTO `space` VALUES ('cfc3615aec484045ba0e38f13e24055a', '2', '4', '3', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('d01a7a7d7fe846fcaf64547f81d301dc', '12', '3', '4', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('d045cb31a336452f8e15d147c836b24c', '3', '1', '1', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);

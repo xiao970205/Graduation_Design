@@ -128,14 +128,14 @@ public class ParkingRun {
          return users;
      }
      
-     public List<Parking> getParkingsByNature(String nature){
+     public List<Parking> getParkingsByNature(String nature,String order){
          Session session = null;
          Transaction tran = null;
          List<Parking> parkings = null;
          try {
              session = HibernateUtil.openSession();
              tran = session.beginTransaction();
-             Query query =session.createQuery("from Parking where nature = '"+nature+"'",Parking.class);
+             Query query =session.createQuery("from Parking where nature = '"+nature+"' "+order,Parking.class);
              parkings = query.getResultList();
              tran.commit(); 
 

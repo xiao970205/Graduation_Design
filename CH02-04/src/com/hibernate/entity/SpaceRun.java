@@ -50,6 +50,7 @@ public class SpaceRun {
                  + "c.realname = '"
                  + cRk
                  + "'";
+             System.out.println(sql);
              space = (Space)session.createSQLQuery(sql).addEntity(Space.class).getResultList().get(0);
              tran.commit();
 
@@ -62,6 +63,26 @@ public class SpaceRun {
          return space;
      }
     
+    public Space getSpaceByXYZ(int x,int y,int z){
+        Session session = null;
+        Transaction tran = null;
+        Space space = null;
+        String sql = "select * from space where x = "+x+" and y = "+y+" and z = "+z;
+        try {
+            session = HibernateUtil.openSession();
+            tran = session.beginTransaction();
+            space = (Space)session.createSQLQuery(sql).addEntity(Space.class).getResultList().get(0);
+            tran.commit();
+
+        } catch (Exception e) {
+            tran.rollback();
+        } finally {
+            session.close();
+        }
+
+        return space;
+    }
+    
     public Space getSaveSpace(){
         Session session = null;
         Transaction tran = null;
@@ -73,7 +94,7 @@ public class SpaceRun {
             String sql = "select * "
                 + "from space "
                 + "where "
-                + "ISNULL(carid) "
+                + "nature = 'aaaeeb3acc5e44899a5d1de5ca5ab11a' "
                 + "ORDER BY z,y,x DESC";
             space = (Space)session.createSQLQuery(sql).addEntity(Space.class).getResultList().get(0);
             tran.commit();
