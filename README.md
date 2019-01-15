@@ -5,4 +5,10 @@
 
 CH02-04:学校提供的hibernate框架，用于实验方案，自己电脑上有springboot框架模板
 
-1.11注意：再ParkingRun类中的getParkingsByNature从nature获得parking列表的时候没有按日期进行排序
+##1.11更新： 
+    再ParkingRun类中的getParkingsByNature从nature获得parking列表的时候没有按日期进行排序  
+ 
+## 1.15 更新：
+    1.添加springboot框架，用于展示，项目为znck
+    2.核心代码完成
+    3.数据库文件上传  
