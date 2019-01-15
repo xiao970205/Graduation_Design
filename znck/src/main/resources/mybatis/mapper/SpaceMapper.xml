@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.znck.mapper.SpaceMapper" >
+    <resultMap id="BaseResultMap" type="com.znck.entity.SpaceEntity" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="x" property="x" jdbcType="INTEGER" />
+        <result column="y" property="y" jdbcType="INTEGER" />
+        <result column="z" property="z" jdbcType="INTEGER" />
+        <result column="nature" property="nature" jdbcType="VARCHAR" />
+        <result column="carid" property="carId" jdbcType="VARCHAR" />        
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+        id, x,y,z,nature,carId
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap"  >
+       SELECT 
+       <include refid="Base_Column_List" />
+       FROM space
+    </select>
+
+    <select id="getOne" parameterType="String" resultMap="BaseResultMap" >
+        SELECT 
+       <include refid="Base_Column_List" />
+       FROM space
+       WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.znck.entity.UserEntity" >
+       INSERT INTO 
+            space
+            (id,x,y,z,nature,carid) 
+        VALUES
+            (#{id}, #{x}, #{y},#{z},#{nature},#{carId})
+    </insert>
+    
+    <update id="update" parameterType="com.znck.entity.UserEntity" >
+       UPDATE 
+            space 
+       SET 
+            userName = #{userName},
+            x = #{x},
+            y = #{y},
+            z = #{z},
+            nature = #{nature},
+            carid = #{carId},
+       WHERE 
+            id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="String" >
+       DELETE FROM
+             space  
+       WHERE 
+             id =#{id}
+    </delete>
+
+</mapper>

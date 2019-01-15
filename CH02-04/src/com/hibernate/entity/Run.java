@@ -20,36 +20,73 @@ import com.mysql.cj.util.StringUtils;
  */
 public class Run {
 
-    //车库-占用 7bd42e7aad7645e4ad586349691a87e6
+    /**
+     * id:7bd42e7aad7645e4ad586349691a87e6
+     * realName:车库-占用
+     */
     private Contrast ckZy;
-    //920005b52e54468ca653be0b593e6025通道-可通过
+    
+    /**
+     * id:920005b52e54468ca653be0b593e6025
+     * realName:通道-可通过
+     */
     private Contrast tDktg;
-    //1e95f2208c7f4dd9b584889bba7e3164入口
+    
+    /**
+     * id:1e95f2208c7f4dd9b584889bba7e3164
+     * realName:入口
+     */
     private Contrast rk;
-    //b8dd53a77a1e4c809550dc1dc750f6ce停车中
+    
+    /**
+     * id:b8dd53a77a1e4c809550dc1dc750f6ce
+     * realName:停车中
+     */
     private Contrast tCz;
-    //9774f488d8054ebab4c9e843ff7e86a4通道-占用
-    private Contrast tdZy;
-    //85f8320ee6004d5eb7f21a470fadb366取车中
+    
+    /**
+     * id:9774f488d8054ebab4c9e843ff7e86a4
+     * realName:通道-占用
+     */
+    private Contrast tdzy;
+    
+    /**
+     * id:85f8320ee6004d5eb7f21a470fadb366
+     * realName:取车中
+     */
     private Contrast qCz;
     
-    public Run(){
+    /**
+     * id:351cc2cdda6547528e20c6444e4a3bbd
+     * realName:存车中
+     */
+    private Contrast cCc;
+
+    /**
+     * id:729352f0e3b74fee91bf15baa7187e58
+     * realName:出口
+     */
+    private Contrast ck;
+
+    public Run() {
         ContrastRun run = new ContrastRun();
         this.setCkZy(run.getContrastByRealName("车库-占用"));
         this.settDktg(run.getContrastByRealName("通道-可通过"));
         this.setRk(run.getContrastByRealName("入口"));
         this.settCz(run.getContrastByRealName("停车中"));
-        this.setTdZy(run.getContrastByRealName("通道-占用"));
+        this.setTdzy(run.getContrastByRealName("通道-占用"));
         this.setqCz(run.getContrastByRealName("取车中"));
+        this.setcCc(run.getContrastByRealName("存车中"));
+        this.setCk(run.getContrastByRealName("出口"));
     }
-    
+
     /**
      * 存车方法
      * 
      * @param userId 用户id，字符串
      * @param carId 车辆id，字符串
      * @param outTime 取车时间，Date类型
-     * @throws ParseException 
+     * @throws ParseException
      */
     public void saveCar(String userId, String carId, Date outTime) throws ParseException {
 
@@ -58,13 +95,15 @@ public class Run {
         ParkingRun parkingRun = new ParkingRun();
         SpaceRun spaceRun = new SpaceRun();
         // 获得入口id
-        String inSpaceId = spaceRun.getCrk("入口").getId();
+        String inSpaceId = spaceRun.getCrk(this.getRk().getRealName()).getId();
         Date inTime = getDate();
-        ContrastRun contrastRun = new ContrastRun();
-        String nature = contrastRun.getContrastByRealName("存车中").getId();
+        
+        String nature = this.getcCc().getId();
+        
         Space fetureSpace = spaceRun.getSaveSpace();
         String fetureSpaceId = fetureSpace.getId();
-        fetureSpace.setNature("7bd42e7aad7645e4ad586349691a87e6");
+        
+        fetureSpace.setNature(this.getCkZy().getId());
         // 锁定空间
         spaceRun.Update(fetureSpace);
 
@@ -88,16 +127,16 @@ public class Run {
         Date date2 = format.parse(dateStr);
         return date2;
     }
-    
+
     /**
      * 定时器每时每刻（1分钟）进行的方法。
-     * @throws ParseException 
+     * 
+     * @throws ParseException
      */
     public void getCar() throws ParseException {
-        ContrastRun contrastRun = new ContrastRun();
-        String saveCarRealNameId = contrastRun.getContrastByRealName("存车中").getId();
-        String inCarRealNameId = contrastRun.getContrastByRealName("停车中").getId();
-        String takeOutCarRealNameId = contrastRun.getContrastByRealName("取车中").getId();
+        String saveCarRealNameId = this.getcCc().getId();
+        String inCarRealNameId = this.gettCz().getId();
+        String takeOutCarRealNameId = this.getqCz().getId();
 
         ParkingRun parkingRun = new ParkingRun();
         List<Parking> inCar = parkingRun.getParkingsByNature(inCarRealNameId, "");
@@ -109,7 +148,7 @@ public class Run {
         List<Parking> saveCar = parkingRun.getParkingsByNature(saveCarRealNameId, "order by inTime");
         this.takeOutCarForTimeToDo(saveCar);
     }
-
+    
     /**
      * 每分钟进行的方法进行每个车的获得下一步路径并处理
      * 
@@ -118,9 +157,7 @@ public class Run {
     public void takeOutCarForTimeToDo(List<Parking> saveCars) {
         SpaceRun spaceRun = new SpaceRun();
         saveCars.forEach(saveCar -> {
-            Space nowSpace = spaceRun.get(saveCar.getNowSpaceId());
-            Space fetureSpace = spaceRun.get(saveCar.getFetureSpaceId());
-            this.carNextWay(nowSpace, fetureSpace, saveCar);
+            this.carNextWay(spaceRun.get(saveCar.getNowSpaceId()), spaceRun.get(saveCar.getFetureSpaceId()), saveCar);
         });
     }
 
@@ -131,93 +168,68 @@ public class Run {
      * @param fetureSpace
      * @param parking
      */
-    public boolean carNextWay(Space nowSpace, Space fetureSpace, Parking parking) {
-        int nX = nowSpace.getX();
-        int nY = nowSpace.getY();
-        int nZ = nowSpace.getZ();
-        int fX = fetureSpace.getX();
-        int fY = fetureSpace.getY();
-        int fZ = fetureSpace.getZ();
+    public void carNextWay(Space nowSpace, Space fetureSpace, Parking parking) {
+        final String x = "x";
+        final String y = "y";
+        final String z = "z";
         ParkingRun parkingRun = new ParkingRun();
         String nature = parking.getNature();
         Map<String, Integer> zb = null;
-        ContrastRun contrastRun = new ContrastRun();
-        String saveCarRealNameId = contrastRun.getContrastByRealName("存车中").getId();
+        String saveCarRealNameId = this.getcCc().getId();
         SpaceRun spaceRun = new SpaceRun();
         if (saveCarRealNameId.equals(nature)) {
-            // 存车中
-            zb = this.getNextSpaceWhenSavingCar(nX, nY, nZ, fX, fY, fZ);
-            // 能不能挪动
-            Space nextSpace = spaceRun.getSpaceByXYZ(zb.get("x"), zb.get("y"), zb.get("z"));
-            if(StringUtils.isNullOrEmpty(nextSpace.getCarId())){
-                // 可以挪动
-                if (zb.get("x") == fX && zb.get("y") == fY && zb.get("z") == fZ) {
-                    // 挪动到位置
+            zb = this.getNextSpaceWhenSavingCar(nowSpace.getX(), nowSpace.getY(), nowSpace.getZ(), fetureSpace.getX(), fetureSpace.getY(), fetureSpace.getZ());
+            Space nextSpace = spaceRun.getSpaceByXYZ(zb.get(x), zb.get(y), zb.get(z));
+            if (StringUtils.isNullOrEmpty(nextSpace.getCarId())) {
+                if (zb.get(x) == fetureSpace.getX() && zb.get(y) == fetureSpace.getY() && zb.get(z) == fetureSpace.getZ()) {
                     nextSpace.setCarId(parking.getCarId());
-                    nextSpace.setNature("7bd42e7aad7645e4ad586349691a87e6");
+                    nextSpace.setNature(this.getCkZy().getId());
                     spaceRun.Update(nextSpace);
                     nowSpace.setCarId(null);
-                    nowSpace.setNature("920005b52e54468ca653be0b593e6025");
-                    if(!nowSpace.getNature().equals("1e95f2208c7f4dd9b584889bba7e3164")){
-                        nowSpace.setNature("920005b52e54468ca653be0b593e6025");
+                    nowSpace.setNature(this.gettDktg().getId());
+                    if(!nowSpace.getNature().equals(this.getRk().getId())){
+                        nowSpace.setNature(this.gettDktg().getId());
                     }
-                        
                     spaceRun.Update(nowSpace);
-                    parking.setNature("b8dd53a77a1e4c809550dc1dc750f6ce");
+                    parking.setNature(this.gettCz().getId());
                     parking.setNowSpaceId(nextSpace.getId());
                     parkingRun.Update(parking);
-                    return true;
                 } else {
-                    // 未挪动到位置
                     nextSpace.setCarId(parking.getCarId());
-                    nextSpace.setNature("9774f488d8054ebab4c9e843ff7e86a4");
+                    nextSpace.setNature(this.getTdzy().getId());
                     spaceRun.Update(nextSpace);
                     nowSpace.setCarId(null);
-                    if(!nowSpace.getNature().equals("1e95f2208c7f4dd9b584889bba7e3164")){
-                        nowSpace.setNature("920005b52e54468ca653be0b593e6025");
+                    if(!nowSpace.getNature().equals(this.getRk().getId())){
+                        nowSpace.setNature(this.gettDktg().getId());
                     }
                     spaceRun.Update(nowSpace);
                     parking.setNowSpaceId(nextSpace.getId());
                     parkingRun.Update(parking);
-                    return true;
                 }
             } else {
-                // 不可以挪动
-                return false;
             }
         } else {
-            // 取车中
-            zb = this.getNextSpaceWhenTakingOutCar(nX, nY, nZ, fX, fY, fZ);
-            // 能不能挪动
-            Space nextSpace = spaceRun.getSpaceByXYZ(zb.get("x"), zb.get("y"), zb.get("z"));
+            zb = this.getNextSpaceWhenTakingOutCar(nowSpace.getX(), nowSpace.getY(), nowSpace.getZ(), fetureSpace.getX(), fetureSpace.getY(), fetureSpace.getZ());
+            Space nextSpace = spaceRun.getSpaceByXYZ(zb.get(x), zb.get(y), zb.get(z));
             if (nextSpace.getCarId() == null) {
-                // 可以挪动
-                if (zb.get("x") == fX && zb.get("y") == fY && zb.get("z") == fZ) {
-                    // 挪动到位置
+                if (zb.get(x) == fetureSpace.getX() && zb.get(y) == fetureSpace.getY() && zb.get(z) == fetureSpace.getZ()) {
                     nowSpace.setCarId(null);
-                    nowSpace.setNature("920005b52e54468ca653be0b593e6025");
+                    nowSpace.setNature(this.gettDktg().getId());
                     spaceRun.Update(nowSpace);
                     parkingRun.delete(parking.getId());;
-                    return true;
                 } else {
-                    // 未挪动到位置
-
                     nextSpace.setCarId(parking.getCarId());
-                    nextSpace.setNature("7bd42e7aad7645e4ad586349691a87e6");
+                    nextSpace.setNature(this.getCkZy().getId());
                     spaceRun.Update(nextSpace);
                     nowSpace.setCarId(null);
-                    nowSpace.setNature("920005b52e54468ca653be0b593e6025");
+                    nowSpace.setNature(this.gettDktg().getId());
                     spaceRun.Update(nowSpace);
-                    parking.setNature("b8dd53a77a1e4c809550dc1dc750f6ce");
+                    parking.setNature(this.gettCz().getId());
                     parking.setNowSpaceId(nextSpace.getId());
                     parkingRun.Update(parking);
-                    return true;
                 }
             } else {
-                // 不可以挪动
-                return false;
             }
-            // 是否到位置上
         }
     }
 
@@ -230,7 +242,7 @@ public class Run {
      * @return
      */
     public Map<String, Integer> getNextSpaceMapStringInteger(int x, int y, int z) {
-        Map<String, Integer> zb = new HashMap<String, Integer>();
+        Map<String, Integer> zb = new HashMap<String, Integer>(3);
         zb.put("x", x);
         zb.put("y", y);
         zb.put("z", z);
@@ -250,7 +262,7 @@ public class Run {
      * @return
      */
     public Map<String, Integer> getNextSpaceWhenTakingOutCar(int nX, int nY, int nZ, int fX, int fY, int fZ) {
-        Map<String, Integer> zb = new HashMap<String, Integer>();
+        Map<String, Integer> zb = new HashMap<String, Integer>(3);
         if (nY % 3 != 2) {
             // 在车位上
             if (nY == 1) {
@@ -288,7 +300,7 @@ public class Run {
      * @return
      */
     public Map<String, Integer> getNextSpaceWhenSavingCar(int nX, int nY, int nZ, int fX, int fY, int fZ) {
-        Map<String, Integer> zb = new HashMap<String, Integer>();
+        Map<String, Integer> zb = new HashMap<String, Integer>(3);
         if (nZ == fZ) {
             // 相同层
             if (nY % 3 == 2) {
@@ -300,9 +312,9 @@ public class Run {
                         zb = getNextSpaceMapStringInteger(nX + 1, nY, nZ);
                     } else {
                         // 仅差上下移动
-                        if(nY-fY>0){
+                        if (nY - fY > 0) {
                             zb = getNextSpaceMapStringInteger(nX, nY - 1, nZ);
-                        }else{
+                        } else {
                             zb = getNextSpaceMapStringInteger(nX, nY + 1, nZ);
                         }
                     }
@@ -327,10 +339,10 @@ public class Run {
      * @param inCar
      * @param inCarRealNameId
      * @param takeOutCarRealNameId
-     * @throws ParseException 
+     * @throws ParseException
      */
-    public void inCarForTimeToDo(List<Parking> inCar, String inCarRealNameId, String takeOutCarRealNameId) throws ParseException {
-        ParkingRun parkingRun = new ParkingRun();
+    public void inCarForTimeToDo(List<Parking> inCar, String inCarRealNameId, String takeOutCarRealNameId)
+        throws ParseException {
 
         Date date = getDate();
         inCar.forEach(parks -> {
@@ -339,8 +351,7 @@ public class Run {
                 try {
                     takeOutCar(inCarToOutCar.getCarId());
                 } catch (ParseException e) {
-                    // TODO Auto-generated catch block
-                     e.printStackTrace();
+                    e.printStackTrace();
                 }
             }
         });
@@ -351,21 +362,25 @@ public class Run {
      * 
      * @param carId
      * @return
-     * @throws ParseException 
+     * @throws ParseException
      */
     public Parking takeOutCar(String carId) throws ParseException {
         ParkingRun parkingRun = new ParkingRun();
         SpaceRun spaceRun = new SpaceRun();
         Parking parking = parkingRun.getParkingByCarid(carId);
-        String fetrueSpaceId = spaceRun.getCrk("出口").getId();
+        
+        String fetureSpaceId = spaceRun.getCrk(this.getCk().getRealName()).getId();
+        
         Date outTime = parking.getOutTime();
         if (outTime == null) {
             outTime = getDate();
         }
         parking.setOutTime(outTime);
-        parking.setFetureSpaceId(fetrueSpaceId);
+        parking.setFetureSpaceId(fetureSpaceId);
         parking.setOrginalSpaceId(parking.getNowSpaceId());
-        parking.setNature("85f8320ee6004d5eb7f21a470fadb366");
+        
+        parking.setNature(this.getqCz().getId());
+        
         parkingRun.Update(parking);
 
         return parking;
@@ -413,12 +428,12 @@ public class Run {
         this.tCz = tCz;
     }
 
-    public Contrast getTdZy() {
-        return tdZy;
+    public Contrast getTdzy() {
+        return tdzy;
     }
 
-    public void setTdZy(Contrast tdZy) {
-        this.tdZy = tdZy;
+    public void setTdzy(Contrast tdzy) {
+        this.tdzy = tdzy;
     }
 
     public Contrast getqCz() {
@@ -428,6 +443,21 @@ public class Run {
     public void setqCz(Contrast qCz) {
         this.qCz = qCz;
     }
-    
-    
+
+    public Contrast getcCc() {
+        return cCc;
+    }
+
+    public void setcCc(Contrast cCc) {
+        this.cCc = cCc;
+    }
+
+    public Contrast getCk() {
+        return ck;
+    }
+
+    public void setCk(Contrast ck) {
+        this.ck = ck;
+    }
+
 }

@@ -5,15 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-import com.hibernate.entity.Parking;
-import com.hibernate.entity.ParkingRun;
+import com.hibernate.entity.Car;
+import com.hibernate.entity.CarRun;
 import com.hibernate.entity.Run;
 
 public class Test {
     public static void main(String[] args) throws InterruptedException, ParseException {
-        Run run = new Run();
-        run.getCar();
-        
+
     }
 
     public static String getId() {
