@@ -24,6 +24,7 @@ public class Parking {
     private Date inTime;
     private Date outTime;
     private String nature;
+    private String way;
 
     @Id
     public String getId() {
@@ -97,5 +98,14 @@ public class Parking {
     public void setNature(String nature) {
         this.nature = nature;
     }
+
+    public String getWay() {
+        return way;
+    }
+
+    public void setWay(String way) {
+        this.way = way;
+    }
+    
 
 }

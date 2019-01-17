@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.znck.mapper.ParkingSaveMapper" >
+    <resultMap id="BaseResultMap" type="com.znck.entity.ParkingSaveEntity" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="userid" property="userId" jdbcType="VARCHAR" />
+        <result column="carid" property="carId" jdbcType="VARCHAR" />
+        <result column="way" property="way" jdbcType="VARCHAR" />
+        <result column="intime" property="inTime" javaType="java.util.Date" />
+        <result column="saveinplacetime" property="saveInPlaceTime" javaType="java.util.Date" />
+        <result column="outtime" property="outTime" javaType="java.util.Date" />
+        <result column="outinplacetime" property="outInPlaceTime" javaType="java.util.Date" />
+        <result column="savespaceid" property="saveSpaceId" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+        id,userId,carId,way,inTime,saveInPlaceTime,outTime,outInPlaceTime,saveSpaceId
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap"  >
+       SELECT 
+        <include refid="Base_Column_List" />
+       FROM parkingsave
+    </select>
+
+    <select id="getOne" parameterType="String" resultMap="BaseResultMap" >
+        SELECT 
+        <include refid="Base_Column_List" />
+       FROM parkingsave
+       WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.znck.entity.ParkingSaveEntity" >
+       INSERT INTO 
+            parkingsave
+            (id,
+            userid,
+            carid,
+            way,
+            intime,
+            saveinplacetime,
+            outtime,
+            outinplacetime,
+            savespaceid) 
+        VALUES
+            (#{id}, #{userId}, #{carId}
+            ,#{way}, #{inTime}, #{saveInPlaceTime}, #{outTime}
+            , #{outInPlaceTime}, #{saveSpaceId})
+    </insert>
+    
+    <update id="update" parameterType="com.znck.entity.ParkingSaveEntity" >
+       UPDATE 
+            parkingsave 
+       SET 
+        userid = #{userId},
+        carid = #{carId},
+        way = #{way},
+        intime = #{inTime},
+        outtime = #{outTime},
+        outinplacetime = #{outInPlaceTime},
+        savespaceid = #{saveSpaceId},
+        saveinplacetime = #{saveInPlaceTime}
+       WHERE 
+            id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="String" >
+       DELETE FROM
+             parkingsave 
+       WHERE 
+             id =#{id}
+    </delete>
+
+</mapper>

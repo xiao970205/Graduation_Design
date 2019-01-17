@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2019-01-15 10:20:08
+Date: 2019-01-17 16:05:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -74,13 +74,36 @@ CREATE TABLE `parking` (
   `nowspaceid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `feturespaceid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `intime` datetime(6) DEFAULT NULL,
+  `saveinplacetime` datetime(6) DEFAULT NULL,
   `outtime` datetime(6) DEFAULT NULL,
   `nature` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '性质：存车中，停车中，取车中',
+  `way` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of parking
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for parkingsave
+-- ----------------------------
+DROP TABLE IF EXISTS `parkingsave`;
+CREATE TABLE `parkingsave` (
+  `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'id',
+  `userid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户id',
+  `carid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '汽车id',
+  `way` text CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '经过的路径',
+  `intime` datetime(6) DEFAULT NULL COMMENT '存车时间',
+  `saveinplacetime` datetime(6) DEFAULT NULL COMMENT '存入时间',
+  `outtime` datetime(6) DEFAULT NULL COMMENT '取车时间',
+  `outinplacetime` datetime(6) DEFAULT NULL COMMENT '取走时间',
+  `savespaceid` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '存车地点id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of parkingsave
 -- ----------------------------
 
 -- ----------------------------

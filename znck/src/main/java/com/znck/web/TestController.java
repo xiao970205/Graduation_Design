@@ -117,11 +117,7 @@ public class TestController {
              e.printStackTrace();
         }
     }
-    
-    @RequestMapping("/getCar")
-    public void getCar() throws ParseException{
-        runService.getCar();
-    }
+   
     @RequestMapping("/updateParking")
     public void updateParking(){
         ParkingEntity parking = parkingService.getAll().get(0);

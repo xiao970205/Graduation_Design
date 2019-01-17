@@ -12,8 +12,10 @@ public class ParkingEntity {
     private String nowSpaceId;
     private String fetureSpaceId;
     private Date inTime;
+    private Date saveInPlaceTime;
     private Date outTime;
     private String nature;
+    private String way;
 
     public ParkingEntity(){
         super();
@@ -111,6 +113,14 @@ public class ParkingEntity {
         this.inTime = inTime;
     }
 
+    public Date getSaveInPlaceTime() {
+        return saveInPlaceTime;
+    }
+
+    public void setSaveInPlaceTime(Date saveInPlaceTime) {
+        this.saveInPlaceTime = saveInPlaceTime;
+    }
+
     public Date getOutTime() {
         return outTime;
     }
@@ -125,6 +135,14 @@ public class ParkingEntity {
 
     public void setNature(String nature) {
         this.nature = nature;
+    }
+
+    public String getWay() {
+        return way;
+    }
+
+    public void setWay(String way) {
+        this.way = way;
     }
 
     public static long getSerialversionuid() {

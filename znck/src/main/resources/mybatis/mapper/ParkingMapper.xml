@@ -9,12 +9,14 @@
 		<result column="nowspaceid" property="nowSpaceId" jdbcType="VARCHAR" />
 		<result column="feturespaceid" property="fetureSpaceId" jdbcType="VARCHAR" />
 		<result column="intime" property="inTime" javaType="java.util.Date" />
+		<result column="saveinplacetime" property="saveInPlaceTime" javaType="java.util.Date" />
 		<result column="outtime" property="outTime" javaType="java.util.Date" />
 		<result column="nature" property="nature" jdbcType="VARCHAR" />
+		<result column="way" property="way" jdbcType="VARCHAR" />
 	</resultMap>
     
 	<sql id="Base_Column_List" >
-        id,userId,carId,orginalSpaceId,nowSpaceId,fetureSpaceId,inTime,outTime,nature
+        id,userId,carId,orginalSpaceId,nowSpaceId,fetureSpaceId,inTime,saveInPlaceTime,outTime,nature,way
 	</sql>
 
 	<select id="getParkingByCarid" parameterType="String" resultMap="BaseResultMap" >
@@ -55,11 +57,11 @@
             parking
             (id,userid,carid
             ,orginalspaceid,nowspaceid,feturespaceid
-            ,intime,outtime,nature) 
+            ,intime,saveinplacetime,outtime,nature,way) 
         VALUES
             (#{id}, #{userId}, #{carId}
             , #{orginalSpaceId}, #{nowSpaceId}, #{fetureSpaceId}
-            , #{inTime}, #{outTime}, #{nature})
+            , #{inTime}, #{saveInPlaceTime}, #{outTime}, #{nature},#{way})
 	</insert>
     
 	<update id="update" parameterType="com.znck.entity.ParkingEntity" >
@@ -69,7 +71,9 @@
         userid = #{userId},carid = #{carId},
         orginalspaceid = #{orginalSpaceId},nowspaceid = #{nowSpaceId},
         feturespaceid = #{fetureSpaceId},intime = #{inTime},
-        outtime = #{outTime},nature = #{nature}
+        saveinplacetime = #{saveInPlaceTime},
+        outtime = #{outTime},nature = #{nature},
+        way = #{way}
        WHERE 
             id = #{id}
 	</update>
