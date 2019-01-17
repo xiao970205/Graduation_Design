@@ -11,7 +11,8 @@ import com.hibernate.entity.Run;
 
 public class Test {
     public static void main(String[] args) throws InterruptedException, ParseException {
-
+        Run run = new Run();
+        run.getCar();
     }
 
     public static String getId() {
