@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.znck.mapper.CarMapper" >
+	<resultMap id="BaseResultMap" type="com.znck.entity.CarEntity" >
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="userid" property="userId" jdbcType="VARCHAR" />
+        <result column="carcard" property="carCard" jdbcType="VARCHAR" />
+        <result column="carname" property="carName" jdbcType="VARCHAR" />
+		<result column="carinfo" property="carInfo" jdbcType="VARCHAR" />
+	</resultMap>
+    
+	<sql id="Base_Column_List" >
+        id, userId,carCard,carName,carInfo
+	</sql>
+
+	<select id="getAll" resultMap="BaseResultMap"  >
+       SELECT 
+		<include refid="Base_Column_List" />
+       FROM car
+	</select>
+
+	<select id="getOne" parameterType="String" resultMap="BaseResultMap" >
+        SELECT 
+		<include refid="Base_Column_List" />
+       FROM car
+       WHERE id = #{id}
+	</select>
+
+	<insert id="insert" parameterType="com.znck.entity.UserEntity" >
+       INSERT INTO 
+            user
+            (id,userid,carid,carname,carinfo) 
+        VALUES
+            (#{id}, #{userId},#{carCard},#{carName}, #{carInfo})
+	</insert>
+    
+	<update id="update" parameterType="com.znck.entity.UserEntity" >
+       UPDATE 
+            car 
+       SET 
+        userid = #{userId},
+        carcard = #{carCard},
+        carname = #{carName},
+        carinfo = #{carInfo}
+       WHERE 
+            id = #{id}
+	</update>
+    
+	<delete id="delete" parameterType="String" >
+       DELETE FROM
+             car 
+       WHERE 
+             id =#{id}
+	</delete>
+
+</mapper>

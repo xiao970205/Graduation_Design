@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.znck.mapper.ContrastMapper" >
+	<resultMap id="BaseResultMap" type="com.znck.entity.ContrastEntity" >
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="realname" property="realName" jdbcType="VARCHAR" />
+	</resultMap>
+    
+	<sql id="Base_Column_List" >
+        id, realName
+	</sql>
+
+	<select id="getContrastByRealName" parameterType="String" resultMap="BaseResultMap" >
+        SELECT 
+		<include refid="Base_Column_List" />
+       FROM contrast
+       WHERE realname = #{realName}
+	</select>
+
+	<select id="getAll" resultMap="BaseResultMap"  >
+       SELECT 
+		<include refid="Base_Column_List" />
+       FROM contrast
+	</select>
+
+	<select id="getOne" parameterType="String" resultMap="BaseResultMap" >
+        SELECT 
+		<include refid="Base_Column_List" />
+       FROM contrast
+       WHERE id = #{id}
+	</select>
+
+	<insert id="insert" parameterType="com.znck.entity.ContrastEntity" >
+       INSERT INTO 
+            contrast
+            (id,realname) 
+        VALUES
+            (#{id}, #{realName})
+	</insert>
+    
+	<update id="update" parameterType="com.znck.entity.ContrastEntity" >
+       UPDATE 
+            contrast 
+       SET 
+        realname = #{realName},
+       WHERE 
+            id = #{id}
+	</update>
+    
+	<delete id="delete" parameterType="String" >
+       DELETE FROM
+             contrast 
+       WHERE 
+             id =#{id}
+	</delete>
+
+</mapper>

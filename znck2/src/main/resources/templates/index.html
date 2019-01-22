@@ -1,0 +1,21 @@
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script type="text/javascript" th:src="@{../../static/js/jquery.js}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+    		$("button").click(function() {
+    			$("p").hide();
+    		});
+    	});
+    </script>
+  </head>
+  <body>
+    <h2>This is a heading</h2>
+    <p>This is a paragraph.</p>
+    <p>This is another paragraph.</p>
+    <p>${pageContext.request.contextPath}</p>
+    <button type="button">Click me</button>
+    <input type="text" name="" oninput="value=value.replace(/[^\d]/g,'')" id = "userName"/>
+    <input type = "password" id = "password">
+  </body>
+</html>
