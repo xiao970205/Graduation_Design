@@ -1,44 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.znck.mapper.UserMapper" >
-    <resultMap id="BaseResultMap" type="com.znck.entity.UserEntity" >
-        <id column="id" property="id" jdbcType="VARCHAR" />
-        <result column="nickname" property="nickName" jdbcType="VARCHAR" />
-        <result column="phone" property="phone" jdbcType="VARCHAR" />
-        <result column="realname" property="realName" jdbcType="VARCHAR" />
-        <result column="password" property="password" jdbcType="VARCHAR" />
-        <result column="email" property="email" jdbcType="VARCHAR" />
-        <result column="idcard" property="idCard" jdbcType="VARCHAR" />
-        <result column="nature" property="nature" jdbcType="VARCHAR" />
-    </resultMap>
+	<resultMap id="BaseResultMap" type="com.znck.entity.UserEntity" >
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="nickname" property="nickName" jdbcType="VARCHAR" />
+		<result column="phone" property="phone" jdbcType="VARCHAR" />
+		<result column="realname" property="realName" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="idcard" property="idCard" jdbcType="VARCHAR" />
+		<result column="nature" property="nature" jdbcType="VARCHAR" />
+	</resultMap>
     
-    <sql id="Base_Column_List" >
-        id, nickName, phone, realName, password, email, idCard, nature
-    </sql>
-
-    <select id="getAll" resultMap="BaseResultMap"  >
-       SELECT 
-       <include refid="Base_Column_List" />
-       FROM user
-    </select>
-
-    <select id="getOne" parameterType="String" resultMap="BaseResultMap" >
+	<select id="findByUserNameAndPassword" resultMap="BaseResultMap" >
         SELECT 
-       <include refid="Base_Column_List" />
+		<include refid="Base_Column_List" />
+       FROM user
+       where phone = #{phone} and password = #{password}
+	</select>
+    
+	<sql id="Base_Column_List" >
+        id, nickName, phone, realName, password, email, idCard, nature
+	</sql>
+
+	<select id="getAll" resultMap="BaseResultMap"  >
+       SELECT 
+		<include refid="Base_Column_List" />
+       FROM user
+	</select>
+
+	<select id="getUserByPhone" resultMap="BaseResultMap"  parameterType="String">
+       SELECT 
+		<include refid="Base_Column_List" />
+       FROM user
+       where phone = #{phone}
+	</select>
+
+	<select id="getOne" parameterType="String" resultMap="BaseResultMap" >
+        SELECT 
+		<include refid="Base_Column_List" />
        FROM user
        WHERE id = #{id}
-    </select>
+	</select>
 
-    <insert id="insert" parameterType="com.znck.entity.UserEntity" >
+	<insert id="insert" parameterType="com.znck.entity.UserEntity" >
        INSERT INTO 
             user
             (id, nickname, phone, realname, password, email, idcard, nature) 
         VALUES
             (#{id}, #{nickName}, #{phone}, #{realName}
             , #{password}, #{email}, #{idCard}, #{nature})
-    </insert>
+	</insert>
     
-    <update id="update" parameterType="com.znck.entity.UserEntity" >
+	<update id="update" parameterType="com.znck.entity.UserEntity" >
        UPDATE 
             user 
        SET 
@@ -51,13 +65,13 @@
         nature = #{nature},
        WHERE 
             id = #{id}
-    </update>
+	</update>
     
-    <delete id="delete" parameterType="String" >
+	<delete id="delete" parameterType="String" >
        DELETE FROM
              user 
        WHERE 
              id =#{id}
-    </delete>
+	</delete>
 
 </mapper>

@@ -4,8 +4,8 @@
 	<resultMap id="BaseResultMap" type="com.znck.entity.CarEntity" >
 		<id column="id" property="id" jdbcType="VARCHAR" />
 		<result column="userid" property="userId" jdbcType="VARCHAR" />
-        <result column="carcard" property="carCard" jdbcType="VARCHAR" />
-        <result column="carname" property="carName" jdbcType="VARCHAR" />
+		<result column="carcard" property="carCard" jdbcType="VARCHAR" />
+		<result column="carname" property="carName" jdbcType="VARCHAR" />
 		<result column="carinfo" property="carInfo" jdbcType="VARCHAR" />
 	</resultMap>
     
@@ -17,6 +17,17 @@
        SELECT 
 		<include refid="Base_Column_List" />
        FROM car
+	</select>
+
+	<select id="getCarsByUserId" resultMap="BaseResultMap" parameterType="String"  >
+		SELECT 
+            c.id,c.userid,c.carcard,c.carname,c.carinfo
+        FROM
+            car c,user u
+        WHERE
+            c.userid = u.id 
+            and 
+            u.id = #{userId}
 	</select>
 
 	<select id="getOne" parameterType="String" resultMap="BaseResultMap" >

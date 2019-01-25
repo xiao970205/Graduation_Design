@@ -1,12 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
+  <head>
+    <meta charset="UTF-8" />
     <title>Hello Thymeleaf!</title>
-</head>
-<body>
-    <p th:text="'Hello, ' + ${name} + '!'" />
-    <p>fuckAll</p>
-    <p>hello</p>
-</body>
+    <script type="text/javascript" th:src="@{../../static/js/jquery.js}"></script>
+  </head>
+  <body>
+    <input type = "hidden" th:value = "${phone}" id = "phone"/>
+  </body>
+  <script type="text/javascript">
+  	$(function() { 
+  		var phone = $("#phone").val();
+  		$.ajax({
+                type:'POST',
+                dataType:'json',
+                url:'http://localhost:8080/getUserByPhone',
+                contentType:'application/json;charset=UTF-8',
+                data:JSON.stringify({"phone":phone}),
+                success:function(data){
+                    
+                }
+            });
+  	})
+  </script>
 </html>
