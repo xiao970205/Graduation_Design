@@ -2,6 +2,10 @@ package com.znck.entity;
 
 import java.util.Date;
 
+/**
+ * @author 肖舒翔
+ * 停车实体类
+ */
 public class ParkingSaveEntity {
     private static final long serialVersionUID = 1L;
 
@@ -20,7 +24,7 @@ public class ParkingSaveEntity {
     }
 
     public ParkingSaveEntity(String id, String userId, String carId, String way, Date inTime, Date saveInPlaceTime,
-        Date outTime, Date OutInPlaceTime, String saveSpaceId, String nature) {
+        Date outTime, Date outInPlaceTime, String saveSpaceId, String nature) {
         super();
         this.id = id;
         this.carId = carId;
@@ -28,7 +32,7 @@ public class ParkingSaveEntity {
         this.inTime = inTime;
         this.saveInPlaceTime = saveInPlaceTime;
         this.outTime = outTime;
-        this.outInPlaceTime = OutInPlaceTime;
+        this.outInPlaceTime = outInPlaceTime;
         this.saveSpaceId = saveSpaceId;
         this.nature = nature;
     }

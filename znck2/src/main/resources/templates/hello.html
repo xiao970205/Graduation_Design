@@ -7,9 +7,13 @@
   </head>
   <body>
     <input type = "hidden" th:value = "${phone}" id = "phone"/>
+    <p id = "userNickName">您好</p>
+    <p id="userId">123</p>
+    <input type="button" id="grxx" value="重置个人信息"/>
   </body>
   <script type="text/javascript">
-  	$(function() { 
+  	$(function() {
+  	    var ids=123;
   		var phone = $("#phone").val();
   		$.ajax({
                 type:'POST',
@@ -18,9 +22,22 @@
                 contentType:'application/json;charset=UTF-8',
                 data:JSON.stringify({"phone":phone}),
                 success:function(data){
-                    
+                    //alert(JSON.stringify(data));
+                    //alert(data.nickName);
+                    $("#userNickName").text($("#userNickName").text() +"  "+ data.nickName);
+                    $("#userId").text(data.id);
                 }
             });
+        $.ajax({
+            type:'POST',
+            dataType:'json',
+            url:'http://localhost:8080/getCarByUserId',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify({"id":$("#userId").html()}),
+            success:function(data){
+
+            }
+        });
   	})
   </script>
 </html>

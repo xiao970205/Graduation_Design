@@ -1,5 +1,11 @@
 package com.znck.entity;
 
+/***
+ * 汽车实体类
+ *
+ * @author 肖舒翔
+ * @date 2019/1/27
+ */
 public class CarEntity {
 
     private static final long serialVersionUID = 1L;

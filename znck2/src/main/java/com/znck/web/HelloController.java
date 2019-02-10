@@ -1,7 +1,9 @@
 package com.znck.web;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.znck.entity.ContrastEntity;
+import com.znck.entity.UserEntity;
+import com.znck.service.RunService;
+import com.znck.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,10 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.znck.entity.ContrastEntity;
-import com.znck.entity.UserEntity;
-import com.znck.service.RunService;
-import com.znck.service.UserService;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class HelloController {
@@ -28,6 +27,7 @@ public class HelloController {
     public String hello(Model model,
         @RequestParam(value = "name", required = false, defaultValue = "World") String name) {
         model.addAttribute("name", name);
+
         return "hello";
     }
     
@@ -52,6 +52,7 @@ public class HelloController {
     @RequestMapping("/jump2")
     public String jump2(Model model,
         @RequestParam(value = "name", required = false, defaultValue = "World") String name) {
+        System.out.println(1);
         model.addAttribute("name", name);
         return "phone";
     }
@@ -76,11 +77,13 @@ public class HelloController {
     @ResponseBody
     public UserEntity getUserByPhone(@RequestBody String data){
         UserEntity user = this.userService.getUserByPhone(data);
-        user.setId(null);
-        user.setPassword(null);
-        user.setRealName(null);
-        user.setIdCard(null);
-        user.setEmail(null);
+        return user;
+    }
+
+    @RequestMapping("/getCarByUserId")
+    @ResponseBody
+    public UserEntity getCarByUserId(@RequestBody String data){
+        System.out.println("id"+data);
         return null;
     }
     
