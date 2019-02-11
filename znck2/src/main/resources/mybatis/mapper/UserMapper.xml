@@ -62,7 +62,7 @@
         password = #{password},
         email = #{email},
         idcard = #{idCard},
-        nature = #{nature},
+        nature = #{nature}
        WHERE 
             id = #{id}
 	</update>

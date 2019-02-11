@@ -14,7 +14,7 @@ public interface CarMapper {
      
      void update(CarEntity car);
      
-     void delete(String id);
+     void delete(String id);    
      
      List<CarEntity> getCarsByUserId(String userId);
 }

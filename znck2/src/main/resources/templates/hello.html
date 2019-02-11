@@ -8,36 +8,58 @@
   <body>
     <input type = "hidden" th:value = "${phone}" id = "phone"/>
     <p id = "userNickName">您好</p>
-    <p id="userId">123</p>
-    <input type="button" id="grxx" value="重置个人信息"/>
+    <p id = "userNature">您现在处于未激活状态，请重置个人信息，尽快实名认证</p>
+    <input type="button" id="grxx" value="设置个人信息"/>
+    <p id = "carinfos"></p>
+    <div>
+        <p>汽车名称</p>
+    </div>
+    <input type = "button" id="addCar" value = "添加新车辆"/>
   </body>
   <script type="text/javascript">
   	$(function() {
-  	    var ids=123;
   		var phone = $("#phone").val();
+  		var userData = null;
+  		var url = window.location.protocol + '//'+window.location.host;
   		$.ajax({
+                async:false,
                 type:'POST',
                 dataType:'json',
-                url:'http://localhost:8080/getUserByPhone',
+                url:url+'/getUserByPhone',
                 contentType:'application/json;charset=UTF-8',
                 data:JSON.stringify({"phone":phone}),
                 success:function(data){
                     //alert(JSON.stringify(data));
-                    //alert(data.nickName);
-                    $("#userNickName").text($("#userNickName").text() +"  "+ data.nickName);
-                    $("#userId").text(data.id);
+                    
+                    userData = data;
                 }
             });
+        $("#userNickName").text($("#userNickName").text() +"  "+ userData.nickName);
+        if(userData.nature == 0){
+            $("#grxx").val("重置个人信息");
+            return;
+        }else if(userData.nature == 1){
+            $("#userNature").text("");
+        }else{
+            $("#userNature").text("您现在是会员用户，享受预约取车权力！");
+        }
         $.ajax({
+            async:false,
             type:'POST',
             dataType:'json',
-            url:'http://localhost:8080/getCarByUserId',
+            url:url+'/getCarByUserId',
             contentType:'application/json;charset=UTF-8',
-            data:JSON.stringify({"id":$("#userId").html()}),
+            data:JSON.stringify({"id":userData.id}),
             success:function(data){
-
+                $("#carinfos").text(JSON.stringify(data.length));
             }
         });
-  	})
+  	});
+  	$("#grxx").click(function() {
+        window.location.href="jumpToUrl?url=userInfo&phone="+$("#phone").val();
+    });
+    $("#addCar").click(function() {
+        window.location.href="jumpToUrl?url=jumpToAddNewCar&phone="+$("#phone").val();
+    })
   </script>
 </html>

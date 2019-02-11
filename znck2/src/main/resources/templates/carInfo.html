@@ -1,0 +1,86 @@
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script type="text/javascript" th:src="@{../../static/js/jquery.js}"></script>
+  </head>
+  <body>
+    <input type = "hidden" th:value = "${carId}" id = "carId"/>
+    <input type = "hidden" id = "userId" value = "222"/>
+    
+            车牌号<input type = "text" id = "carCard"/><br>
+            汽车名<input type = "text" id = "carName"/><br>
+            车辆信息<input type = "text" id = "carInfo"/><br>
+    
+    <input type = "button" value="确认" id = "qr"/>
+  </body>
+  <script type="text/javascript">
+    $(function() {
+        var phone = $("#phone").val();
+        $("#userphone").val(phone);
+        var userData = null;
+        var url = window.location.protocol + '//'+window.location.host;
+        $.ajax({
+                async:false,
+                type:'POST',
+                dataType:'json',
+                url:url+'/getUserByPhone',
+                contentType:'application/json;charset=UTF-8',
+                data:JSON.stringify({"phone":phone}),
+                success:function(data){
+                    //alert(JSON.stringify(data));
+                    
+                    userData = data;
+                }
+            });
+         $("#userId").val(userData.id);
+         $("#nickName").val(userData.nickName);
+         $("#realName").val(userData.realName);
+         $("#email").val(userData.email);
+         $("#idCard").val(userData.idCard);
+    });
+    $("#cz").click(function() {
+        var phone = $("#phone").val();
+        $("#userphone").val(phone);
+        var userData = null;
+        var url = window.location.protocol + '//'+window.location.host;
+        $.ajax({
+                async:false,
+                type:'POST',
+                dataType:'json',
+                url:url+'/getUserByPhone',
+                contentType:'application/json;charset=UTF-8',
+                data:JSON.stringify({"phone":phone}),
+                success:function(data){
+                    //alert(JSON.stringify(data));
+                    
+                    userData = data;
+                }
+            });
+         $("#nickName").val(userData.nickName);
+         $("#realName").val(userData.realName);
+         $("#email").val(userData.email);
+         $("#idCard").val(userData.idCard);
+    });
+    $("#qr").click(function() {
+        var phone = $("#userphone").val();
+        var nickName = $("#nickName").val();
+        var realName = $("#realName").val();
+        var password = $("#password").val();
+        var email = $("#email").val();
+        var idcard = $("#idcard").val();
+        var userid = $("#userId").val();
+        var url = window.location.protocol + '//'+window.location.host;
+        var info2 = {id:userid,phone:phone,nickName:nickName,realName:realName,password:password,email:email,idCard:idcard};
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:url+'/changeUserInfo',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify(info2),
+            success:function(data){
+                window.location.href="jumpToUrl?url=index&name=null";
+            }
+        });
+    })
+  </script>
+</html>

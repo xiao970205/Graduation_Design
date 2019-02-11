@@ -29,4 +29,9 @@ import com.znck.mapper.CarMapper;
     public void delete(String id){
         carMapper.delete(id);
     }
+    
+    public List<CarEntity> getCardByUserId(String data){
+        String userId = data.split("\"id\":\"")[1].split("\"")[0];
+        return carMapper.getCarsByUserId(userId);
+    }
 }

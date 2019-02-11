@@ -7,18 +7,8 @@
     <input type = "text" name="" oninput="value=value.replace(/[^\d]/g,'')" id="phone" />
     <br>
     <input type = "button" class = "zc" id = "zc" value = "注册" /><br>
-    <input type = "button" class = "getcs" id = "getcs" value = "获得参数" />
   </body>
   <script type="text/javascript">
-    $("#getcs").click(function() {
-    	var url = window.location.href.toString().split('?')[1];
-    	url = url.replace(/&/g, '","');
-    	url = '{"'+url.replace(/=/g, '"="')+'"}';
-    	url = url.replace(/=/g, ':');
-    	var json = JSON.parse(url);
-    	alert(json['password']);
-    })
-    
     $("#zc").click(function() {
     	var phone = $("#phone").val();
     	if(phone.length != 11){
@@ -33,7 +23,7 @@
                 success:function(data){
                     if(data['id'] == 'true'){
                         alert("注册成功！初始密码为 123456 ，即将返回登陆界面进行登陆");
-                        window.location.href="jumpToIndex";
+                        window.location.href="jumpToUrl?url=index&name=null";
                     }else{
                         alert("电话已被注册！");
                     }

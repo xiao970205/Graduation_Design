@@ -15,7 +15,7 @@
   </body>
   <script type="text/javascript">
     $("#zc").click(function() {
-    	window.location.href="jump2?name=1&password=2&nickname=4";
+    	window.location.href="jumpToUrl?phone=null&url=phone";
     })
   
     $("#dl").click(function() {
@@ -42,7 +42,7 @@
                 contentType:'application/json;charset=UTF-8',
                 data:JSON.stringify({"phone":userName,"password":password}),
                 success:function(data){
-                    window.location.href="jumpToHello?phone="+data["phone"];
+                    window.location.href="jumpToUrl?phone="+data["phone"]+"&url=hello";
                 },
                 error: function(){
                     alert("登陆失败！请检查用户名或密码");
