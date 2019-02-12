@@ -3,9 +3,8 @@
     <script type="text/javascript" th:src="@{../../static/js/jquery.js}"></script>
   </head>
   <body>
-    <input type = "hidden" th:value = "${carId}" id = "carId"/>
-    <input type = "hidden" id = "userId" value = "222"/>
-    
+    <input type = "hidden" th:value = "${phone}" id = "phone"/>
+    <input type = "hidden" th:value = "${carId}" id = "carId" />
             车牌号<input type = "text" id = "carCard"/><br>
             汽车名<input type = "text" id = "carName"/><br>
             车辆信息<input type = "text" id = "carInfo"/><br>
@@ -14,71 +13,47 @@
   </body>
   <script type="text/javascript">
     $(function() {
-        var phone = $("#phone").val();
-        $("#userphone").val(phone);
-        var userData = null;
-        var url = window.location.protocol + '//'+window.location.host;
-        $.ajax({
-                async:false,
-                type:'POST',
-                dataType:'json',
-                url:url+'/getUserByPhone',
-                contentType:'application/json;charset=UTF-8',
-                data:JSON.stringify({"phone":phone}),
-                success:function(data){
-                    //alert(JSON.stringify(data));
-                    
-                    userData = data;
-                }
-            });
-         $("#userId").val(userData.id);
-         $("#nickName").val(userData.nickName);
-         $("#realName").val(userData.realName);
-         $("#email").val(userData.email);
-         $("#idCard").val(userData.idCard);
-    });
-    $("#cz").click(function() {
-        var phone = $("#phone").val();
-        $("#userphone").val(phone);
-        var userData = null;
-        var url = window.location.protocol + '//'+window.location.host;
-        $.ajax({
-                async:false,
-                type:'POST',
-                dataType:'json',
-                url:url+'/getUserByPhone',
-                contentType:'application/json;charset=UTF-8',
-                data:JSON.stringify({"phone":phone}),
-                success:function(data){
-                    //alert(JSON.stringify(data));
-                    
-                    userData = data;
-                }
-            });
-         $("#nickName").val(userData.nickName);
-         $("#realName").val(userData.realName);
-         $("#email").val(userData.email);
-         $("#idCard").val(userData.idCard);
-    });
-    $("#qr").click(function() {
-        var phone = $("#userphone").val();
-        var nickName = $("#nickName").val();
-        var realName = $("#realName").val();
-        var password = $("#password").val();
-        var email = $("#email").val();
-        var idcard = $("#idcard").val();
-        var userid = $("#userId").val();
-        var url = window.location.protocol + '//'+window.location.host;
-        var info2 = {id:userid,phone:phone,nickName:nickName,realName:realName,password:password,email:email,idCard:idcard};
+        var carId = $("#carId").val();
+        if(carId == "null"){
+            //alert("添加车辆");
+            return ;
+        }
+        
+        //alert("修改车辆");
+        
         $.ajax({
             async:false,
             type:'POST',
             dataType:'json',
-            url:url+'/changeUserInfo',
+            url:url+'/getCar',
             contentType:'application/json;charset=UTF-8',
-            data:JSON.stringify(info2),
+            data:JSON.stringify({"id":carId}),
             success:function(data){
+                alert("添加成功！");
                 window.location.href="jumpToUrl?url=index&name=null";
+                window.location.href="jumpToUrl?phone="+phone+"&url=hello";
+            }
+        });
+        
+    });
+    
+    $("#qr").click(function() {
+        var carCard = $("#carCard").val();
+        var carName = $("#carName").val();
+        var carInfo = $("#carInfo").val();
+        var phone = $("#phone").val();
+        var url = window.location.protocol + '//'+window.location.host;
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:url+'/saveNewCar',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify({"id":phone,"carCard":carCard,"carInfo":carInfo,"carName":carName}),
+            success:function(data){
+                alert("添加成功！");
+                window.location.href="jumpToUrl?url=index&name=null";
+                window.location.href="jumpToUrl?phone="+phone+"&url=hello";
             }
         });
     })

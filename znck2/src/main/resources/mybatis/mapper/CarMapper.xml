@@ -39,8 +39,8 @@
 
 	<insert id="insert" parameterType="com.znck.entity.UserEntity" >
        INSERT INTO 
-            user
-            (id,userid,carid,carname,carinfo) 
+            car
+            (id,userid,carcard,carname,carinfo) 
         VALUES
             (#{id}, #{userId},#{carCard},#{carName}, #{carInfo})
 	</insert>

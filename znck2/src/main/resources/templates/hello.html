@@ -8,12 +8,44 @@
   <body>
     <input type = "hidden" th:value = "${phone}" id = "phone"/>
     <p id = "userNickName">您好</p>
-    <p id = "userNature">您现在处于未激活状态，请重置个人信息，尽快实名认证</p>
+    <p id = "userNature">您现在处于未激活状态，请填写敏感个人信息，尽快实名认证</p>
     <input type="button" id="grxx" value="设置个人信息"/>
+    <input type="button" id="changePhone" value="修改绑定手机号"/>
+    <input type = "button" id = "changeSensitiveMessage" value = "修改个人敏感信息" />
     <p id = "carinfos"></p>
     <div>
-        <p>汽车名称</p>
+        <!-- 正在存的车 -->
+        <div id = "savingCar">
+            <p>正在存的车</p>
+        
+        </div>
+        <!-- 已经存上的车 -->
+        <div id = "savingCar">
+            <p>已经存上的车</p>
+        
+        </div>
+        <!-- 预约取的车 -->
+        <div id = "savingCar">
+            <p>预约取的车</p>
+        
+        </div>
+        <!-- 正在取的车 -->
+        <div id = "getingCar">
+            <p>正在取的车</p>
+        
+        </div>
+        <!-- 可以存的车 -->
+        <div id = "carCanSave">
+            <p>可以存的车</p>
+        </div>
+        <!-- 所有的车 -->
+        <div id = "allCars">
+            <p>所有的车</p>
+        
+        </div>
     </div>
+      
+    <input type = "button" class = "changeCarMassage" value = "ccc"/>
     <input type = "button" id="addCar" value = "添加新车辆"/>
   </body>
   <script type="text/javascript">
@@ -21,6 +53,7 @@
   		var phone = $("#phone").val();
   		var userData = null;
   		var url = window.location.protocol + '//'+window.location.host;
+  		var carMassage = null;
   		$.ajax({
                 async:false,
                 type:'POST',
@@ -36,13 +69,17 @@
             });
         $("#userNickName").text($("#userNickName").text() +"  "+ userData.nickName);
         if(userData.nature == 0){
-            $("#grxx").val("重置个人信息");
+            $("#grxx").hide();
+            $("#changePhone").hide();
+            $("#changeSensitiveMessage").val("补全个人敏感信息");
             return;
         }else if(userData.nature == 1){
             $("#userNature").text("");
         }else{
             $("#userNature").text("您现在是会员用户，享受预约取车权力！");
         }
+        
+        //获得所有的车
         $.ajax({
             async:false,
             type:'POST',
@@ -52,14 +89,63 @@
             data:JSON.stringify({"id":userData.id}),
             success:function(data){
                 $("#carinfos").text(JSON.stringify(data.length));
+                carMassage = data;
             }
         });
+        for(var i = 0;i<carMassage.length;i++){
+            var text = '<div id = "'+carMassage[i].id+'">'+
+                +'<p>'+carMassage[i].carInfo+'</p>'
+                +'<input type = "button" value = "停车" class = "saveCar"/>'
+                +'<input type = "button" value = "修改车辆信息" class="changeCarMassage"/>'
+                +'<input type = "button" value = "删除车辆" class="deleteCar"/>'
+                +'</div>';
+            $("#allCars").append(text);
+        }
+        
+        //获得所有正在存的车
+        
+        //已经存上的车
+        
+        //预约取的车
+        
+        //预约取的车
+        
+        //正在取的车
+        
+        //可以存的车
+        
   	});
+  	
+  	$(".changeCarMassage").click(function() {
+  	    alert("666");
+    });
+    $("body").on("click", ".saveCar",saveCar );
+　         function saveCar(){
+        alert($(this).parent().attr('id'));
+        alert("存车");
+    }
+    $("body").on("click", ".changeCarMassage",changeCarMassage );
+　         function changeCarMassage(){
+        var carId = $(this).parent().attr('id');
+        window.location.href="jumpToUrl?carId="+carId+"&url=carInfo&phone="+$("#phone").val();
+    }
+    $("body").on("click", ".deleteCar",deleteCar );
+　         function deleteCar(){
+        alert($(this).parent().attr('id'));
+        alert("删除车辆");
+    }
+  	
   	$("#grxx").click(function() {
-        window.location.href="jumpToUrl?url=userInfo&phone="+$("#phone").val();
+        window.location.href="jumpToUrl?url=userInfo&changeLevel=1&phone="+$("#phone").val();
     });
     $("#addCar").click(function() {
-        window.location.href="jumpToUrl?url=jumpToAddNewCar&phone="+$("#phone").val();
-    })
+        window.location.href="jumpToUrl?carId=null&url=carInfo&phone="+$("#phone").val();
+    });
+    $("#changePhone").click(function() {
+        window.location.href="jumpToUrl?url=userInfo&changeLevel=2&phone="+$("#phone").val();
+    });
+    $("#changeSensitiveMessage").click(function() {
+        window.location.href="jumpToUrl?url=userInfo&changeLevel=3&phone="+$("#phone").val();
+    });
   </script>
 </html>

@@ -29,7 +29,7 @@ public class Scheduler2Task {
     @Scheduled(fixedRate = 6000)
     public void reportCurrentTime() throws ParseException {
         System.out.println("现在时间：" + dateFormat.format(new Date()));
-//        getCar();
+        getCar();
     }
 
     /**
@@ -114,6 +114,7 @@ public class Scheduler2Task {
 
         List<ParkingEntity> saveCar = parkingService.getParkingsByNature(saveCarRealNameId, "order by inTime");
         this.takeOutCarForTimeToDo(saveCar);
+        System.out.println("运行中");
     }
 
     public Date getDate() throws ParseException {

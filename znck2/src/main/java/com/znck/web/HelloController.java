@@ -1,6 +1,10 @@
 package com.znck.web;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,59 +25,88 @@ import com.znck.service.UserService;
 
 @Controller
 public class HelloController {
-    
+
     @Autowired
     private RunService runService;
-    
+
     @Autowired
     private UserService userService;
-    
+
     @Autowired
     private CarService carService;
-    
+
     @RequestMapping("/")
-    public String index(){
+    public String index() {
         return "index";
     }
-    
+
     @RequestMapping("/regphone")
     @ResponseBody
-    public ContrastEntity regphone(@RequestBody String data){
+    public ContrastEntity regphone(@RequestBody String data) {
         String massage = userService.regist(data);
         ContrastEntity contrast = new ContrastEntity();
         contrast.setId(massage);
         return contrast;
     }
-    
+
     @RequestMapping("/getUserByPhone")
     @ResponseBody
-    public UserEntity getUserByPhone(@RequestBody String data){
+    public UserEntity getUserByPhone(@RequestBody String data) {
         UserEntity user = this.userService.getUserByPhone(data);
         return user;
     }
-    
+
     @RequestMapping("/changeUserInfo")
     @ResponseBody
-    public UserEntity changeUserInfo(@RequestBody UserEntity data){
+    public UserEntity changeUserInfo(@RequestBody UserEntity data) {
+        System.out.println(data.toString());
         return this.userService.changeUserInfo(data);
     }
 
     @RequestMapping("/getCarByUserId")
     @ResponseBody
-    public List<CarEntity> getCarByUserId(@RequestBody String data){
+    public List<CarEntity> getCarByUserId(@RequestBody String data) {
         return this.carService.getCardByUserId(data);
     }
-    
+
     @RequestMapping("/landing")
     @ResponseBody
-    public UserEntity landing(@RequestBody String data){
+    public UserEntity landing(@RequestBody String data) {
         return userService.landing(data);
     }
     
+    @RequestMapping("/saveNewCar")
+    @ResponseBody
+    public String saveNewCarByUserPhone(@RequestBody CarEntity data) {
+        this.carService.saveNewCarByPhone(data);
+        return "true";
+    }
+
     @RequestMapping("/jumpToUrl")
     public String jumpToHello(Model model,
-        @RequestParam(value = "name", required = false, defaultValue = "World") String name,HttpServletRequest request) {
-        model.addAttribute("phone", request.getParameter("phone"));
+        @RequestParam(value = "name", required = false, defaultValue = "World") String name,
+        HttpServletRequest request) {
+        Map<String,String> nameValue = parseFrom(request);
+        for (Entry<String, String> m : nameValue.entrySet()) {
+            model.addAttribute(m.getKey(), m.getValue());
+        }
         return request.getParameter("url");
     }
+
+    public static Map<String, String> parseFrom(HttpServletRequest request) {
+
+        Map<String, String> parameters = new HashMap<>();
+
+        Enumeration<String> parameterNames = request.getParameterNames();
+
+        while (parameterNames.hasMoreElements()) {
+
+            String parameterName = parameterNames.nextElement();
+
+            parameters.put(parameterName, request.getParameter(parameterName));
+        }
+
+        return parameters;
+    }
+
 }

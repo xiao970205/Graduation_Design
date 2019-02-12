@@ -16,32 +16,42 @@ public class UserService {
     private UserMapper userMapper;
 
     public UserEntity changeUserInfo(UserEntity userEntity) {
-        UserEntity userOlder = userMapper.getOne(userEntity.getId());
-        int nature = 0;
-        if (!StringUtils.isNullOrEmpty(userEntity.getEmail())) {
-            userOlder.setEmail(userEntity.getEmail());
-            nature++;
-        }
-        if (!StringUtils.isNullOrEmpty(userEntity.getIdCard())) {
-            userOlder.setIdCard(userEntity.getIdCard());
-            nature++;
-        }
-        if (!StringUtils.isNullOrEmpty(userEntity.getNickName())) {
+        UserEntity userOlder = null;
+        if (userEntity.getId().equals("1")) {
+            userOlder = userMapper.getUserByPhone(userEntity.getPhone()).get(0);
+            // 一般信息
             userOlder.setNickName(userEntity.getNickName());
-        }
-        if (!StringUtils.isNullOrEmpty(userEntity.getPassword())) {
-            userOlder.setPassword(userEntity.getPassword());
-        }
-        if (!StringUtils.isNullOrEmpty(userEntity.getPhone())) {
+        } else if (userEntity.getId().equals("3")) {
+            // 敏感信息
+            userOlder = userMapper.getUserByPhone(userEntity.getPhone()).get(0);
+            int size = 0;
+            if(!StringUtils.isNullOrEmpty(userEntity.getRealName())){
+                userOlder.setRealName(userEntity.getRealName());
+                size++;
+            }
+            if(!StringUtils.isNullOrEmpty(userEntity.getPassword())){
+                userOlder.setPassword(userEntity.getPassword());
+            }else{
+                userOlder.setPassword("123456");
+            }
+            if(!StringUtils.isEmptyOrWhitespaceOnly(userEntity.getEmail())){
+                userOlder.setEmail(userEntity.getEmail());
+                size++;
+            }
+            if(!StringUtils.isEmptyOrWhitespaceOnly(userEntity.getIdCard())){
+                userOlder.setIdCard(userEntity.getIdCard());
+                size++;
+            }
+            
+            if(size==3){
+                userOlder.setNature("1");
+            }else{
+                userOlder.setNature("0");
+            }
+        } else {
+            // 修改电话
+            userOlder = userMapper.getUserByPhone(userEntity.getId()).get(0);
             userOlder.setPhone(userEntity.getPhone());
-            nature++;
-        }
-        if (!StringUtils.isNullOrEmpty(userEntity.getRealName())) {
-            userOlder.setRealName(userEntity.getRealName());
-            nature++;
-        }
-        if(userOlder.getNature().equals("0") && nature == 4){
-            userOlder.setNature("1");
         }
         userMapper.update(userOlder);
         return userOlder;
