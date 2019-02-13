@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.znck.entity.CarEntity;
+import com.znck.entity.ContrastEntity;
 import com.znck.mapper.CarMapper;
 import com.znck.mapper.UserMapper;
 
@@ -35,9 +36,8 @@ import com.znck.mapper.UserMapper;
         carMapper.delete(id);
     }
     
-    public List<CarEntity> getCardByUserId(String data){
-        String userId = data.split("\"id\":\"")[1].split("\"")[0];
-        return carMapper.getCarsByUserId(userId);
+    public List<CarEntity> getCardByUserId(ContrastEntity data){
+        return carMapper.getCarsHaveNatureByUserId(data.getId());
     }
     
     public void saveNewCarByPhone(CarEntity carEntity){
@@ -49,5 +49,10 @@ import com.znck.mapper.UserMapper;
     public static String getId() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString().replace("-", "");
+    }
+    
+    public void updateCarWithoutUserId(CarEntity car){
+        car.setId(this.carMapper.getOne(car.getId()).getId());
+        this.carMapper.update(car);
     }
 }

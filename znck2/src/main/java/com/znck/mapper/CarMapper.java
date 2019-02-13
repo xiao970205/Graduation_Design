@@ -17,4 +17,6 @@ public interface CarMapper {
      void delete(String id);    
      
      List<CarEntity> getCarsByUserId(String userId);
+     
+     List<CarEntity> getCarsHaveNatureByUserId(String userId);
 }

@@ -13,28 +13,25 @@
   </body>
   <script type="text/javascript">
     $(function() {
+        var url = window.location.protocol + '//'+window.location.host;
         var carId = $("#carId").val();
         if(carId == "null"){
             //alert("添加车辆");
             return ;
         }
-        
-        //alert("修改车辆");
-        
         $.ajax({
             async:false,
             type:'POST',
             dataType:'json',
-            url:url+'/getCar',
+            url:url+'/getCarById',
             contentType:'application/json;charset=UTF-8',
             data:JSON.stringify({"id":carId}),
             success:function(data){
-                alert("添加成功！");
-                window.location.href="jumpToUrl?url=index&name=null";
-                window.location.href="jumpToUrl?phone="+phone+"&url=hello";
+                $("#carCard").val(data.carCard);
+                $("#carName").val(data.carName);
+                $("#carInfo").val(data.carInfo);
             }
         });
-        
     });
     
     $("#qr").click(function() {
@@ -43,15 +40,30 @@
         var carInfo = $("#carInfo").val();
         var phone = $("#phone").val();
         var url = window.location.protocol + '//'+window.location.host;
+        var data = null;
+        var carId = $("#carId").val();
+        var message = null;
+        if(carId == "null"){
+            //添加车辆
+            url = url + '/saveNewCar';
+            data = JSON.stringify({"id":phone,"carCard":carCard,"carInfo":carInfo,"carName":carName});
+            message = "添加成功!";
+        }else{
+            //修改车辆
+            url = url + '/updateCarWithoutUserId';
+            data = JSON.stringify({"id":carId,"carCard":carCard,"carInfo":carInfo,"carName":carName});
+            message = "修改成功!";
+        }
+        
         $.ajax({
             async:false,
             type:'POST',
             dataType:'json',
-            url:url+'/saveNewCar',
+            url:url,
             contentType:'application/json;charset=UTF-8',
-            data:JSON.stringify({"id":phone,"carCard":carCard,"carInfo":carInfo,"carName":carName}),
+            data:data,
             success:function(data){
-                alert("添加成功！");
+                alert(message);
                 window.location.href="jumpToUrl?url=index&name=null";
                 window.location.href="jumpToUrl?phone="+phone+"&url=hello";
             }

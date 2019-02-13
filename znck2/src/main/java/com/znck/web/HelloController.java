@@ -65,8 +65,21 @@ public class HelloController {
 
     @RequestMapping("/getCarByUserId")
     @ResponseBody
-    public List<CarEntity> getCarByUserId(@RequestBody String data) {
+    public List<CarEntity> getCarByUserId(@RequestBody ContrastEntity data) {
         return this.carService.getCardByUserId(data);
+    }
+    
+    @RequestMapping("/getCarById")
+    @ResponseBody
+    public CarEntity getCarById(@RequestBody CarEntity data) {
+        return this.carService.getOne(data.getId());
+    }
+    
+    @RequestMapping("/deleteCarById")
+    @ResponseBody
+    public boolean deleteCarById(@RequestBody CarEntity data) {
+        this.carService.delete(data.getId());
+        return true;
     }
 
     @RequestMapping("/landing")
@@ -79,6 +92,13 @@ public class HelloController {
     @ResponseBody
     public String saveNewCarByUserPhone(@RequestBody CarEntity data) {
         this.carService.saveNewCarByPhone(data);
+        return "true";
+    }
+    
+    @RequestMapping("/updateCarWithoutUserId")
+    @ResponseBody
+    public String updateCarWithoutUserId(@RequestBody CarEntity data) {
+        this.carService.updateCarWithoutUserId(data);
         return "true";
     }
 

@@ -1,0 +1,50 @@
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <script type="text/javascript" th:src="@{../../static/js/jquery.js}"></script>
+  </head>
+  <body>
+    <input type = "hidden" th:value = "${nature}" id = "nature"/>
+    <input type = "hidden" th:value = "${carId}" id = "carId" />
+    <label id = "text">停车时间：</label>
+    <input id="inTime" type="datetime-local"/>
+    <input type = "button" id = "saveCar" value = "停车"/>
+  </body>
+  <script type="text/javascript">
+    $(function() {
+        var carId = $("#carId").val();
+        var nature = $("#nature").val();
+        if(nature == "canSave"){
+            $("#text").hide();
+            $("#inTime").hide();
+        }else if(nature =="canGet"){
+            $("#inTime").hide();
+            $("#text").hide();
+            $("#nature").val("ok");
+            $("#saveCar").val("取车");
+        }else{
+            //预约取车
+            $("#text").val("预约取车时间");
+            $("#saveCar").val("取车");
+        }
+    });
+    $("#saveCar").click(function() {
+        var carId = $("#carId").val();
+        var nature = $("#nature").val();
+        var time = $("#inTime").val();
+        alert(time);
+        if(nature == "canSave"){
+            
+        }else if(nature =="canGet"){
+            
+        }else{
+            //预约取车
+            //2019-02-13T23:00
+            var time2 = "2019-02-13T23:00";
+            var time3 =time2.split("T")[0];
+            var time4 =time2.split("T")[1];
+            alert(time3);
+            alert(time4);
+        }
+    });
+  </script>
+</html>

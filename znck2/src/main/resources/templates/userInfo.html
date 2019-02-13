@@ -29,21 +29,18 @@
   <script type="text/javascript">
     $(function() {
         if($("#changeLevel").val() == "1"){
-            alert("修改一般信息");
             $("#showUserPhone").hide();
             $("#showRealName").hide();
             $("#showPassword").hide();
             $("#showEmail").hide();
             $("#showidcard").hide();
         }else if($("#changeLevel").val() == "2"){
-            alert("修改电话");
             $("#showNickName").hide();
             $("#showRealName").hide();
             $("#showPassword").hide();
             $("#showEmail").hide();
             $("#showidcard").hide();
         }else{
-            alert("修改敏感信息");
             $("#showUserPhone").hide();
             $("#showNickName").hide();
         }

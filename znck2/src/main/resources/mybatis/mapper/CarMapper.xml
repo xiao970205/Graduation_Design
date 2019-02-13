@@ -8,6 +8,15 @@
 		<result column="carname" property="carName" jdbcType="VARCHAR" />
 		<result column="carinfo" property="carInfo" jdbcType="VARCHAR" />
 	</resultMap>
+	
+	<resultMap id="carEntityHaveNature" type="com.znck.entity.CarEntity" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="userid" property="userId" jdbcType="VARCHAR" />
+        <result column="carcard" property="carCard" jdbcType="VARCHAR" />
+        <result column="carname" property="carName" jdbcType="VARCHAR" />
+        <result column="carinfo" property="carInfo" jdbcType="VARCHAR" />
+        <result column="nature" property="nature" jdbcType="VARCHAR" />
+    </resultMap>
     
 	<sql id="Base_Column_List" >
         id, userId,carCard,carName,carInfo
@@ -29,6 +38,56 @@
             and 
             u.id = #{userId}
 	</select>
+	
+	<select id="getCarsHaveNatureByUserId" resultMap="carEntityHaveNature" parameterType="String"  >
+        SELECT
+            a.id,
+            a.userid,
+            a.carcard,
+            a.carname,
+            a.carinfo,
+            max(a.nature) AS 'nature'
+        FROM
+            (
+                SELECT
+                    c.id,
+                    c.userid,
+                    c.carcard,
+                    c.carname,
+                    c.carinfo,
+                    '' AS nature
+                FROM
+                    car c,
+                    USER u
+                WHERE
+                    c.userid = u.id
+                AND u.id = #{userId}
+                UNION
+                SELECT
+                    c.id,
+                    c.userid,
+                    c.carcard,
+                    c.carname,
+                    c.carinfo,
+                    c1.realname AS nature
+                FROM
+                    parking p,
+                    car c,
+                    contrast c1,
+                USER u
+                WHERE
+                    p.carid = c.id
+                AND c1.id = p.nature
+                AND u.id = #{userId}
+                AND u.id = c.userid
+            ) AS a
+        GROUP BY
+            a.id,
+            a.userid,
+            a.carcard,
+            a.carname,
+            a.carinfo
+    </select>
 
 	<select id="getOne" parameterType="String" resultMap="BaseResultMap" >
         SELECT 

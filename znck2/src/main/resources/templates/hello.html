@@ -14,38 +14,11 @@
     <input type = "button" id = "changeSensitiveMessage" value = "修改个人敏感信息" />
     <p id = "carinfos"></p>
     <div>
-        <!-- 正在存的车 -->
-        <div id = "savingCar">
-            <p>正在存的车</p>
-        
-        </div>
-        <!-- 已经存上的车 -->
-        <div id = "savingCar">
-            <p>已经存上的车</p>
-        
-        </div>
-        <!-- 预约取的车 -->
-        <div id = "savingCar">
-            <p>预约取的车</p>
-        
-        </div>
-        <!-- 正在取的车 -->
-        <div id = "getingCar">
-            <p>正在取的车</p>
-        
-        </div>
-        <!-- 可以存的车 -->
-        <div id = "carCanSave">
-            <p>可以存的车</p>
-        </div>
-        <!-- 所有的车 -->
         <div id = "allCars">
             <p>所有的车</p>
-        
         </div>
     </div>
-      
-    <input type = "button" class = "changeCarMassage" value = "ccc"/>
+    <br>
     <input type = "button" id="addCar" value = "添加新车辆"/>
   </body>
   <script type="text/javascript">
@@ -88,41 +61,35 @@
             contentType:'application/json;charset=UTF-8',
             data:JSON.stringify({"id":userData.id}),
             success:function(data){
-                $("#carinfos").text(JSON.stringify(data.length));
+                $("#carinfos").text("汽车数量："+JSON.stringify(data.length));
                 carMassage = data;
             }
         });
         for(var i = 0;i<carMassage.length;i++){
-            var text = '<div id = "'+carMassage[i].id+'">'+
-                +'<p>'+carMassage[i].carInfo+'</p>'
-                +'<input type = "button" value = "停车" class = "saveCar"/>'
-                +'<input type = "button" value = "修改车辆信息" class="changeCarMassage"/>'
-                +'<input type = "button" value = "删除车辆" class="deleteCar"/>'
+            nature = carMassage[i].nature;
+            if(nature == "" || nature == null || nature == undefined){
+                nature = "可以停车";
+            }
+            var carName1 = carMassage[i].carName;
+            var text = '<div id = "'+carMassage[i].id+'" style=\"border:1px solid #000000\;width:300px;padding-left:20px;padding-bottom:20px;margin-bottom:20px;">'
+                +"<div><p>车牌号："+carMassage[i].carCard+"</p></div>"
+                +"<div><p>车名称："+carMassage[i].carName+"</p></div>"
+                +"<div><p>信息："+carMassage[i].carInfo+"</p></div>"
+                +"<div><p>汽车状态："+nature+"</p></div>"
+                +'<input type = "hidden" id = "canSave"/>'
+                +'<input type = "button" value = "停车" class = "saveCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;"
+                +'<input type = "button" value = "修改车辆信息" class="changeCarMassage"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;"
+                +'<input type = "button" value = "删除车辆" class="deleteCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;"
                 +'</div>';
             $("#allCars").append(text);
         }
-        
-        //获得所有正在存的车
-        
-        //已经存上的车
-        
-        //预约取的车
-        
-        //预约取的车
-        
-        //正在取的车
-        
-        //可以存的车
-        
   	});
   	
-  	$(".changeCarMassage").click(function() {
-  	    alert("666");
-    });
     $("body").on("click", ".saveCar",saveCar );
 　         function saveCar(){
-        alert($(this).parent().attr('id'));
-        alert("存车");
+        var carId = $(this).parent().attr('id');
+        var nature = $(this).prev().attr('id');
+        window.location.href="jumpToUrl?carId="+carId+"&url=carToDo&nature="+nature;
     }
     $("body").on("click", ".changeCarMassage",changeCarMassage );
 　         function changeCarMassage(){
@@ -131,8 +98,21 @@
     }
     $("body").on("click", ".deleteCar",deleteCar );
 　         function deleteCar(){
-        alert($(this).parent().attr('id'));
+        var carId = $(this).parent().attr('id');
+        var url = window.location.protocol + '//'+window.location.host;
+        var phone = $("#phone").val();
         alert("删除车辆");
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:url+'/deleteCarById',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify({"id":carId}),
+            success:function(data){
+                window.location.href="jumpToUrl?phone="+phone+"&url=hello";
+            }
+        });
     }
   	
   	$("#grxx").click(function() {

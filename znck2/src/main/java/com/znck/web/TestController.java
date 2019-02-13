@@ -125,6 +125,7 @@ public class TestController {
         parking.setNowSpaceId("45456456");
         parking.setFetureSpaceId("asdfdsf456");
         parking.setNature("asdfdsf");
+        //yyyy/MM/dd-HH:mm:ss:SSS
         parkingService.update(parking);
     }
 }

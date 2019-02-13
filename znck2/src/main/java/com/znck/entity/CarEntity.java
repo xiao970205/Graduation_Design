@@ -14,7 +14,8 @@ public class CarEntity {
     private String carCard;
     private String carName;
     private String carInfo;
-
+    private String nature;
+    
     public CarEntity(){
         super();
     }
@@ -76,4 +77,14 @@ public class CarEntity {
     public void setCarInfo(String carInfo) {
         this.carInfo = carInfo;
     }
+
+    public String getNature() {
+        return nature;
+    }
+
+    public void setNature(String nature) {
+        this.nature = nature;
+    }
+    
+    
 }
