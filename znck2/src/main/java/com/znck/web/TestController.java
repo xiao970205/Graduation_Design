@@ -11,42 +11,38 @@ import com.znck.entity.CarEntity;
 import com.znck.entity.ContrastEntity;
 import com.znck.entity.ParkingEntity;
 import com.znck.entity.SpaceEntity;
-import com.znck.entity.UserEntity;
-import com.znck.service.CarService;
-import com.znck.service.ContrastService;
-import com.znck.service.ParkingService;
+import com.znck.service.CarServiceImpl;
+import com.znck.service.ContrastServiceImpl;
+import com.znck.service.ParkingServiceImpl;
 import com.znck.service.RunService;
-import com.znck.service.SpaceService;
-import com.znck.service.UserService;
+import com.znck.service.SpaceServiceImpl;
 
 @RestController
 public class TestController {
-    @Autowired
-    private CarService carService;
 
     @Autowired
-    private UserService userService;
-    
+    private CarServiceImpl carService;
+
     @Autowired
-    private ContrastService contrastService;
-    
+    private ContrastServiceImpl contrastService;
+
     @Autowired
-    private ParkingService parkingService;
-    
+    private ParkingServiceImpl parkingService;
+
     @Autowired
-    private SpaceService spaceService;
-    
+    private SpaceServiceImpl spaceService;
+
     @Autowired
     private RunService runService;
-    
+
     @RequestMapping("/getAllCar")
     public String getAllCar() {
-        
+
         String a = carService.getOne("6f0f4516ec04414f90c3cc72e25f6d47").toString();
-        
+
         return a;
     }
-    
+
     @RequestMapping("/getAllCars")
     public String getAllCars() {
         List<CarEntity> cars = carService.getAll();
@@ -56,49 +52,50 @@ public class TestController {
         }
         return a;
     }
-    
-    @RequestMapping("/getAllUser")
-    public String getAllUser() {
-        List<UserEntity> users = userService.getAll();
-        String a = "";
-        for (UserEntity user : users) {
-            a = a + user.toString() + "</br>";
-        }
-        return a;
-    }
-    
+
+//    @RequestMapping("/getAllUser")
+//    public String getAllUser() {
+//        List<UserEntity> users = userService.getAll();
+//        String a = "";
+//        for (UserEntity user : users) {
+//            a = a + user.toString() + "</br>";
+//        }
+//        return a;
+//    }
+
     @RequestMapping("/getAllContrast")
-    public String getAllContrast(){
+    public String getAllContrast() {
         List<ContrastEntity> contrasts = contrastService.getAll();
         String a = "";
-        for(ContrastEntity contrast:contrasts){
+        for (ContrastEntity contrast : contrasts) {
             a = a + contrast.toString() + "</br>";
         }
         return a;
     }
-    
+
     @RequestMapping("/getParkings")
-    public String getParkingEntitys(){
-        List<ParkingEntity> parkings = parkingService.getParkingsByNature("351cc2cdda6547528e20c6444e4a3bbd", "order by inTime");
+    public String getParkingEntitys() {
+        List<ParkingEntity> parkings
+            = parkingService.getParkingsByNature("351cc2cdda6547528e20c6444e4a3bbd", "order by inTime");
         String a = "";
-        for(ParkingEntity parking:parkings){
+        for (ParkingEntity parking : parkings) {
             a = a + parking.toString() + "</br>";
         }
         return a;
     }
-    
+
     @RequestMapping("/getSpaces")
-    public String getSpaceEntitys(){
+    public String getSpaceEntitys() {
         List<SpaceEntity> spaces = spaceService.getAll();
         String a = "";
-        for(SpaceEntity space:spaces){
+        for (SpaceEntity space : spaces) {
             a = a + space.toString() + "</br>";
         }
         return a;
     }
-    
+
     @RequestMapping("/saveCar")
-    public void saveCar(){
+    public void saveCar() {
         try {
             runService.saveCar("6f0f4516ec04414f90c3cc72e25f6d47", null);
             Thread.sleep(1000);
@@ -111,21 +108,21 @@ public class TestController {
             runService.saveCar("a79f4d9a52ae4acda5d361306464f7af", null);
         } catch (ParseException e) {
             // TODO Auto-generated catch block
-             e.printStackTrace();
+            e.printStackTrace();
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
-             e.printStackTrace();
+            e.printStackTrace();
         }
     }
-   
+
     @RequestMapping("/updateParking")
-    public void updateParking(){
+    public void updateParking() {
         ParkingEntity parking = parkingService.getAll().get(0);
         parking.setCarId("54112345");
         parking.setNowSpaceId("45456456");
         parking.setFetureSpaceId("asdfdsf456");
         parking.setNature("asdfdsf");
-        //yyyy/MM/dd-HH:mm:ss:SSS
+        // yyyy/MM/dd-HH:mm:ss:SSS
         parkingService.update(parking);
     }
 }

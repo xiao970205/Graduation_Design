@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import com.znck.entity.ParkingEntity;
 import com.znck.entity.SpaceEntity;
 import com.znck.mapper.ParkingMapper;
+import com.znck.service.serviceImpl.ParkingService;
 
 @Service
-public class ParkingService {
+public class ParkingServiceImpl implements ParkingService {
 
     @Autowired
     private ParkingMapper parkingMapper;

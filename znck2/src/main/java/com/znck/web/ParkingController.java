@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.znck.entity.ParkingEntity;
-import com.znck.service.ParkingService;
+import com.znck.service.ParkingServiceImpl;
 
 @RestController
  public class ParkingController {   
     @Autowired
-    private ParkingService parkingService;
+    private ParkingServiceImpl parkingService;
     
     @RequestMapping("/save0")
     public void update0() throws ParseException{

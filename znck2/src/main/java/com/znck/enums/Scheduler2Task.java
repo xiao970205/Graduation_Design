@@ -17,10 +17,10 @@ import com.znck.entity.ContrastEntity;
 import com.znck.entity.ParkingEntity;
 import com.znck.entity.ParkingSaveEntity;
 import com.znck.entity.SpaceEntity;
-import com.znck.service.ContrastService;
-import com.znck.service.ParkingSaveService;
-import com.znck.service.ParkingService;
-import com.znck.service.SpaceService;
+import com.znck.service.ContrastServiceImpl;
+import com.znck.service.ParkingSaveServiceImpl;
+import com.znck.service.ParkingServiceImpl;
+import com.znck.service.SpaceServiceImpl;
 
 @Component
 public class Scheduler2Task {
@@ -73,16 +73,16 @@ public class Scheduler2Task {
     private ContrastEntity cCc;
 
     @Autowired
-    private ContrastService contrastService;
+    private ContrastServiceImpl contrastService;
 
     @Autowired
-    private ParkingService parkingService;
+    private ParkingServiceImpl parkingService;
 
     @Autowired
-    private SpaceService spaceService;
+    private SpaceServiceImpl spaceService;
 
     @Autowired
-    private ParkingSaveService parkingSaveService;
+    private ParkingSaveServiceImpl parkingSaveService;
 
     public void setAllContrast() {
         this.setCkZy(contrastService.getContrastByRealName("车库-占用"));

@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.znck.entity.ContrastEntity;
 import com.znck.mapper.ContrastMapper;
+import com.znck.service.serviceImpl.ContrastService;
 
 @Service
-public class ContrastService {
+public class ContrastServiceImpl implements ContrastService{
     @Autowired
     private ContrastMapper contrastMapper;
 
@@ -31,5 +32,11 @@ public class ContrastService {
     
     public ContrastEntity getContrastByRealName(String realName){
         return contrastMapper.getContrastByRealName(realName);
+    }
+
+    @Override
+    public void insert(ContrastEntity car) {
+        // TODO Auto-generated method stub
+         contrastMapper.insert(car);
     }
 }

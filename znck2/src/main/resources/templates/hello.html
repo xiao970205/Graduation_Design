@@ -7,11 +7,13 @@
   </head>
   <body>
     <input type = "hidden" th:value = "${phone}" id = "phone"/>
+    <input type = "hidden" id = "vip"/>
     <p id = "userNickName">您好</p>
     <p id = "userNature">您现在处于未激活状态，请填写敏感个人信息，尽快实名认证</p>
     <input type="button" id="grxx" value="设置个人信息"/>
     <input type="button" id="changePhone" value="修改绑定手机号"/>
     <input type = "button" id = "changeSensitiveMessage" value = "修改个人敏感信息" />
+    <input type = "button" value = "成为会员" id = "toBeVip"/>
     <p id = "carinfos"></p>
     <div>
         <div id = "allCars">
@@ -22,6 +24,15 @@
     <input type = "button" id="addCar" value = "添加新车辆"/>
   </body>
   <script type="text/javascript">
+    function updateCar(userId){
+        //alert(userId);
+    }
+    $(document).ready(function() {
+    	setInterval(function() {
+    	   var phone = $("#phone").val();
+    	   updateCar(456);
+    	}, 1000);
+    })
   	$(function() {
   		var phone = $("#phone").val();
   		var userData = null;
@@ -41,6 +52,8 @@
                 }
             });
         $("#userNickName").text($("#userNickName").text() +"  "+ userData.nickName);
+        var vip = userData.nature;
+        $("vip").val(vip);
         if(userData.nature == 0){
             $("#grxx").hide();
             $("#changePhone").hide();
@@ -65,21 +78,48 @@
                 carMassage = data;
             }
         });
+        
         for(var i = 0;i<carMassage.length;i++){
-            nature = carMassage[i].nature;
+            var nature = carMassage[i].nature;
+            var textForNatureId = "";
+            var textForNatureRealName = "";
+            var textForDeleteCar = "";
             if(nature == "" || nature == null || nature == undefined){
+                
                 nature = "可以停车";
+                
+                if(vip != 0 && vip !=1){
+                    textForNatureId = '<input type = "hidden" id = "canSaveVip"/>';
+                }else{
+                    textForNatureId = '<input type = "hidden" id = "canSave"/>';
+                }
+                textForNatureRealName = '<input type = "button" value = "停车" class = "saveCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;";
+                textForDeleteCar = '<input type = "button" value = "删除车辆" class="deleteCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;";
+            }else if (nature == "存车中"){
+                textForNatureId = '<input type = "hidden" id = "savingCar"/>';
+            }else if(nature == "停车中"){
+                textForNatureId = '<input type = "hidden" id = "canGet"/>';
+                if(vip != 0 && vip !=1){
+                    textForNatureId = '<input type = "hidden" id = "canGetVip"/>';
+                }else{
+                    textForNatureId = '<input type = "hidden" id = "canGet"/>';
+                }
+                textForNatureRealName = '<input type = "button" value = "取车" class = "saveCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;";
+            }else{
+                //取车中
+                textForNatureId = '<input type = "hidden" id = "stopCar"/>';
             }
+            
             var carName1 = carMassage[i].carName;
             var text = '<div id = "'+carMassage[i].id+'" style=\"border:1px solid #000000\;width:300px;padding-left:20px;padding-bottom:20px;margin-bottom:20px;">'
                 +"<div><p>车牌号："+carMassage[i].carCard+"</p></div>"
                 +"<div><p>车名称："+carMassage[i].carName+"</p></div>"
                 +"<div><p>信息："+carMassage[i].carInfo+"</p></div>"
                 +"<div><p>汽车状态："+nature+"</p></div>"
-                +'<input type = "hidden" id = "canSave"/>'
-                +'<input type = "button" value = "停车" class = "saveCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;"
+                +textForNatureId
+                +textForNatureRealName
                 +'<input type = "button" value = "修改车辆信息" class="changeCarMassage"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;"
-                +'<input type = "button" value = "删除车辆" class="deleteCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;"
+                +textForDeleteCar
                 +'</div>';
             $("#allCars").append(text);
         }
@@ -89,7 +129,8 @@
 　         function saveCar(){
         var carId = $(this).parent().attr('id');
         var nature = $(this).prev().attr('id');
-        window.location.href="jumpToUrl?carId="+carId+"&url=carToDo&nature="+nature;
+        var phone = $("#phone").val();
+        window.location.href="jumpToUrl?carId="+carId+"&url=carToDo&nature="+nature+"&phone="+phone;
     }
     $("body").on("click", ".changeCarMassage",changeCarMassage );
 　         function changeCarMassage(){
@@ -113,7 +154,23 @@
                 window.location.href="jumpToUrl?phone="+phone+"&url=hello";
             }
         });
-    }
+    };
+  	
+  	$("#toBeVip").click(function() {
+  	    var url = window.location.protocol + '//'+window.location.host;
+  	    var phone = $("#phone").val();
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:url+'/toBeVip',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify({"phone":phone}),
+            success:function(data){
+                window.location.href="jumpToUrl?phone="+phone+"&url=hello";
+            }
+        });
+    });
   	
   	$("#grxx").click(function() {
         window.location.href="jumpToUrl?url=userInfo&changeLevel=1&phone="+$("#phone").val();

@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.znck.entity.ParkingSaveEntity;
 import com.znck.mapper.ParkingSaveMapper;
+import com.znck.service.serviceImpl.ParkingSaveService;
 
 @Service
-public class ParkingSaveService {
+public class ParkingSaveServiceImpl implements ParkingSaveService {
     
     @Autowired
     private ParkingSaveMapper parkingSaveMapper;

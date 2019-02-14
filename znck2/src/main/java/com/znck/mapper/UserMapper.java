@@ -10,7 +10,7 @@ public interface UserMapper {
 
     UserEntity findByUserNameAndPassword(@Param("phone") String phone,@Param("password") String password);
     
-    List<UserEntity> getUserByPhone(String phone);
+    UserEntity getUserByPhone(String phone);
 
     List<UserEntity> getAll();
 

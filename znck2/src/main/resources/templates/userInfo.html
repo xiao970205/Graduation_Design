@@ -77,14 +77,10 @@
         var url = window.location.protocol + '//'+window.location.host;
         var info2 = null;
         if($("#changeLevel").val() == "1"){
-            alert("修改一般信息");
             info2 = {id:1,nickName:nickName,phone:phone};
         }else if($("#changeLevel").val() == "2"){
-            alert("修改电话");
             info2 = {phone:phone,id:$("#phone").val()};
         }else{
-            alert("修改敏感信息");
-            alert($("#phone").val());
             info2 = {id:3,phone:$("#phone").val(),realName:realName,password:password,email:email,idCard:idcard};
         }
         

@@ -42,16 +42,16 @@ public class RunService {
     private ContrastEntity cCc;
 
     @Autowired
-    private ContrastService contrastService;
+    private ContrastServiceImpl contrastService;
 
     @Autowired
-    private ParkingService parkingService;
+    private ParkingServiceImpl parkingService;
 
     @Autowired
-    private SpaceService spaceService;
+    private SpaceServiceImpl spaceService;
 
     @Autowired
-    private ParkingSaveService parkingSaveService;
+    private ParkingSaveServiceImpl parkingSaveService;
     
     public void setAllContrast() {
         this.setCkZy(contrastService.getContrastByRealName("车库-占用"));
@@ -82,7 +82,7 @@ public class RunService {
 
         String nature = this.getcCc().getId();
 
-        SpaceEntity fetureSpace = spaceService.getSaveSpace();
+        SpaceEntity fetureSpace = spaceService.getSaveSpace().get(0);
         String fetureSpaceId = fetureSpace.getId();
 
         fetureSpace.setNature(this.getCkZy().getId());

@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 
 import com.znck.entity.SpaceEntity;
 import com.znck.mapper.SpaceMapper;
+import com.znck.service.serviceImpl.SpaceService;
 
 @Service
-public class SpaceService {
+public class SpaceServiceImpl implements SpaceService{
     @Autowired
     private SpaceMapper spaceMapper;
 
@@ -21,10 +22,6 @@ public class SpaceService {
         return spaceMapper.getSpaceByXYZ(x, y, z);
     }
     
-    public SpaceEntity getSaveSpace(){
-        return spaceMapper.getSaveSpace().get(0);
-    }
-    
     public List<SpaceEntity> getAll() {
         return spaceMapper.getAll();
     }
@@ -33,11 +30,23 @@ public class SpaceService {
         return spaceMapper.getOne(id);
     }
 
-    public void update(SpaceEntity spaceEntity) {
-        spaceMapper.update(spaceEntity);
+    public void update(SpaceEntity space) {
+        spaceMapper.update(space);
     }
 
     public void delete(String id) {
         spaceMapper.delete(id);
+    }
+
+    @Override
+    public List<SpaceEntity> getSaveSpace() {
+        // TODO Auto-generated method stub
+         return spaceMapper.getSaveSpace();
+    }
+
+    @Override
+    public void insert(SpaceEntity space) {
+        // TODO Auto-generated method stub
+         spaceMapper.insert(space);
     }
 }
