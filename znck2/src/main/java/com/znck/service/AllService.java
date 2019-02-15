@@ -1,9 +1,11 @@
 package com.znck.service;
 
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,13 @@ import com.znck.entity.ParkingSaveEntity;
 import com.znck.entity.SpaceEntity;
 import com.znck.entity.UserEntity;
 
+/**
+ * 
+ * AllService
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 @Service
 public class AllService {
 
@@ -70,13 +79,18 @@ public class AllService {
      * @param data ContrastEntity类型数据，id是carid，realName为时间，Date类型
      * @throws ParseException
      */
-    public void saveCar(ContrastEntity data) throws ParseException {
+    public void saveCar(UserEntity data) throws ParseException {
 
         this.setAllContrast();
         Date outTime = null;
-        if(data.getRealName() != null){
-            //取车时间不为空，需要格式化日期在进行加入
-            System.out.println(data.getRealName());
+        if(data.getNickName()!=null){
+            //vip
+            if(data.getRealName()!=null){
+                Random r = new Random();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+                ParsePosition pos = new ParsePosition(0);
+                outTime = formatter.parse(data.getRealName() + " " + (r.nextInt(899) + 100), pos);
+            }
         }
         
         // 获得存车数据
@@ -102,8 +116,7 @@ public class AllService {
         parking.setInTime(inTime);
         parking.setOutTime(outTime);
         parking.setNature(nature);
-        parking.setWay(
-            parking.getWay() + "|" + inSpaceId.getX() + "," + inSpaceId.getY() + "," + inSpaceId.getZ());
+        parking.setWay(inSpaceId.getX() + "," + inSpaceId.getY() + "," + inSpaceId.getZ());
         
         ParkingSaveEntity parkingSave = new ParkingSaveEntity();
         parkingSave.setId(parking.getId());
@@ -132,13 +145,20 @@ public class AllService {
         this.setCk(contrastServiceImpl.getContrastByRealName("出口"));
     }
     
-    public void parkingGetCar(ContrastEntity data) throws ParseException{
+    public void parkingGetCar(UserEntity data) throws ParseException{
         Date outTime = null;
         String carId = data.getId();
-        if(data.getRealName() == null){
-            //用户预约取车
+        if(data.getNickName()!=null){
+            //vip
+            if(data.getRealName()!=null){
+                Random r = new Random();
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+                ParsePosition pos = new ParsePosition(0);
+                outTime = formatter.parse(data.getRealName() + " " + (r.nextInt(899) + 100), pos);
+            }
         }
-        takeOutCar(carId);
+        
+        takeOutCar(carId,outTime);
     }
     
     /**
@@ -148,7 +168,7 @@ public class AllService {
      * @return
      * @throws ParseException
      */
-    public ParkingEntity takeOutCar(String carId) throws ParseException {
+    public ParkingEntity takeOutCar(String carId,Date outTimeByWeb) throws ParseException {
         this.setAllContrast();
 
         ParkingEntity parking = parkingServiceImpl.getParkingByCarid(carId);
@@ -156,8 +176,15 @@ public class AllService {
         String fetureSpaceId = spaceServiceImpl.getCrk(this.getCk().getRealName()).getId();
 
         Date outTime = parking.getOutTime();
-        if (outTime == null) {
-            outTime = getDate();
+        
+        if(outTimeByWeb == null){
+            //正常取车
+            if (outTime == null) {
+                outTime = getDate();
+            }
+        }else{
+            //预约取车
+            outTime = outTimeByWeb;
         }
         parking.setOutTime(outTime);
         parking.setFetureSpaceId(fetureSpaceId);
@@ -174,11 +201,14 @@ public class AllService {
     
     public UserEntity changeUserInfo(UserEntity userEntity) {
         UserEntity userOlder = null;
-        if (userEntity.getId().equals("1")) {
+        final String  value1 = "1";
+        final String  value3 = "3";
+        final Integer numberThree = 3;
+        if (value1.equals(userEntity.getId())) {
             userOlder = userServiceImpl.getUserByPhone(userEntity.getPhone());
             // 一般信息
             userOlder.setNickName(userEntity.getNickName());
-        } else if (userEntity.getId().equals("3")) {
+        } else if (userEntity.getId().equals(value3)) {
             // 敏感信息
             userOlder = userServiceImpl.getUserByPhone(userEntity.getPhone());
             int size = 0;
@@ -200,7 +230,7 @@ public class AllService {
                 size++;
             }
 
-            if (size == 3) {
+            if (size == numberThree) {
                 userOlder.setNature("1");
             } else {
                 userOlder.setNature("0");

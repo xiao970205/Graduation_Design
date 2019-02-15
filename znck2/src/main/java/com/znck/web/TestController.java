@@ -17,6 +17,14 @@ import com.znck.service.ParkingServiceImpl;
 import com.znck.service.RunService;
 import com.znck.service.SpaceServiceImpl;
 
+/**
+ * 
+ * TestController
+ * 
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 @RestController
 public class TestController {
 
@@ -46,29 +54,23 @@ public class TestController {
     @RequestMapping("/getAllCars")
     public String getAllCars() {
         List<CarEntity> cars = carService.getAll();
+        StringBuilder text = new StringBuilder("");
         String a = "";
         for (CarEntity car : cars) {
-            a = a + car.toString() + "</br>";
+            text.append(car.toString() + "</br>");
+//            a = a + car.toString() + "</br>";
         }
         return a;
     }
-
-//    @RequestMapping("/getAllUser")
-//    public String getAllUser() {
-//        List<UserEntity> users = userService.getAll();
-//        String a = "";
-//        for (UserEntity user : users) {
-//            a = a + user.toString() + "</br>";
-//        }
-//        return a;
-//    }
 
     @RequestMapping("/getAllContrast")
     public String getAllContrast() {
         List<ContrastEntity> contrasts = contrastService.getAll();
         String a = "";
+        StringBuilder text = new StringBuilder("");
         for (ContrastEntity contrast : contrasts) {
-            a = a + contrast.toString() + "</br>";
+            text.append(contrast.toString() + "</br>");
+//            a = a + contrast.toString() + "</br>";
         }
         return a;
     }
@@ -78,8 +80,10 @@ public class TestController {
         List<ParkingEntity> parkings
             = parkingService.getParkingsByNature("351cc2cdda6547528e20c6444e4a3bbd", "order by inTime");
         String a = "";
+        StringBuilder text = new StringBuilder("");
         for (ParkingEntity parking : parkings) {
-            a = a + parking.toString() + "</br>";
+            text.append(parking.toString() + "</br>");
+//            a = a + parking.toString() + "</br>";
         }
         return a;
     }
@@ -88,8 +92,10 @@ public class TestController {
     public String getSpaceEntitys() {
         List<SpaceEntity> spaces = spaceService.getAll();
         String a = "";
+        StringBuilder text = new StringBuilder("");
         for (SpaceEntity space : spaces) {
-            a = a + space.toString() + "</br>";
+            text.append(space.toString() + "</br>");
+//            a = a + space.toString() + "</br>";
         }
         return a;
     }

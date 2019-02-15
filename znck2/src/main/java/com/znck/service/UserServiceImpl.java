@@ -7,52 +7,60 @@ import org.springframework.stereotype.Service;
 
 import com.znck.entity.UserEntity;
 import com.znck.mapper.UserMapper;
-import com.znck.service.serviceImpl.UserService;
+import com.znck.service.serviceimpl.UserService;
 
+/**
+ * 
+ * UserServiceImpl
+ * 
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
     @Override
     public UserEntity findByUserNameAndPassword(String phone, String password) {
         // TODO Auto-generated method stub
-         return userMapper.findByUserNameAndPassword(phone, password);
+        return userMapper.findByUserNameAndPassword(phone, password);
     }
 
     @Override
     public UserEntity getUserByPhone(String phone) {
         // TODO Auto-generated method stub
-         return userMapper.getUserByPhone(phone);
+        return userMapper.getUserByPhone(phone);
     }
 
     @Override
     public List<UserEntity> getAll() {
         // TODO Auto-generated method stub
-         return null;
+        return null;
     }
 
     @Override
     public UserEntity getOne(String id) {
         // TODO Auto-generated method stub
-         return userMapper.getOne(id);
+        return userMapper.getOne(id);
     }
 
     @Override
     public void insert(UserEntity user) {
         // TODO Auto-generated method stub
-         userMapper.insert(user);
+        userMapper.insert(user);
     }
 
     @Override
     public void update(UserEntity user) {
         // TODO Auto-generated method stub
-         userMapper.update(user);
+        userMapper.update(user);
     }
 
     @Override
     public void delete(String id) {
         // TODO Auto-generated method stub
-         userMapper.delete(id);
+        userMapper.delete(id);
     }
 }

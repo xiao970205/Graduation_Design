@@ -1,7 +1,6 @@
 package com.znck.web;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -23,12 +22,19 @@ import com.znck.entity.ContrastEntity;
 import com.znck.entity.UserEntity;
 import com.znck.service.AllService;
 
+/**
+ * 
+ * HelloController
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 @Controller
 public class HelloController {
 
     @Autowired
     private AllService allService;
-
+    
     @RequestMapping("/")
     public String index() {
         return "index";
@@ -45,7 +51,7 @@ public class HelloController {
     public UserEntity getUserByPhone(@RequestBody UserEntity data) {
         return allService.getUserByPhone(data);
     }
-    
+
     @RequestMapping("/toBeVip")
     @ResponseBody
     public UserEntity toBeVip(@RequestBody UserEntity data) {
@@ -96,17 +102,17 @@ public class HelloController {
         this.allService.updateCarWithoutUserId(data);
         return "true";
     }
-    
+
     @RequestMapping("/parkingStopCar")
     @ResponseBody
-    public String parkingStopCar(@RequestBody ContrastEntity data) throws ParseException {
+    public String parkingStopCar(@RequestBody UserEntity data) throws ParseException {
         allService.saveCar(data);
         return "true";
     }
-    
+
     @RequestMapping("/parkingGetCar")
     @ResponseBody
-    public String parkingGetCar(@RequestBody ContrastEntity data) throws ParseException {
+    public String parkingGetCar(@RequestBody UserEntity data) throws ParseException {
         allService.parkingGetCar(data);
         return "true";
     }
@@ -123,7 +129,7 @@ public class HelloController {
     }
 
     public static Map<String, String> parseFrom(HttpServletRequest request) {
-        Map<String, String> parameters = new HashMap<>();
+        Map<String, String> parameters = new HashMap<>(200);
         Enumeration<String> parameterNames = request.getParameterNames();
         while (parameterNames.hasMoreElements()) {
             String parameterName = parameterNames.nextElement();

@@ -7,8 +7,15 @@ import org.springframework.stereotype.Service;
 
 import com.znck.entity.CarEntity;
 import com.znck.mapper.CarMapper;
-import com.znck.service.serviceImpl.CarService;
+import com.znck.service.serviceimpl.CarService;
 
+/**
+ * 
+ * CarServiceImpl
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 @Service
 public class CarServiceImpl implements CarService {
 

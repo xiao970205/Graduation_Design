@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2019-01-21 16:32:14
+Date: 2019-02-15 15:23:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,6 +31,7 @@ CREATE TABLE `car` (
 -- ----------------------------
 -- Records of car
 -- ----------------------------
+INSERT INTO `car` VALUES ('285d4e63d6c8455b87ebfa38138696c5', '4177f759000b41c692dd50f16c4568f0', 'lx633', 'firstCar', '1');
 INSERT INTO `car` VALUES ('6f0f4516ec04414f90c3cc72e25f6d47', '642880079c2b4c7eb9b2a58780e2a957', null, null, '保时捷Panamera');
 INSERT INTO `car` VALUES ('7050f26ee0fa4e7b8571ad3f43a83884', '642880079c2b4c7eb9b2a58780e2a957', null, null, '道奇蝰蛇');
 INSERT INTO `car` VALUES ('721799c190734042a0329c6ddacc1040', '642880079c2b4c7eb9b2a58780e2a957', null, null, '玛莎拉蒂');
@@ -1132,4 +1133,5 @@ CREATE TABLE `user` (
 -- Records of user
 -- ----------------------------
 INSERT INTO `user` VALUES ('1a8247f2ad85446d850a518f235e1613', null, null, null, null, null, null, null);
+INSERT INTO `user` VALUES ('4177f759000b41c692dd50f16c4568f0', '新用户15703286077', '15703286077', '肖舒翔', '123456', '1037426886@qq.com', '130102199702052111', '1');
 INSERT INTO `user` VALUES ('642880079c2b4c7eb9b2a58780e2a957', null, null, null, null, null, null, null);

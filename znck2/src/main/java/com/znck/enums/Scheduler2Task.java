@@ -22,13 +22,20 @@ import com.znck.service.ParkingSaveServiceImpl;
 import com.znck.service.ParkingServiceImpl;
 import com.znck.service.SpaceServiceImpl;
 
+/**
+ * 
+ * Scheduler2Task
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 @Component
 public class Scheduler2Task {
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+    private static final SimpleDateFormat DATEFORMAT = new SimpleDateFormat("HH:mm:ss");
 
-    @Scheduled(fixedRate = 6000)
+    @Scheduled(fixedRate = 5000)
     public void reportCurrentTime() throws ParseException {
-        System.out.println("现在时间：" + dateFormat.format(new Date()));
+        System.out.println("现在时间：" + DATEFORMAT.format(new Date()));
         getCar();
     }
 
@@ -71,6 +78,11 @@ public class Scheduler2Task {
      * id:351cc2cdda6547528e20c6444e4a3bbd realName:存车中
      */
     private ContrastEntity cCc;
+    
+    /**
+     * id:aaaeeb3acc5e44899a5d1de5ca5ab11a realName:车库-空置
+     */
+    private ContrastEntity ckkz;
 
     @Autowired
     private ContrastServiceImpl contrastService;
@@ -93,6 +105,7 @@ public class Scheduler2Task {
         this.setqCz(contrastService.getContrastByRealName("取车中"));
         this.setcCc(contrastService.getContrastByRealName("存车中"));
         this.setCk(contrastService.getContrastByRealName("出口"));
+        this.setCkkz(contrastService.getContrastByRealName("车库-空置"));
     }
 
     /**
@@ -142,6 +155,101 @@ public class Scheduler2Task {
         });
     }
 
+    public void carNextWayWhenSave(SpaceEntity nowSpace, SpaceEntity fetureSpace, ParkingEntity parking) throws ParseException{
+        
+        final String x = "x";
+        final String y = "y";
+        final String z = "z";
+        Map<String, Integer> zb = null;
+        
+        zb = this.getNextSpaceWhenSavingCar(nowSpace.getX(), nowSpace.getY(), nowSpace.getZ(), fetureSpace.getX(),
+            fetureSpace.getY(), fetureSpace.getZ());
+        SpaceEntity nextSpace = spaceService.getSpaceByXYZ(zb.get(x), zb.get(y), zb.get(z));
+        if (StringUtils.isNullOrEmpty(nextSpace.getCarId())) {
+            if (zb.get(x) == fetureSpace.getX() && zb.get(y) == fetureSpace.getY()
+                && zb.get(z) == fetureSpace.getZ()) {
+                nextSpace.setCarId(parking.getCarId());
+                nextSpace.setNature(this.getCkZy().getId());
+
+                nowSpace.setCarId(null);
+                nowSpace.setNature(this.gettDktg().getId());
+                if (!nowSpace.getNature().equals(this.getRk().getId())) {
+                    nowSpace.setNature(this.gettDktg().getId());
+                }
+                parking.setNature(this.gettCz().getId());
+                parking.setNowSpaceId(nextSpace.getId());
+                Date saveInPlaceTime = getDate();
+
+                ParkingSaveEntity parkingSave = parkingSaveService.getOne(parking.getId());
+                parkingSave.setSaveInPlaceTime(saveInPlaceTime);
+                parkingSaveService.update(parkingSave);
+
+            } else {
+                nextSpace.setCarId(parking.getCarId());
+                nextSpace.setNature(this.getTdzy().getId());
+
+                nowSpace.setCarId(null);
+                if (!nowSpace.getNature().equals(this.getRk().getId())) {
+                    nowSpace.setNature(this.gettDktg().getId());
+                }
+                parking.setNowSpaceId(nextSpace.getId());
+            }
+            parking.setWay(
+                parking.getWay() + "|" + nextSpace.getX() + "," + nextSpace.getY() + "," + nextSpace.getZ());
+            spaceService.update(nowSpace);
+            spaceService.update(nextSpace);
+        } else {
+            parking.setWay(parking.getWay() + "|wait");
+        }
+        parkingService.update(parking);
+    }
+    
+    
+    public void carNextWayWhenGet(SpaceEntity nowSpace, SpaceEntity fetureSpace, ParkingEntity parking) throws ParseException{
+        final String x = "x";
+        final String y = "y";
+        final String z = "z";
+        Map<String, Integer> zb = null;
+        
+        zb = this.getNextSpaceWhenTakingOutCar(nowSpace.getX(), nowSpace.getY(), nowSpace.getZ(),
+            fetureSpace.getX(), fetureSpace.getY(), fetureSpace.getZ());
+        SpaceEntity nextSpace = spaceService.getSpaceByXYZ(zb.get(x), zb.get(y), zb.get(z));
+        if (nextSpace.getCarId() == null) {
+            if (zb.get(x) == fetureSpace.getX() && zb.get(y) == fetureSpace.getY()
+                && zb.get(z) == fetureSpace.getZ()) {
+                nowSpace.setCarId(null);
+                nowSpace.setNature(this.gettDktg().getId());
+                spaceService.update(nowSpace);
+                String way = parking.getWay() + "|" + fetureSpace.getX() + "," + fetureSpace.getY() + ","
+                    + fetureSpace.getZ();
+                ParkingSaveEntity parkingSave = parkingSaveService.getOne(parking.getId());
+                parkingSave.setOutInPlaceTime(getDate());
+                parkingSave.setWay(way);
+                parkingSaveService.update(parkingSave);
+                parkingService.delete(parking.getId());;
+            } else {
+                nextSpace.setCarId(parking.getCarId());
+                nextSpace.setNature(this.getTdzy().getId());
+                nowSpace.setCarId(null);
+                if (nowSpace.getNature().equals(this.getCkZy().getId())) {
+                    nowSpace.setNature(this.getCkkz().getId());
+                } else {
+                    nowSpace.setNature(this.gettDktg().getId());
+                }
+                parking.setNature(this.getqCz().getId());
+                parking.setNowSpaceId(nextSpace.getId());
+                parking.setWay(
+                    parking.getWay() + "|" + nextSpace.getX() + "," + nextSpace.getY() + "," + nextSpace.getZ());
+                spaceService.update(nowSpace);
+                spaceService.update(nextSpace);
+
+            }
+        } else {
+            parking.setWay(parking.getWay() + "|wait");
+        }
+        parkingService.update(parking);
+    }
+    
     /**
      * 每分钟进行的方法进行每个车的获得下一步路径.
      * 
@@ -151,87 +259,12 @@ public class Scheduler2Task {
      * @throws ParseException
      */
     public void carNextWay(SpaceEntity nowSpace, SpaceEntity fetureSpace, ParkingEntity parking) throws ParseException {
-        final String x = "x";
-        final String y = "y";
-        final String z = "z";
         String nature = parking.getNature();
-        Map<String, Integer> zb = null;
         String saveCarRealNameId = this.getcCc().getId();
         if (saveCarRealNameId.equals(nature)) {
-            zb = this.getNextSpaceWhenSavingCar(nowSpace.getX(), nowSpace.getY(), nowSpace.getZ(), fetureSpace.getX(),
-                fetureSpace.getY(), fetureSpace.getZ());
-            SpaceEntity nextSpace = spaceService.getSpaceByXYZ(zb.get(x), zb.get(y), zb.get(z));
-            if (StringUtils.isNullOrEmpty(nextSpace.getCarId())) {
-                if (zb.get(x) == fetureSpace.getX() && zb.get(y) == fetureSpace.getY()
-                    && zb.get(z) == fetureSpace.getZ()) {
-                    nextSpace.setCarId(parking.getCarId());
-                    nextSpace.setNature(this.getCkZy().getId());
-
-                    nowSpace.setCarId(null);
-                    nowSpace.setNature(this.gettDktg().getId());
-                    if (!nowSpace.getNature().equals(this.getRk().getId())) {
-                        nowSpace.setNature(this.gettDktg().getId());
-                    }
-                    parking.setNature(this.gettCz().getId());
-                    parking.setNowSpaceId(nextSpace.getId());
-                    Date saveInPlaceTime = getDate();
-                    
-                    ParkingSaveEntity parkingSave = parkingSaveService.getOne(parking.getId());
-                    parkingSave.setSaveInPlaceTime(saveInPlaceTime);
-                    parkingSaveService.update(parkingSave);
-                    
-                } else {
-                    nextSpace.setCarId(parking.getCarId());
-                    nextSpace.setNature(this.getTdzy().getId());
-
-                    nowSpace.setCarId(null);
-                    if (!nowSpace.getNature().equals(this.getRk().getId())) {
-                        nowSpace.setNature(this.gettDktg().getId());
-                    }
-                    parking.setNowSpaceId(nextSpace.getId());
-                }
-                parking.setWay(
-                    parking.getWay() + "|" + nextSpace.getX() + "," + nextSpace.getY() + "," + nextSpace.getZ());
-                spaceService.update(nowSpace);
-                spaceService.update(nextSpace);
-            } else {
-                parking.setWay(parking.getWay() + "|wait");
-            }
-            parkingService.update(parking);
+            carNextWayWhenSave(nowSpace, fetureSpace, parking);
         } else {
-            zb = this.getNextSpaceWhenTakingOutCar(nowSpace.getX(), nowSpace.getY(), nowSpace.getZ(),
-                fetureSpace.getX(), fetureSpace.getY(), fetureSpace.getZ());
-            SpaceEntity nextSpace = spaceService.getSpaceByXYZ(zb.get(x), zb.get(y), zb.get(z));
-            if (nextSpace.getCarId() == null) {
-                if (zb.get(x) == fetureSpace.getX() && zb.get(y) == fetureSpace.getY()
-                    && zb.get(z) == fetureSpace.getZ()) {
-                    nowSpace.setCarId(null);
-                    nowSpace.setNature(this.gettDktg().getId());
-                    spaceService.update(nowSpace);
-                    String way = parking.getWay() + "|" + fetureSpace.getX() + "," + fetureSpace.getY() + ","
-                        + fetureSpace.getZ();
-                    ParkingSaveEntity parkingSave = parkingSaveService.getOne(parking.getId());
-                    parkingSave.setOutInPlaceTime(getDate());
-                    parkingSave.setWay(way);
-                    parkingSaveService.update(parkingSave);
-                    parkingService.delete(parking.getId());;
-                } else {
-                    nextSpace.setCarId(parking.getCarId());
-                    nextSpace.setNature(this.getCkZy().getId());
-                    nowSpace.setCarId(null);
-                    nowSpace.setNature(this.gettDktg().getId());
-                    parking.setNature(this.gettCz().getId());
-                    parking.setNowSpaceId(nextSpace.getId());
-                    parking.setWay(
-                        parking.getWay() + "|" + nextSpace.getX() + "," + nextSpace.getY() + "," + nextSpace.getZ());
-                    spaceService.update(nowSpace);
-                    spaceService.update(nextSpace);
-
-                }
-            } else {
-                parking.setWay(parking.getWay() + "|wait");
-            }
-            parkingService.update(parking);
+            carNextWayWhenGet(nowSpace, fetureSpace, parking);
         }
     }
 
@@ -264,8 +297,11 @@ public class Scheduler2Task {
      * @return
      */
     public Map<String, Integer> getNextSpaceWhenTakingOutCar(int nX, int nY, int nZ, int fX, int fY, int fZ) {
+        final Integer numberTwo = 2;
+        final Integer numberThree = 3;
+        final Integer numberTwentyTwo = 22;
         Map<String, Integer> zb = new HashMap<String, Integer>(3);
-        if (nY % 3 != 2) {
+        if (nY % numberThree != numberTwo) {
             // 在车位上
             if (nY == 1) {
                 // 在第一排,后挪,y++
@@ -276,7 +312,7 @@ public class Scheduler2Task {
             }
         } else {
             // 不再车位上
-            if (nX != 22) {
+            if (nX != numberTwentyTwo) {
                 // 在横向通道,右挪
                 zb = getNextSpaceMapStringInteger(nX + 1, nY, nZ);
             } else if (nY != fY) {
@@ -302,10 +338,12 @@ public class Scheduler2Task {
      * @return
      */
     public Map<String, Integer> getNextSpaceWhenSavingCar(int nX, int nY, int nZ, int fX, int fY, int fZ) {
+        final Integer numberTwo = 2;
+        final Integer numberThree = 3;
         Map<String, Integer> zb = new HashMap<String, Integer>(3);
         if (nZ == fZ) {
             // 相同层
-            if (nY % 3 == 2) {
+            if (nY % numberThree == numberTwo) {
                 // 在横向通道中
                 if (Math.abs(nY - fY) == 1) {
                     // 在合适的横向通道中
@@ -359,7 +397,7 @@ public class Scheduler2Task {
         parking.setNature(this.getqCz().getId());
 
         parkingService.update(parking);
-        
+
         ParkingSaveEntity parkingSave = parkingSaveService.getOne(parking.getId());
         parkingSave.setOutTime(parking.getOutTime());
         parkingSaveService.update(parkingSave);
@@ -462,5 +500,13 @@ public class Scheduler2Task {
 
     public void setCk(ContrastEntity ck) {
         this.ck = ck;
+    }
+
+    public ContrastEntity getCkkz() {
+        return ckkz;
+    }
+
+    public void setCkkz(ContrastEntity ckkz) {
+        this.ckkz = ckkz;
     }
 }

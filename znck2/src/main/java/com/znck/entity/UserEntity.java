@@ -1,5 +1,13 @@
 package com.znck.entity;
 
+/**
+ * 
+ * UserEntity
+ * 
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 public class UserEntity {
     private static final long serialVersionUID = 1L;
     private String id;

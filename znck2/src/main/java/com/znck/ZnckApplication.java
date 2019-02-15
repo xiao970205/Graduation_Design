@@ -5,6 +5,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+/**
+ * 
+ * ZnckApplication
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 @SpringBootApplication
 @MapperScan("com.znck.mapper")
 @EnableScheduling

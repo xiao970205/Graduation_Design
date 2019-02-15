@@ -11,7 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.znck.entity.ParkingEntity;
 import com.znck.service.ParkingServiceImpl;
-
+/**
+ * 
+ * 
+ * ParkingController
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 @RestController
  public class ParkingController {   
     @Autowired

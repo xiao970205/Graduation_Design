@@ -1,5 +1,12 @@
 package com.znck.entity;
 
+/**
+ * 
+ * SpaceEntity
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 public class SpaceEntity {
     private static final long serialVersionUID = 1L;
 

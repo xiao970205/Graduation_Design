@@ -25,8 +25,8 @@
             $("#saveCar").val("取车");
         }else {
             //预约取车
-            $("#text").val("预约取车时间");
-            $("#saveCar").val("取车");
+            $("#text").text("预约取车时间");
+            $("#saveCar").val("存车");
         }
     });
     
@@ -57,25 +57,42 @@
         var phone = $("#phone").val();
         if(nature == "canSave"){
             url = url + '/parkingStopCar';
-            data = JSON.stringify({"id":carId,"realName":null});
+            data = JSON.stringify({"id":carId,"realName":null,"nickName":null});
             message = "成功存车！正在存车中";
         }else if(nature =="canGet"){
-            url = url + '/parkingGetCar'
-            data = JSON.stringify({"id":carId,"realName":null});
+            url = url + '/parkingGetCar';
+            data = JSON.stringify({"id":carId,"realName":null,"nickName":null});
             message = "成功取车！正在取车中";
         }else if(nature =="canGetVip"){
-            
+            //vip取车，可预约取车时间
+            var timeToString = null;
+            var message2 = "";
+            var message3 = "";
+            if(time == "" || time == null || time == undefined){
+                //var nowDate = new Date();
+                //timeToString=new Date().Format("yyyy-MM-dd hh:mm:ss");
+                message3 = "请在出口等待车辆！";
+            }else{
+                message2 = "预约"
+                timeToString =time.split("T")[0]+" " +time.split("T")[1]+":00";
+                message3 = "请于"+timeToString+"取出车辆！";
+            }
+            data = JSON.stringify({"id":carId,"realName":timeToString,"nickName":"true"});
+            url = url + '/parkingGetCar';
+            message = "尊敬的wip用户！您已"+message2+"取车成功！"+message3;
         }else{
-            //预约取车
+            //vip存车，可预约取车时间
             //2019-02-13T23:00
             var timeToString = null;
             if(time == "" || time == null || time == undefined){
-                var nowDate = new Date();
-                timeToString=new Date().Format("yyyy-MM-dd hh:mm:ss");
+                //var nowDate = new Date();
+                //timeToString=new Date().Format("yyyy-MM-dd hh:mm:ss");
             }else{
                 timeToString =time.split("T")[0]+" " +time.split("T")[1]+":00";
             }
-            data = JSON.stringify({"id":carId,"realName":timeToString});
+            data = JSON.stringify({"id":carId,"realName":timeToString,"nickName":"true"});
+            url = url + '/parkingStopCar';
+            message = "尊敬的vip用户！您已停车成功！"
         }
         
         $.ajax({

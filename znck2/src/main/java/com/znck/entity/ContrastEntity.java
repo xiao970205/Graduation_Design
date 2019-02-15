@@ -1,5 +1,12 @@
 package com.znck.entity;
 
+/**
+ * 
+ * ContrastEntity
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 public class ContrastEntity {
     private static final long serialVersionUID = 1L;
     private String id;

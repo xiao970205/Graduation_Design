@@ -13,6 +13,15 @@ import com.znck.entity.ParkingEntity;
 import com.znck.entity.ParkingSaveEntity;
 import com.znck.entity.SpaceEntity;
 
+
+/**
+ * 
+ * RunService
+ * 
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 @Service
 public class RunService {
 
@@ -52,7 +61,7 @@ public class RunService {
 
     @Autowired
     private ParkingSaveServiceImpl parkingSaveService;
-    
+
     public void setAllContrast() {
         this.setCkZy(contrastService.getContrastByRealName("车库-占用"));
         this.setRk(contrastService.getContrastByRealName("入口"));
@@ -96,9 +105,8 @@ public class RunService {
         parking.setInTime(inTime);
         parking.setOutTime(outTime);
         parking.setNature(nature);
-        parking.setWay(
-            parking.getWay() + "|" + inSpaceId.getX() + "," + inSpaceId.getY() + "," + inSpaceId.getZ());
-        
+        parking.setWay(parking.getWay() + "|" + inSpaceId.getX() + "," + inSpaceId.getY() + "," + inSpaceId.getZ());
+
         ParkingSaveEntity parkingSave = new ParkingSaveEntity();
         parkingSave.setId(parking.getId());
         parkingSave.setCarId(parking.getCarId());
@@ -106,7 +114,7 @@ public class RunService {
         parkingSave.setOutTime(parking.getOutTime());
         parkingSave.setSaveSpaceId(parking.getFetureSpaceId());
         parkingSaveService.insert(parkingSave);
-        
+
         parkingService.insert(parking);
     }
 

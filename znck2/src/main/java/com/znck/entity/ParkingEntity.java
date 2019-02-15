@@ -3,6 +3,13 @@ package com.znck.entity;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * 
+ * ParkingEntity
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 public class ParkingEntity {
     private static final long serialVersionUID = 1L;
     private String id;
