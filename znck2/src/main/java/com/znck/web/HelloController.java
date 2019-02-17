@@ -1,14 +1,7 @@
 package com.znck.web;
 
-import java.text.ParseException;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.znck.entity.*;
+import com.znck.service.AllService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.znck.entity.CarEntity;
-import com.znck.entity.ContrastEntity;
-import com.znck.entity.UserEntity;
-import com.znck.service.AllService;
+import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * 
@@ -38,6 +34,35 @@ public class HelloController {
     @RequestMapping("/")
     public String index() {
         return "index";
+    }
+
+    @RequestMapping("/tojiamitest")
+    public String tojiamitest() {
+        return "jiamitest";
+    }
+
+    @RequestMapping("/tojiamitest22")
+    public String tojiamitest22() {
+        return "jiami2";
+    }
+
+    @RequestMapping("/jiamitest2")
+    @ResponseBody
+    public String jiamitest2(@RequestBody String data) throws Exception {
+        String data2 = "肖舒翔";
+        AESUtil a = new AESUtil();
+        return null;
+    }
+
+    @RequestMapping("/jiamitest3")
+    @ResponseBody
+    public String jiamitest3(@RequestBody String data) throws Exception {
+        String data2 = "肖舒翔";
+        AesUtil3 a = new AesUtil3();
+        System.out.println(1+data);
+        System.out.println(2+AesUtil3.desEncrypt(data));
+        System.out.println(3+AesUtil3.encrypt(data2));
+        return null;
     }
 
     @RequestMapping("/registPhone")

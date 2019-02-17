@@ -1,0 +1,36 @@
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script type="text/javascript" th:src="@{../../static/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../../static/js/core.js}"></script>
+    <script type="text/javascript" th:src="@{../../static/js/aes.js}"></script>
+    <script type="text/javascript" th:src="@{../../static/js/mode-ecb.js}"></script>
+    <script type="text/javascript" th:src="@{../../static/js/jiami.js}"></script>
+</head>
+<body>
+    <input type="button" id="jiamitest" name="123" value="123">
+</body>
+<script type="text/javascript">
+    $("#jiamitest").click(function () {
+        var name = encrypt("肖舒翔");
+        var data = encrypt(JSON.stringify({"name":name}));
+        alert(name);
+
+        var url = window.location.protocol + '//'+window.location.host;
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'text',
+            url:url+'/jiamitest2',
+            contentType:'application/text;charset=UTF-8',
+            data:name,
+            success:function(data){
+                //alert(JSON.stringify(data));
+                //userData = data;
+            }
+        });
+    });
+
+
+
+</script>
+</html>
