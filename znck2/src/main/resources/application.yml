@@ -5,11 +5,16 @@ spring:
     username: root
     password: 123
   thymeleaf:
-    cache: false
+    cache: true
+    prefix: classpath:static/templates/ 
   mvc:
-    static-path-pattern: /static/**
+    static-path-pattern: /**
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml
   mapper-locations: classpath:mybatis/mapper/*.xml
-  type-aliases-package: com.neo.entity
+  type-aliases-package: com.znck.entity
+  
+server:
+  servlet:
+    context-path: /znck 

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+  </head>
+  <body>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="aes.js"></script>
+    <script type="text/javascript" src="pad-zeropadding.js"></script>
+    <script type="text/javascript" src="mode-ecb.js"></script>
+    <input type="hidden" value="23" id="size">
+    <input type="button" value="33" id="bu">
+    <p>待加密值：</p>
+    <p id="p1"></p>
+    <p id="p2"></p>
+    <script type="text/javascript">
+        $("#bu").click(function() {
+    		var data = null;
+            var key = CryptoJS.enc.Latin1.parse('qwertyuiasdfghjk');
+            var iv = CryptoJS.enc.Latin1.parse('qwertyuiasdfghjk');
+
+            //加密
+            var encrypted = CryptoJS.AES.encrypt(data, key, {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7
+            });
+            $("#p1").text("加密结果："+encrypted.toString());
+            console.log(encrypted.toString())
+            //解密
+            var decrypted = CryptoJS.AES.decrypt(encrypted, key, {
+                mode: CryptoJS.mode.ECB,padding: CryptoJS.pad.Pkcs7});
+            console.log(decrypted.toString(CryptoJS.enc.Utf8));
+            $("#p2").text("解密结果："+decrypted.toString(CryptoJS.enc.Utf8));
+        });
+        
+        function stringToHex(str){
+　　　　                var val="";
+　　　　                for(var i = 0; i < str.length; i++){
+　　　　　　              if(val == "")
+　　　　　　　　                val = str.charCodeAt(i).toString(16);
+　　　　　　              else
+　　　　　　　　          val += "," + str.charCodeAt(i).toString(16);
+　　　　                }
+　　　　            return val;
+　　                  }
+
+        function hexToString(str){
+　　　　                var val="";
+　　　　                var arr = str.split(",");
+　　　　                for(var i = 0; i < arr.length; i++){
+　　　　　　                  val += arr[i].fromCharCode(i);
+　　　　                }
+　　　　                return val;
+　　               }
+    </script>
+  </body>
+</html>

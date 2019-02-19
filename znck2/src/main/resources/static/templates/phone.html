@@ -1,0 +1,37 @@
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/js/publicFunction.js}"></script>
+  </head>
+  <body>
+    手机号：
+    <input type = "text" name="" oninput="value=value.replace(/[^\d]/g,'')" id="phone" />
+    <br>
+    <input type = "button" class = "zc" id = "zc" value = "注册" /><br>
+  </body>
+  <script type="text/javascript">
+    $("#zc").click(function() {
+    	var phone = $("#phone").val();
+    	if(phone.length != 11){
+    	   alert("手机号码格式不符合！");
+    	}else{
+    	   $.ajax({
+                type:'POST',
+                dataType:'json',
+                url:getProjectName()+"/"+'registPhone',
+                contentType:'application/json;charset=UTF-8',
+                data:JSON.stringify({"phone":phone}),
+                success:function(data){
+                    if(data['id'] == 'true'){
+                        alert("注册成功！初始密码为 123456 ，即将返回登陆界面进行登陆");
+                        window.location.href=getProjectName()+"/"+"jumpToUrl?url=index&name=null";
+                    }else{
+                        alert("电话已被注册！");
+                    }
+                }
+            });
+    	}
+    })
+  </script>
+</html>

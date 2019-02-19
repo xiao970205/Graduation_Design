@@ -249,14 +249,14 @@ public class AllService {
         ContrastEntity contrast = new ContrastEntity();
         if (userServiceImpl.getUserByPhone(phone) != null) {
             // 已注册
-            contrast.setId("false");
+            contrast.setId("false");    
         } else {
             // 未注册
             UserEntity user = new UserEntity();
             user.setId(getId());
             user.setPhone(phone);
             user.setNickName("新用户" + phone);
-            user.setNature("0");
+            user.setNature(getId());
             user.setPassword("123456");
             userServiceImpl.insert(user);
             user = userServiceImpl.getUserByPhone(phone);
@@ -266,7 +266,6 @@ public class AllService {
     }
 
     public UserEntity landing(UserEntity massage) {
-        System.out.println("allservice2");
         return userServiceImpl.findByUserNameAndPassword(massage.getPhone(), massage.getPassword());
     }
 

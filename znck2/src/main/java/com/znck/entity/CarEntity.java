@@ -15,16 +15,34 @@ public class CarEntity {
     private String carName;
     private String carInfo;
     private String nature;
-    
-    public CarEntity(){
+
+    public void encrypt(String password) {
+        this.id = AESUtil.encrypt(id, password);
+        this.id = AESUtil.encrypt(userId, password);
+        this.id = AESUtil.encrypt(carCard, password);
+        this.id = AESUtil.encrypt(carName, password);
+        this.id = AESUtil.encrypt(carInfo, password);
+        this.id = AESUtil.encrypt(nature, password);
+    }
+
+    public void decrypt(String password) {
+        this.id = AESUtil.decrypt(id, password);
+        this.id = AESUtil.decrypt(userId, password);
+        this.id = AESUtil.decrypt(carCard, password);
+        this.id = AESUtil.decrypt(carName, password);
+        this.id = AESUtil.decrypt(carInfo, password);
+        this.id = AESUtil.decrypt(nature, password);
+    }
+
+    public CarEntity() {
         super();
     }
-    
+
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
 
-    public CarEntity(String id,String userId,String carCard,String carName,String carInfo){
+    public CarEntity(String id, String userId, String carCard, String carName, String carInfo) {
         super();
         this.id = id;
         this.userId = userId;
@@ -32,10 +50,11 @@ public class CarEntity {
         this.carName = carName;
         this.carInfo = carInfo;
     }
-    
+
     @Override
-    public String toString(){
-        return "id:"+this.id+", userId:"+userId+", carCard:"+carCard+", carName:"+carName+", carInfo:"+carInfo;
+    public String toString() {
+        return "id:" + this.id + ", userId:" + userId + ", carCard:" + carCard + ", carName:" + carName + ", carInfo:"
+            + carInfo;
     }
 
     public String getId() {
@@ -85,6 +104,5 @@ public class CarEntity {
     public void setNature(String nature) {
         this.nature = nature;
     }
-    
-    
+
 }

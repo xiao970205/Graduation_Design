@@ -12,6 +12,10 @@ public class ContrastEntity {
     private String id;
     private String realName;
 
+    public void encrypt(String password){
+        
+    }
+    
     public ContrastEntity() {
         super();
     }

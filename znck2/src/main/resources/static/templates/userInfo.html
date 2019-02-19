@@ -1,0 +1,108 @@
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/js/publicFunction.js}"></script>
+  </head>
+  <body>
+    <input type = "hidden" th:value = "${phone}" id = "phone"/>
+    <input type = "hidden" th:value = "${changeLevel}" id = "changeLevel"/>
+    <input type = "hidden" id = "userId" value = "222"/>
+    <div id = "showUserPhone" >
+                        电话：                 <input type = "text" id = "userphone" oninput="value=value.replace(/[^\d]/g,'')"/><br>
+    </div>
+    <div id = "showNickName">
+                        用户名:        <input type = "text" id = "nickName"/><br>
+    </div>
+    <div id = "showRealName">
+                         真实姓名：<input type = "text" id = "realName"/><br>
+    </div>
+    <div id = "showPassword">
+                          密码：<input type = "text" id = "password"/><br>
+    </div>
+    <div id = "showEmail">
+                          邮箱：<input type = "text" id = "email"/><br>
+    </div>
+    <div id = "showidcard">
+                          身份证号码：<input type = "text" id = "idcard" oninput="value=value.replace(/[^\d]/g,'')"/><br>
+    </div>
+    <input type = "button" value="确认" id = "qr"/>
+  </body>
+  <script type="text/javascript">
+    $(function() {
+        if($("#changeLevel").val() == "0"){
+            $("#userphone").hide();
+            $("#nickName").hide();
+            $("#realName").hide();
+            $("#password").hide();
+            $("#idcard").hide();
+        }else if($("#changeLevel").val() == "1"){
+            $("#showUserPhone").hide();
+            $("#showRealName").hide();
+            $("#showPassword").hide();
+            $("#showEmail").hide();
+            $("#showidcard").hide();
+        }else if($("#changeLevel").val() == "3"){
+            $("#showNickName").hide();
+            $("#showRealName").hide();
+            $("#showPassword").hide();
+            $("#showEmail").hide();
+            $("#showidcard").hide();
+        }else{
+            $("#showUserPhone").hide();
+            $("#showNickName").hide();
+        }
+        var phone = $("#phone").val();
+        $("#userphone").val(phone);
+        var userData = null;
+        $.ajax({
+                async:false,
+                type:'POST',
+                dataType:'json',
+                url:getUrl()+'getUserByPhone',
+                contentType:'application/json;charset=UTF-8',
+                data:JSON.stringify({"phone":phone}),
+                success:function(data){
+                    //alert(JSON.stringify(data));
+                    userData = data;
+                }
+            });
+         $("#userId").val(userData.id);
+         $("#nickName").val(userData.nickName);
+         $("#realName").val(userData.realName);
+         $("#email").val(userData.email);
+         $("#idCard").val(userData.idCard);
+    });
+    $("#qr").click(function() {
+        var phone = $("#userphone").val();
+        var nickName = $("#nickName").val();
+        var realName = $("#realName").val();
+        var password = $("#password").val();
+        var email = $("#email").val();
+        var idcard = $("#idcard").val();
+        var userid = $("#userId").val();
+        var info2 = null;
+        if($("#changeLevel").val() == "0"){
+            info2 = {id:0,email:email};
+        }else if($("#changeLevel").val() == "1"){
+            info2 = {id:1,nickName:nickName,phone:phone};
+        }else if($("#changeLevel").val() == "2"){
+            info2 = {phone:phone,id:$("#phone").val()};
+        }else{
+            info2 = {id:3,phone:$("#phone").val(),realName:realName,password:password,email:email,idCard:idcard};
+        }
+        
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:getUrl()+'/changeUserInfo',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify(info2),
+            success:function(data){
+                window.location.href=getProjectName()+"/"+"jumpToUrl?url=index&name=null";
+            }
+        });
+    })
+  </script>
+</html>
