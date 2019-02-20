@@ -12,12 +12,12 @@ import javax.mail.internet.MimeMessage;
 
 import com.sun.mail.util.MailSSLSocketFactory;
 
-public class MainUtil implements Runnable {
+public class MailUtil implements Runnable {
 
     private String email;// 收件人邮箱
     private String code;// 激活码
 
-    public MainUtil(String email, String code) {
+    public MailUtil(String email, String code) {
         this.email = email;
         this.code = code;
     }
@@ -60,9 +60,8 @@ public class MainUtil implements Runnable {
             message.setSubject("账号激活");
             // 2.4设置邮件内容
             String content
-                = "<html><head></head><body><h1>这是一封激活邮件,激活请点击以下链接</h1><h3><a href='http://localhost:8080/RegisterDemo/ActiveServlet?code="
-                    + code + "'>http://localhost:8080/RegisterDemo/ActiveServlet?code=" + code
-                    + "</href></h3></body></html>";
+                = "<html><head></head><body><h1>这是一封激活邮件,激活请点击以下链接</h1><h3><a href='http://localhost:8080/znck/activeEmail?code="
+                    + code + "&email="+email+"'>点击激活</href></h3></body></html>";
             message.setContent(content, "text/html;charset=UTF-8");
             // 3.发送邮件
             Transport.send(message);

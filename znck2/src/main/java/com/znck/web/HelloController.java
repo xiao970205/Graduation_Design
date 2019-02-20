@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.znck.entity.CarEntity;
 import com.znck.entity.ContrastEntity;
-import com.znck.entity.MainUtil;
 import com.znck.entity.UserEntity;
 import com.znck.service.AllService;
 
@@ -36,6 +35,21 @@ public class HelloController {
 
     @Autowired
     private AllService allService;
+    
+    
+    @RequestMapping("/sendVerificationCode")
+    @ResponseBody
+    public String sendVerificationCode(@RequestBody UserEntity data) throws ParseException {
+        allService.sendVerificationCode(data);
+        return "true";
+    }
+    
+    @RequestMapping("/activeVerificationCode")
+    @ResponseBody
+    public String activeVerificationCode(@RequestBody UserEntity data) throws ParseException {
+        allService.activeVerificationCode(data);
+        return "true";
+    }
     
     @RequestMapping("/registPhone")
     @ResponseBody
@@ -130,6 +144,20 @@ public class HelloController {
         return request.getParameter("url");
     }
 
+    @RequestMapping("/sendEmailForActive")
+    @ResponseBody
+    public ContrastEntity sendEmailForActive(@RequestBody UserEntity data) {
+        return allService.sendEmailForActive(data);
+    }
+    
+    @RequestMapping("/activeEmail")
+    public String activeEmail(Model model,
+        @RequestParam(value = "name", required = false, defaultValue = "World") String name,
+        HttpServletRequest request) {
+        allService.activeEmail(request.getParameter("code"), request.getParameter("email"));
+        return "index";
+    }
+    
     public static Map<String, String> parseFrom(HttpServletRequest request) {
         Map<String, String> parameters = new HashMap<>(200);
         Enumeration<String> parameterNames = request.getParameterNames();

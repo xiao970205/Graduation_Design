@@ -26,32 +26,16 @@
     <div id = "showidcard">
                           身份证号码：<input type = "text" id = "idcard" oninput="value=value.replace(/[^\d]/g,'')"/><br>
     </div>
+    <div id = "showVerificationCode">
+                            验证码：<input type = "text" id = "verificationCode"/><br>
+    </div>
+    <div id = "showGetVerificationCode">
+         <input type = "button" id = "getVerificationCode" value = "获得验证码"/><br>
+    </div>
     <input type = "button" value="确认" id = "qr"/>
   </body>
   <script type="text/javascript">
     $(function() {
-        if($("#changeLevel").val() == "0"){
-            $("#userphone").hide();
-            $("#nickName").hide();
-            $("#realName").hide();
-            $("#password").hide();
-            $("#idcard").hide();
-        }else if($("#changeLevel").val() == "1"){
-            $("#showUserPhone").hide();
-            $("#showRealName").hide();
-            $("#showPassword").hide();
-            $("#showEmail").hide();
-            $("#showidcard").hide();
-        }else if($("#changeLevel").val() == "3"){
-            $("#showNickName").hide();
-            $("#showRealName").hide();
-            $("#showPassword").hide();
-            $("#showEmail").hide();
-            $("#showidcard").hide();
-        }else{
-            $("#showUserPhone").hide();
-            $("#showNickName").hide();
-        }
         var phone = $("#phone").val();
         $("#userphone").val(phone);
         var userData = null;
@@ -63,10 +47,30 @@
                 contentType:'application/json;charset=UTF-8',
                 data:JSON.stringify({"phone":phone}),
                 success:function(data){
-                    //alert(JSON.stringify(data));
                     userData = data;
                 }
             });
+    
+        if($("#changeLevel").val() == "activeEmail"){
+            $("#showUserPhone").hide();
+            $("#showNickName").hide();
+            $("#showRealName").hide();
+            $("#showPassword").hide();
+            $("#showidcard").hide();
+            $("#showVerificationCode").hide();
+            $("#showGetVerificationCode").hide();
+            return ;
+        }else if($("#changeLevel").val() == "activePhone"){
+            $("#showNickName").hide();
+            $("#showRealName").hide();
+            $("#showPassword").hide();
+            $("#showidcard").hide();
+            $("#showEmail").hide();
+            $('#qr').attr('disabled',true);
+            $('#userphone').attr('disabled',true);
+            return ;
+        }
+
          $("#userId").val(userData.id);
          $("#nickName").val(userData.nickName);
          $("#realName").val(userData.realName);
@@ -81,26 +85,56 @@
         var email = $("#email").val();
         var idcard = $("#idcard").val();
         var userid = $("#userId").val();
-        var info2 = null;
+        var jsonInfo = null;
+        var urlForServer = null;
+        var urlForJump = null;
+        if($("#changeLevel").val() == "activeEmail"){
+            jsonInfo = {phone:$("#phone").val(),email:email};
+            urlForServer = getUrl() + "sendEmailForActive";
+            urlForJump = getProjectName()+"/"+"jumpToUrl?url=index&name=null";
+        }else if($("#changeLevel").val() == "activePhone"){
+            jsonInfo = {phone:$("#phone").val(),id:$("#verificationCode").val()};
+            urlForServer = getUrl() + "activeVerificationCode";
+            urlForJump = getProjectName()+"/"+"jumpToUrl?phone="+$("#phone").val()+"&url=hello";
+        }
+        
         if($("#changeLevel").val() == "0"){
-            info2 = {id:0,email:email};
+            //info2 = {id:0,email:email};
         }else if($("#changeLevel").val() == "1"){
-            info2 = {id:1,nickName:nickName,phone:phone};
+            //info2 = {id:1,nickName:nickName,phone:phone};
         }else if($("#changeLevel").val() == "2"){
-            info2 = {phone:phone,id:$("#phone").val()};
+            //info2 = {phone:phone,id:$("#phone").val()};
         }else{
-            info2 = {id:3,phone:$("#phone").val(),realName:realName,password:password,email:email,idCard:idcard};
+            //info2 = {id:3,phone:$("#phone").val(),realName:realName,password:password,email:email,idCard:idcard};
         }
         
         $.ajax({
             async:false,
             type:'POST',
             dataType:'json',
-            url:getUrl()+'/changeUserInfo',
+            url:urlForServer,
             contentType:'application/json;charset=UTF-8',
-            data:JSON.stringify(info2),
+            data:JSON.stringify(jsonInfo),
             success:function(data){
-                window.location.href=getProjectName()+"/"+"jumpToUrl?url=index&name=null";
+                window.location.href=urlForJump;
+            }
+        });
+    })
+    
+    $("#getVerificationCode").click(function() {
+        var jsonInfo = {phone:$("#userphone").val()};
+        urlForServer = getUrl() + "sendVerificationCode";
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:urlForServer,
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify(jsonInfo),
+            success:function(data){
+                alert("发送成功！");
+                $('#qr').attr('disabled',false);
+                $('#getVerificationCode').attr('disabled',true);
             }
         });
     })

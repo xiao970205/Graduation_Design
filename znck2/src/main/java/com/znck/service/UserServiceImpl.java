@@ -63,4 +63,10 @@ public class UserServiceImpl implements UserService {
         // TODO Auto-generated method stub
         userMapper.delete(id);
     }
+
+    @Override
+    public List<UserEntity> getUserByEmail(String email) {
+        // TODO Auto-generated method stub
+         return userMapper.getUserByEmail(email);
+    }
 }

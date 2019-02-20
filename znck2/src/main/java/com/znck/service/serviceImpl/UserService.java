@@ -59,4 +59,6 @@ public interface UserService {
      * @param id
      */
     public void delete(String id);
+    
+    public List<UserEntity> getUserByEmail(String email);
 }

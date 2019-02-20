@@ -61,4 +61,6 @@ public interface UserMapper {
      * @param id
      */
     void delete(String id);
+    
+    List<UserEntity> getUserByEmail(String email);
 }

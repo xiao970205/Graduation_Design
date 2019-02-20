@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2019-02-15 15:23:36
+Date: 2019-02-20 13:49:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -63,6 +63,20 @@ INSERT INTO `contrast` VALUES ('aa8d80e74dd84a418fcf73f2c5b493e0', '不可通过
 INSERT INTO `contrast` VALUES ('aaaeeb3acc5e44899a5d1de5ca5ab11a', '车库-空置');
 INSERT INTO `contrast` VALUES ('b8dd53a77a1e4c809550dc1dc750f6ce', '停车中');
 INSERT INTO `contrast` VALUES ('d9a4f33ad6fc483fada40fe0e7f81618', '空间');
+
+-- ----------------------------
+-- Table structure for emailactive
+-- ----------------------------
+DROP TABLE IF EXISTS `emailactive`;
+CREATE TABLE `emailactive` (
+  `id` varchar(255) NOT NULL,
+  `userid` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of emailactive
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for parking
@@ -1120,11 +1134,13 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `nickname` varchar(255) DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `realname` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `idcard` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `phone` varchar(255) DEFAULT NULL,
-  `realname` varchar(255) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL,
+  `phonenature` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `idcard` varchar(255) DEFAULT NULL,
+  `emailnature` varchar(255) DEFAULT NULL,
   `nature` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -1132,6 +1148,3 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1a8247f2ad85446d850a518f235e1613', null, null, null, null, null, null, null);
-INSERT INTO `user` VALUES ('4177f759000b41c692dd50f16c4568f0', '新用户15703286077', '15703286077', '肖舒翔', '123456', '1037426886@qq.com', '130102199702052111', '1');
-INSERT INTO `user` VALUES ('642880079c2b4c7eb9b2a58780e2a957', null, null, null, null, null, null, null);

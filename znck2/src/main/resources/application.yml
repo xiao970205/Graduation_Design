@@ -5,7 +5,7 @@ spring:
     username: root
     password: 123
   thymeleaf:
-    cache: true
+    cache: false
     prefix: classpath:static/templates/ 
   mvc:
     static-path-pattern: /**

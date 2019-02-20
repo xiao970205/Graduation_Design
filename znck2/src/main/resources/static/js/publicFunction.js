@@ -18,3 +18,11 @@ function getProjectName() {
 			.substring(0, pathName.substr(1).indexOf('/') + 1);
     return projectName;
 }
+
+function isNullOrUndefined(a){
+    if(a == "" || a == null || a == undefined){
+        return true;
+    }else{
+        return false;
+    }
+}

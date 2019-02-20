@@ -14,8 +14,11 @@ import org.springframework.stereotype.Service;
 import com.mysql.cj.util.StringUtils;
 import com.znck.entity.CarEntity;
 import com.znck.entity.ContrastEntity;
+import com.znck.entity.EmailActiveEntity;
+import com.znck.entity.MailUtil;
 import com.znck.entity.ParkingEntity;
 import com.znck.entity.ParkingSaveEntity;
+import com.znck.entity.PhoneActiveEntity;
 import com.znck.entity.SpaceEntity;
 import com.znck.entity.UserEntity;
 
@@ -46,6 +49,12 @@ public class AllService {
 
     @Autowired
     private ParkingSaveServiceImpl parkingSaveServiceImpl;
+    
+    @Autowired
+    private EmailActiveServiceImpl emailActiveServiceImpl;
+    
+    @Autowired
+    private PhoneActiveServiceImpl phoneActiveServiceImpl;
 
     /**
      * id:729352f0e3b74fee91bf15baa7187e58 realName:出口
@@ -254,13 +263,17 @@ public class AllService {
             // 未注册
             UserEntity user = new UserEntity();
             user.setId(getId());
-            user.setPhone(phone);
             user.setNickName("新用户" + phone);
-            user.setNature(getId());
             user.setPassword("123456");
+            user.setPhone(phone);
+            user.setPhoneNature("0");
+            user.setEmailNature("0");
+            user.setNature("0");
             userServiceImpl.insert(user);
             user = userServiceImpl.getUserByPhone(phone);
             contrast.setId("true");
+            EmailActiveEntity emailActiveEntity = new EmailActiveEntity(getId(),user.getId());
+            emailActiveServiceImpl.insert(emailActiveEntity);
         }
         return contrast;
     }
@@ -349,5 +362,58 @@ public class AllService {
          user.setNature("2");
          userServiceImpl.update(user);
          return null;
+    }
+    
+    public ContrastEntity sendEmailForActive(UserEntity data) {
+        ContrastEntity contrast = new ContrastEntity();
+        if(userServiceImpl.getUserByEmail(data.getEmail()).size() == 0 ){
+            contrast.setRealName("true");
+            UserEntity user = userServiceImpl.getUserByPhone(data.getPhone());
+            user.setEmail(data.getEmail());
+            userServiceImpl.update(user);
+            EmailActiveEntity emailActiveEntity = emailActiveServiceImpl.getEmailActiveByUserId(user.getId());
+            System.out.println(data.getEmail()+"\n"+emailActiveEntity.getId());
+            MailUtil main = new MailUtil(data.getEmail(),emailActiveEntity.getId());
+            main.run();
+        }else{
+            contrast.setRealName("false");
+        }
+        return contrast;
+    }
+    
+    public void activeEmail(String code,String email){
+        EmailActiveEntity emailActiveEntity = emailActiveServiceImpl.getOne(code);
+        UserEntity user = userServiceImpl.getOne(emailActiveEntity.getUserId());
+        user.setEmail(email);
+        user.setEmailNature("1");
+        if(StringUtils.isNullOrEmpty(user.getRealName())){
+            user.setNature("0");
+        }
+        if(StringUtils.isNullOrEmpty(user.getIdCard())){
+            user.setNature("0");
+        }
+        if(user.getEmailNature().equals("0")){
+            user.setNature("0");
+        }
+        if(user.getPhoneNature().equals("0")){
+            user.setNature("0");
+        }
+        userServiceImpl.update(user);
+        emailActiveServiceImpl.delete(code);
+    }
+    
+    public void sendVerificationCode(UserEntity user){
+        String phone = user.getPhone();
+        int code = (int)((Math.random()*9+1)*1000);
+        user = userServiceImpl.getUserByPhone(phone);
+        PhoneActiveEntity phoneActive = new PhoneActiveEntity(getId(), user.getId(), code+"");
+        phoneActiveServiceImpl.insert(phoneActive);
+        //需要发送验证码接口
+    }
+
+    public void activeVerificationCode(UserEntity data) {
+        // TODO Auto-generated method stub
+         String code = data.getId();
+         String phone = data.getPhone();
     }
 }

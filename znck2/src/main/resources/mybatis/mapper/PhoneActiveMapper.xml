@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.znck.mapper.PhoneActiveMapper" >
+    <resultMap id="BaseResultMap" type="com.znck.entity.PhoneActiveEntity" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="userid" property="userId" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <sql id="Base_Column_List" >
+        id, userId, code
+    </sql>
+
+    <select id="getAll" resultMap="BaseResultMap"  >
+       SELECT 
+        <include refid="Base_Column_List" />
+       FROM phoneactive
+    </select>
+
+    <select id="getPhoneActiveByUserPhone" parameterType="String" resultMap="BaseResultMap" >
+        select p.id,p.userid,p.`code`
+        from user u,phoneactive p
+        WHERE u.id = p.userid and u.phone = #{phone}
+    </select>
+
+    <select id="getOne" parameterType="String" resultMap="BaseResultMap" >
+        SELECT 
+        <include refid="Base_Column_List" />
+       FROM phoneactive
+       WHERE id = #{id}
+    </select>
+    
+    <select id="getPhoneActiveByUserId" parameterType="String" resultMap="BaseResultMap" >
+        SELECT 
+        <include refid="Base_Column_List" />
+       FROM phoneactive
+       WHERE userid = #{userId}
+    </select>
+
+    <insert id="insert" parameterType="com.znck.entity.PhoneActiveEntity" >
+       INSERT INTO 
+            phoneactive
+            (id,userid,code) 
+        VALUES
+            (#{id}, #{userId}, #{code})
+    </insert>
+    
+    <update id="update" parameterType="com.znck.entity.PhoneActiveEntity" >
+       UPDATE 
+            phoneactive 
+       SET 
+        userid = #{userId},code = #{code} 
+       WHERE 
+            id = #{id}
+    </update>
+    
+    <delete id="delete" parameterType="String" >
+       DELETE FROM
+             emailactive 
+       WHERE 
+             id =#{id}
+    </delete>
+
+</mapper>

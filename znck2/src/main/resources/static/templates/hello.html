@@ -8,18 +8,20 @@
   </head>
   <body>
     <input type = "hidden" th:value = "${phone}" id = "phone"/>
-    <input type = "hidden" id = "vip"/>
+    <input type = "hidden" id = "nature"/>
     <p id = "userNickName">您好</p>
-    <p id = "userNature">请您尽快进行邮箱验证，并下一步激活用户</p>
+    <p id = "message"></p>
     <input type = "button" id = "activeEmail" value = "激活邮箱"/>
-    <input type="button" id="grxx" value="设置个人信息"/>
+    <input type="button" id="grxx" value="修改个人信息"/>
     <input type="button" id="changePhone" value="修改绑定手机号"/>
     <input type = "button" id = "changeSensitiveMessage" value = "修改个人敏感信息" />
     <input type = "button" value = "成为会员" id = "toBeVip"/>
+    <input type = "button" value = "激活手机" id = "activePhone"/>
+    <input type = "button" value = "补全个人信息" id = "completionPersonInfo"/>
     <p id = "carinfos"></p>
     <div>
         <div id = "allCars">
-            <p>所有的车</p>
+            <p></p>
         </div>
     </div>
     <br>
@@ -38,7 +40,6 @@
   	$(function() {
   		var phone = $("#phone").val();
   		var userData = null;
-  		var carMassage = null;
   		$.ajax({
                 async:false,
                 type:'POST',
@@ -51,27 +52,48 @@
                 }
             });
         $("#userNickName").text($("#userNickName").text() +"  "+ userData.nickName);
-        var vip = userData.nature;
-        $("vip").val(vip);
+        $("nature").val(userData.nature);
         if(userData.nature == 0){
-            $("#grxx").hide();
-            $("#changePhone").hide();
-            $("#toBeVip").hide();
-            $("#changeSensitiveMessage").val("补全个人敏感信息");
-            $("#userNature").text("您还没有进行实名认证，请填写敏感个人信息，尽快实名认证");
-            return;
-        }else if(userData.nature == 1){
-            $("#userNature").text("");
-        }else if(userData.nature == 2){
-            $("#userNature").text("您现在是会员用户，享受预约取车权力！");
-            $("#toBeVip").hide();
-        }else{
+        
             $("#grxx").hide();
             $("#changePhone").hide();
             $("#changeSensitiveMessage").hide();
             $("#toBeVip").hide();
+            $("#addCar").hide();
+            var message = "请您尽快激活，完成";
+            if(userData.phoneNature != 0){
+                $("#activePhone").hide();
+            }else{
+                message = message + "手机激活";
+            }
+            if(userData.emailNature != 0){
+                $("#activeEmail").hide();
+            }else{
+                message = message + "邮件激活";
+            }
+            if(!isNullOrUndefined(userData.realName)&!isNullOrUndefined(userData.idCard)){
+                $("#completionPersonInfo").hide();
+            }else{
+                message = message + "个人敏感信息认证";
+            }    
+            $("#message").text(message);
+        }else{
+            $("#completionPersonInfo").hide();
+            $("#activeEmail").hide();
+            $("#activePhone").hide();
+            if(userData.nature == 1){
+                $("#message").text("您好，请您停车");
+            }else{
+                $("#message").text("VIP用户您好，请您使用预约取车功能");
+                $("#toBeVip").hide();
+            }
         }
         
+        if(userData.nature == 0){
+            return;
+        }
+        
+        var carMassage = null;
         //获得所有的车
         $.ajax({
             async:false,
@@ -190,7 +212,10 @@
         window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=3&phone="+$("#phone").val();
     });
     $("#activeEmail").click(function() {
-        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=0&phone="+$("#phone").val();
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=activeEmail&phone="+$("#phone").val();
+    });
+    $("#activePhone").click(function() {
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=activePhone&phone="+$("#phone").val();
     });
   </script>
 </html>

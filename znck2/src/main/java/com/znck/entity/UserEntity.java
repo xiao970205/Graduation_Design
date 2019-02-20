@@ -12,11 +12,13 @@ public class UserEntity {
     private static final long serialVersionUID = 1L;
     private String id;
     private String nickName;
-    private String phone;
-    private String realName;
     private String password;
-    private String email;
+    private String realName;
     private String idCard;
+    private String phone;
+    private String phoneNature;
+    private String email;
+    private String emailNature;
     private String nature;
 
     public UserEntity() {
@@ -89,6 +91,22 @@ public class UserEntity {
 
     public static long getSerialversionuid() {
         return serialVersionUID;
+    }
+
+    public String getPhoneNature() {
+        return phoneNature;
+    }
+
+    public void setPhoneNature(String phoneNature) {
+        this.phoneNature = phoneNature;
+    }
+
+    public String getEmailNature() {
+        return emailNature;
+    }
+
+    public void setEmailNature(String emailNature) {
+        this.emailNature = emailNature;
     }
 
     public UserEntity(String id, String nickName, String userName, String phone, String realName, String password,
