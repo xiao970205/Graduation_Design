@@ -17,5 +17,7 @@ public interface PhoneActiveMapper {
 
      PhoneActiveEntity getPhoneActiveByUserId(String userId);
      
-     PhoneActiveEntity getPhoneActiveByUserPhone(String phone);
+     List<PhoneActiveEntity> getPhoneActiveByUserPhone(String phone);
+     
+     void deleteByUserId(String userId);
 }

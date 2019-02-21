@@ -17,5 +17,7 @@ public interface PhoneActiveService {
 
     public PhoneActiveEntity getPhoneActiveByUserId(String userId);
     
-    public PhoneActiveEntity getPhoneActiveByUserPhone(String phone);
+    public List<PhoneActiveEntity> getPhoneActiveByUserPhone(String phone);
+    
+    public void deleteByUserId(String userId);
 }

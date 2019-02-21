@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.znck.mapper.VipMapper" >
+	<resultMap id="BaseResultMap" type="com.znck.entity.VipEntity" >
+		<id column="id" property="id" jdbcType="VARCHAR" />
+		<result column="userid" property="userId" jdbcType="VARCHAR" />
+		<result column="enddate" property="endDate" javaType="java.util.Date" />
+	</resultMap>
+    
+	<sql id="Base_Column_List" >
+        id,userId,endDate
+	</sql>    
+
+	<select id="getAll" resultMap="BaseResultMap"  >
+       SELECT 
+		<include refid="Base_Column_List" />
+       FROM vip
+	</select>
+
+	<select id="getOne" parameterType="String" resultMap="BaseResultMap" >
+        SELECT 
+		<include refid="Base_Column_List" />
+       FROM vip
+       WHERE id = #{id}
+	</select>
+    
+	<select id="getVipByUserId" parameterType="String" resultMap="BaseResultMap" >
+        SELECT 
+		<include refid="Base_Column_List" />
+       FROM vip
+       WHERE userid = #{userId}
+	</select>
+
+	<insert id="insert" parameterType="com.znck.entity.VipEntity" >
+       INSERT INTO 
+            vip
+            (id,userid,enddate) 
+        VALUES
+            (#{id}, #{userId},#{endDate})
+	</insert>
+    
+	<update id="update" parameterType="com.znck.entity.VipEntity" >
+       UPDATE 
+            vip 
+       SET 
+        userid = #{userId},
+        enddate = #{endDate},
+       WHERE 
+            id = #{id}
+	</update>
+    
+	<delete id="delete" parameterType="String" >
+       DELETE FROM
+             vip 
+       WHERE 
+             id =#{id}
+	</delete>
+	
+    <delete id="deleteNowBiggerEndDate" parameterType="String" >
+       DELETE FROM
+             vip 
+       WHERE 
+             enddate &lt; NOW()
+    </delete>
+
+</mapper>

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2019-02-20 13:49:19
+Date: 2019-02-21 10:26:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -31,12 +31,6 @@ CREATE TABLE `car` (
 -- ----------------------------
 -- Records of car
 -- ----------------------------
-INSERT INTO `car` VALUES ('285d4e63d6c8455b87ebfa38138696c5', '4177f759000b41c692dd50f16c4568f0', 'lx633', 'firstCar', '1');
-INSERT INTO `car` VALUES ('6f0f4516ec04414f90c3cc72e25f6d47', '642880079c2b4c7eb9b2a58780e2a957', null, null, '保时捷Panamera');
-INSERT INTO `car` VALUES ('7050f26ee0fa4e7b8571ad3f43a83884', '642880079c2b4c7eb9b2a58780e2a957', null, null, '道奇蝰蛇');
-INSERT INTO `car` VALUES ('721799c190734042a0329c6ddacc1040', '642880079c2b4c7eb9b2a58780e2a957', null, null, '玛莎拉蒂');
-INSERT INTO `car` VALUES ('9aafff25567b4a5b8f429ba2b6de5494', '642880079c2b4c7eb9b2a58780e2a957', null, null, '迈巴赫');
-INSERT INTO `car` VALUES ('a79f4d9a52ae4acda5d361306464f7af', '642880079c2b4c7eb9b2a58780e2a957', null, null, '劳斯莱斯');
 
 -- ----------------------------
 -- Table structure for contrast
@@ -117,6 +111,21 @@ CREATE TABLE `parkingsave` (
 
 -- ----------------------------
 -- Records of parkingsave
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for phoneactive
+-- ----------------------------
+DROP TABLE IF EXISTS `phoneactive`;
+CREATE TABLE `phoneactive` (
+  `id` varchar(255) NOT NULL,
+  `userid` varchar(255) DEFAULT NULL,
+  `code` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of phoneactive
 -- ----------------------------
 
 -- ----------------------------
@@ -1147,4 +1156,19 @@ CREATE TABLE `user` (
 
 -- ----------------------------
 -- Records of user
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for vip
+-- ----------------------------
+DROP TABLE IF EXISTS `vip`;
+CREATE TABLE `vip` (
+  `id` varchar(255) NOT NULL,
+  `userid` varchar(255) DEFAULT NULL,
+  `enddate` datetime(6) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of vip
 -- ----------------------------

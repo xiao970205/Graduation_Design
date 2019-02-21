@@ -3,6 +3,7 @@ package com.znck.service;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -21,10 +22,12 @@ import com.znck.entity.ParkingSaveEntity;
 import com.znck.entity.PhoneActiveEntity;
 import com.znck.entity.SpaceEntity;
 import com.znck.entity.UserEntity;
+import com.znck.entity.VipEntity;
 
 /**
  * 
  * AllService
+ * 
  * @author 肖舒翔
  * @version 1.0
  *
@@ -37,7 +40,7 @@ public class AllService {
 
     @Autowired
     private CarServiceImpl carServiceImpl;
-    
+
     @Autowired
     private ContrastServiceImpl contrastServiceImpl;
 
@@ -49,12 +52,15 @@ public class AllService {
 
     @Autowired
     private ParkingSaveServiceImpl parkingSaveServiceImpl;
-    
+
     @Autowired
     private EmailActiveServiceImpl emailActiveServiceImpl;
-    
+
     @Autowired
     private PhoneActiveServiceImpl phoneActiveServiceImpl;
+
+    @Autowired
+    private VipServiceImpl vipActiveServiceImpl;
 
     /**
      * id:729352f0e3b74fee91bf15baa7187e58 realName:出口
@@ -80,8 +86,7 @@ public class AllService {
      * id:351cc2cdda6547528e20c6444e4a3bbd realName:存车中
      */
     private ContrastEntity cCc;
-    
-    
+
     /**
      * 存车方法
      * 
@@ -92,16 +97,16 @@ public class AllService {
 
         this.setAllContrast();
         Date outTime = null;
-        if(data.getNickName()!=null){
-            //vip
-            if(data.getRealName()!=null){
+        if (data.getNickName() != null) {
+            // vip
+            if (data.getRealName() != null) {
                 Random r = new Random();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
                 ParsePosition pos = new ParsePosition(0);
                 outTime = formatter.parse(data.getRealName() + " " + (r.nextInt(899) + 100), pos);
             }
         }
-        
+
         // 获得存车数据
         ParkingEntity parking = new ParkingEntity();
 
@@ -126,7 +131,7 @@ public class AllService {
         parking.setOutTime(outTime);
         parking.setNature(nature);
         parking.setWay(inSpaceId.getX() + "," + inSpaceId.getY() + "," + inSpaceId.getZ());
-        
+
         ParkingSaveEntity parkingSave = new ParkingSaveEntity();
         parkingSave.setId(parking.getId());
         parkingSave.setCarId(parking.getCarId());
@@ -134,10 +139,10 @@ public class AllService {
         parkingSave.setOutTime(parking.getOutTime());
         parkingSave.setSaveSpaceId(parking.getFetureSpaceId());
         parkingSaveServiceImpl.insert(parkingSave);
-        
+
         parkingServiceImpl.insert(parking);
-    }    
-  
+    }
+
     public Date getDate() throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS");
         Date date = new Date();
@@ -145,7 +150,7 @@ public class AllService {
         Date date2 = format.parse(dateStr);
         return date2;
     }
-    
+
     public void setAllContrast() {
         this.setCkZy(contrastServiceImpl.getContrastByRealName("车库-占用"));
         this.setRk(contrastServiceImpl.getContrastByRealName("入口"));
@@ -153,23 +158,23 @@ public class AllService {
         this.setcCc(contrastServiceImpl.getContrastByRealName("存车中"));
         this.setCk(contrastServiceImpl.getContrastByRealName("出口"));
     }
-    
-    public void parkingGetCar(UserEntity data) throws ParseException{
+
+    public void parkingGetCar(UserEntity data) throws ParseException {
         Date outTime = null;
         String carId = data.getId();
-        if(data.getNickName()!=null){
-            //vip
-            if(data.getRealName()!=null){
+        if (data.getNickName() != null) {
+            // vip
+            if (data.getRealName() != null) {
                 Random r = new Random();
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
                 ParsePosition pos = new ParsePosition(0);
                 outTime = formatter.parse(data.getRealName() + " " + (r.nextInt(899) + 100), pos);
             }
         }
-        
-        takeOutCar(carId,outTime);
+
+        takeOutCar(carId, outTime);
     }
-    
+
     /**
      * 分两种情况 正常取车 用户强制取车
      * 
@@ -177,7 +182,7 @@ public class AllService {
      * @return
      * @throws ParseException
      */
-    public ParkingEntity takeOutCar(String carId,Date outTimeByWeb) throws ParseException {
+    public ParkingEntity takeOutCar(String carId, Date outTimeByWeb) throws ParseException {
         this.setAllContrast();
 
         ParkingEntity parking = parkingServiceImpl.getParkingByCarid(carId);
@@ -185,14 +190,14 @@ public class AllService {
         String fetureSpaceId = spaceServiceImpl.getCrk(this.getCk().getRealName()).getId();
 
         Date outTime = parking.getOutTime();
-        
-        if(outTimeByWeb == null){
-            //正常取车
+
+        if (outTimeByWeb == null) {
+            // 正常取车
             if (outTime == null) {
                 outTime = getDate();
             }
-        }else{
-            //预约取车
+        } else {
+            // 预约取车
             outTime = outTimeByWeb;
         }
         parking.setOutTime(outTime);
@@ -207,58 +212,13 @@ public class AllService {
         parkingSaveServiceImpl.update(parkingSave);
         return parking;
     }
-    
-    public UserEntity changeUserInfo(UserEntity userEntity) {
-        UserEntity userOlder = null;
-        final String  value1 = "1";
-        final String  value3 = "3";
-        final Integer numberThree = 3;
-        if (value1.equals(userEntity.getId())) {
-            userOlder = userServiceImpl.getUserByPhone(userEntity.getPhone());
-            // 一般信息
-            userOlder.setNickName(userEntity.getNickName());
-        } else if (userEntity.getId().equals(value3)) {
-            // 敏感信息
-            userOlder = userServiceImpl.getUserByPhone(userEntity.getPhone());
-            int size = 0;
-            if (!StringUtils.isNullOrEmpty(userEntity.getRealName())) {
-                userOlder.setRealName(userEntity.getRealName());
-                size++;
-            }
-            if (!StringUtils.isNullOrEmpty(userEntity.getPassword())) {
-                userOlder.setPassword(userEntity.getPassword());
-            } else {
-                userOlder.setPassword("123456");
-            }
-            if (!StringUtils.isEmptyOrWhitespaceOnly(userEntity.getEmail())) {
-                userOlder.setEmail(userEntity.getEmail());
-                size++;
-            }
-            if (!StringUtils.isEmptyOrWhitespaceOnly(userEntity.getIdCard())) {
-                userOlder.setIdCard(userEntity.getIdCard());
-                size++;
-            }
-
-            if (size == numberThree) {
-                userOlder.setNature("1");
-            } else {
-                userOlder.setNature("0");
-            }
-        } else {
-            // 修改电话
-            userOlder = userServiceImpl.getUserByPhone(userEntity.getId());
-            userOlder.setPhone(userEntity.getPhone());
-        }
-        userServiceImpl.update(userOlder);
-        return userOlder;
-    }
 
     public ContrastEntity regist(UserEntity data) {
         String phone = data.getPhone();
         ContrastEntity contrast = new ContrastEntity();
         if (userServiceImpl.getUserByPhone(phone) != null) {
             // 已注册
-            contrast.setId("false");    
+            contrast.setId("false");
         } else {
             // 未注册
             UserEntity user = new UserEntity();
@@ -272,7 +232,7 @@ public class AllService {
             userServiceImpl.insert(user);
             user = userServiceImpl.getUserByPhone(phone);
             contrast.setId("true");
-            EmailActiveEntity emailActiveEntity = new EmailActiveEntity(getId(),user.getId());
+            EmailActiveEntity emailActiveEntity = new EmailActiveEntity(getId(), user.getId());
             emailActiveServiceImpl.insert(emailActiveEntity);
         }
         return contrast;
@@ -284,6 +244,33 @@ public class AllService {
 
     public UserEntity getUserByPhone(UserEntity data) {
         return userServiceImpl.getUserByPhone(data.getPhone());
+    }
+
+    public String changePhone(UserEntity data) {
+        UserEntity user = userServiceImpl.getUserByPhone(data.getId());
+        user.setPhone(data.getPhone());
+        user.setPhoneNature("0");
+        user = ChangeUserNature(user);
+        userServiceImpl.update(user);
+        return "true";
+    }
+
+    public String changeEmail(UserEntity data) {
+        UserEntity user = userServiceImpl.getUserByPhone(data.getId());
+        user.setEmail(data.getEmail());
+        user.setEmailNature("0");
+        user = ChangeUserNature(user);
+        userServiceImpl.update(user);
+        return "true";
+    }
+
+    public String changeSensitiveMessage(UserEntity data) {
+        UserEntity user = userServiceImpl.getUserByPhone(data.getId());
+        user.setRealName(data.getRealName());
+        user.setIdCard(data.getId());
+        user = ChangeUserNature(user);
+        userServiceImpl.update(user);
+        return "true";
     }
 
     public static String getId() {
@@ -308,14 +295,14 @@ public class AllService {
         carEntity.setId(getId());
         carServiceImpl.insert(carEntity);
     }
-    
+
     public void updateCarWithoutUserId(CarEntity car) {
         CarEntity oldCar = carServiceImpl.getOne(car.getId());
         car.setId(oldCar.getId());
         car.setUserId(oldCar.getUserId());
         this.carServiceImpl.update(car);
     }
-    
+
     public ContrastEntity getCkZy() {
         return ckZy;
     }
@@ -358,62 +345,130 @@ public class AllService {
 
     public UserEntity toBeVip(UserEntity data) {
         // TODO Auto-generated method stub
-         UserEntity user = userServiceImpl.getUserByPhone(data.getPhone());
-         user.setNature("2");
-         userServiceImpl.update(user);
-         return null;
+        UserEntity user = userServiceImpl.getUserByPhone(data.getPhone());
+        VipEntity vip = vipActiveServiceImpl.getVipByUserId(user.getId());
+        if(vip == null){
+            Calendar cal = Calendar.getInstance();
+            Date date = new Date();
+            cal.setTime(date);
+            cal.add(Calendar.MONTH, 1);
+            vip = new VipEntity(getId(),user.getId(),cal.getTime());
+            vipActiveServiceImpl.insert(vip);
+        }else{
+            Date date = vip.getEndDate();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            cal.add(Calendar.MONTH, 1);
+            date = cal.getTime();
+            vip.setEndDate(date);
+            vipActiveServiceImpl.update(vip);
+        }
+        if(user.getNature().equals("1")){
+            user.setNature("2");
+        }
+        userServiceImpl.update(user);
+        return user;
     }
-    
+
     public ContrastEntity sendEmailForActive(UserEntity data) {
         ContrastEntity contrast = new ContrastEntity();
-        if(userServiceImpl.getUserByEmail(data.getEmail()).size() == 0 ){
+        if (userServiceImpl.getUserByEmail(data.getEmail()).size() == 0) {
             contrast.setRealName("true");
             UserEntity user = userServiceImpl.getUserByPhone(data.getPhone());
             user.setEmail(data.getEmail());
             userServiceImpl.update(user);
             EmailActiveEntity emailActiveEntity = emailActiveServiceImpl.getEmailActiveByUserId(user.getId());
-            System.out.println(data.getEmail()+"\n"+emailActiveEntity.getId());
-            MailUtil main = new MailUtil(data.getEmail(),emailActiveEntity.getId());
+            System.out.println(data.getEmail() + "\n" + emailActiveEntity.getId());
+            MailUtil main = new MailUtil(data.getEmail(), emailActiveEntity.getId());
             main.run();
-        }else{
+        } else {
             contrast.setRealName("false");
         }
         return contrast;
     }
-    
-    public void activeEmail(String code,String email){
+
+    public void activeEmail(String code, String email) {
         EmailActiveEntity emailActiveEntity = emailActiveServiceImpl.getOne(code);
         UserEntity user = userServiceImpl.getOne(emailActiveEntity.getUserId());
         user.setEmail(email);
         user.setEmailNature("1");
-        if(StringUtils.isNullOrEmpty(user.getRealName())){
-            user.setNature("0");
-        }
-        if(StringUtils.isNullOrEmpty(user.getIdCard())){
-            user.setNature("0");
-        }
-        if(user.getEmailNature().equals("0")){
-            user.setNature("0");
-        }
-        if(user.getPhoneNature().equals("0")){
-            user.setNature("0");
-        }
+        user = ChangeUserNature(user);
         userServiceImpl.update(user);
         emailActiveServiceImpl.delete(code);
     }
-    
-    public void sendVerificationCode(UserEntity user){
+
+    public void sendVerificationCode(UserEntity user) {
         String phone = user.getPhone();
-        int code = (int)((Math.random()*9+1)*1000);
+        int code = (int)((Math.random() * 9 + 1) * 1000);
         user = userServiceImpl.getUserByPhone(phone);
-        PhoneActiveEntity phoneActive = new PhoneActiveEntity(getId(), user.getId(), code+"");
+        PhoneActiveEntity phoneActive = new PhoneActiveEntity(getId(), user.getId(), code + "");
         phoneActiveServiceImpl.insert(phoneActive);
-        //需要发送验证码接口
+        // 需要发送验证码接口
     }
 
-    public void activeVerificationCode(UserEntity data) {
+    public String activeVerificationCode(UserEntity data) {
         // TODO Auto-generated method stub
-         String code = data.getId();
-         String phone = data.getPhone();
+        String code = data.getId();
+        String phone = data.getPhone();
+        UserEntity user = userServiceImpl.getUserByPhone(phone);
+        List<PhoneActiveEntity> codes = phoneActiveServiceImpl.getPhoneActiveByUserPhone(phone);
+        for (PhoneActiveEntity cod : codes) {
+            if (cod.getCode().equals(code)) {
+                phoneActiveServiceImpl.deleteByUserId(user.getId());
+                user.setPhoneNature("1");
+                user = ChangeUserNature(user);
+                userServiceImpl.update(user);
+                return "true";
+            }
+        }
+        return "false";
+    }
+
+    public UserEntity ChangeUserNature(UserEntity user) {
+        user.setNature("1");
+        if (StringUtils.isNullOrEmpty(user.getRealName())) {
+            user.setNature("0");
+        }
+        if (StringUtils.isNullOrEmpty(user.getIdCard())) {
+            user.setNature("0");
+        }
+        if (user.getEmailNature().equals("0")) {
+            user.setNature("0");
+        }
+        if (user.getPhoneNature().equals("0")) {
+            user.setNature("0");
+        }
+        VipEntity vip = vipActiveServiceImpl.getVipByUserId(user.getId());
+        if (user.getNature().equals("1") & vip != null) {
+            user.setNature("2");
+        }
+        return user;
+    }
+
+    public void addUserSensitiveInfo(UserEntity user) {
+        UserEntity oldUser = userServiceImpl.getUserByPhone(user.getPhone());
+        oldUser.setRealName(user.getRealName());
+        oldUser.setIdCard(user.getIdCard());
+        oldUser = ChangeUserNature(oldUser);
+        userServiceImpl.update(oldUser);
+    }
+
+    public String changeGeneralInfo(UserEntity user) {
+        UserEntity oldUser = userServiceImpl.getUserByPhone(user.getPhone());
+        oldUser.setNickName(user.getNickName());
+        userServiceImpl.update(oldUser);
+        return "true";
+    }
+
+    public String changePassword(UserEntity data) {
+        // TODO Auto-generated method stub
+        UserEntity user = userServiceImpl.getUserByPhone(data.getPhone());
+        user.setPassword(data.getPassword());
+        userServiceImpl.update(user);
+        return "true";
+    }
+    
+    public void endVip(){
+        vipActiveServiceImpl.deleteNowBiggerEndDate();
     }
 }

@@ -52,9 +52,15 @@ public class PhoneActiveServiceImpl implements PhoneActiveService{
     }
 
     @Override
-    public PhoneActiveEntity getPhoneActiveByUserPhone(String phone) {
+    public List<PhoneActiveEntity> getPhoneActiveByUserPhone(String phone) {
         // TODO Auto-generated method stub
          return phoneActiveMapper.getPhoneActiveByUserPhone(phone);
+    }
+
+    @Override
+    public void deleteByUserId(String userId) {
+        // TODO Auto-generated method stub
+         phoneActiveMapper.deleteByUserId(userId);
     }
     
 

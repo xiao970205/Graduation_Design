@@ -36,6 +36,44 @@ public class HelloController {
     @Autowired
     private AllService allService;
     
+    @RequestMapping("/changePassword")
+    @ResponseBody
+    public String changePassword(@RequestBody UserEntity data) {
+        return allService.changePassword(data);
+    }
+    
+    @RequestMapping("/changePhone")
+    @ResponseBody
+    public String changePhone(@RequestBody UserEntity data) {
+        return allService.changePhone(data);
+    }
+    
+    @RequestMapping("/changeEmail")
+    @ResponseBody
+    public String changeEmail(@RequestBody UserEntity data) {
+        return allService.changeEmail(data);
+    }
+    
+    @RequestMapping("/changeSensitiveMessage")
+    @ResponseBody
+    public String changeSensitiveMessage(@RequestBody UserEntity data) {
+        return allService.changeSensitiveMessage(data);
+    }
+    
+    @RequestMapping("/changeGeneralInfo")
+    @ResponseBody
+    public String changeGeneralInfo(@RequestBody UserEntity data) {
+        return allService.changeGeneralInfo(data);
+    }
+    
+    @RequestMapping("/addUserSensitiveInfo")
+    @ResponseBody
+    public String addUserSensitiveInfo(@RequestBody UserEntity data) {
+        System.out.println(666);
+        allService.addUserSensitiveInfo(data);
+        
+        return "true";
+    }    
     
     @RequestMapping("/sendVerificationCode")
     @ResponseBody
@@ -67,12 +105,6 @@ public class HelloController {
     @ResponseBody
     public UserEntity toBeVip(@RequestBody UserEntity data) {
         return allService.toBeVip(data);
-    }
-
-    @RequestMapping("/changeUserInfo")
-    @ResponseBody
-    public UserEntity changeUserInfo(@RequestBody UserEntity data) {
-        return allService.changeUserInfo(data);
     }
 
     @RequestMapping("/getCarByUserId")

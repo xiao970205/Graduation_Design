@@ -18,7 +18,7 @@
     </select>
 
     <select id="getPhoneActiveByUserPhone" parameterType="String" resultMap="BaseResultMap" >
-        select p.id,p.userid,p.`code`
+        select p.id,p.userid,p.code
         from user u,phoneactive p
         WHERE u.id = p.userid and u.phone = #{phone}
     </select>
@@ -56,9 +56,14 @@
     
     <delete id="delete" parameterType="String" >
        DELETE FROM
-             emailactive 
+             phoneactive 
        WHERE 
              id =#{id}
     </delete>
-
+    <delete id="deleteByUserId" parameterType="String" >
+       DELETE FROM
+             phoneactive 
+       WHERE 
+             userid =#{userId}
+    </delete>
 </mapper>

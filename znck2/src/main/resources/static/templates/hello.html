@@ -14,7 +14,9 @@
     <input type = "button" id = "activeEmail" value = "激活邮箱"/>
     <input type="button" id="grxx" value="修改个人信息"/>
     <input type="button" id="changePhone" value="修改绑定手机号"/>
+    <input type="button" id="changeEmail" value="修改绑定邮箱"/>
     <input type = "button" id = "changeSensitiveMessage" value = "修改个人敏感信息" />
+    <input type = "button" id = "changePassword" value = "修改密码" />
     <input type = "button" value = "成为会员" id = "toBeVip"/>
     <input type = "button" value = "激活手机" id = "activePhone"/>
     <input type = "button" value = "补全个人信息" id = "completionPersonInfo"/>
@@ -60,6 +62,7 @@
             $("#changeSensitiveMessage").hide();
             $("#toBeVip").hide();
             $("#addCar").hide();
+            $("#changeEmail").hide();
             var message = "请您尽快激活，完成";
             if(userData.phoneNature != 0){
                 $("#activePhone").hide();
@@ -107,7 +110,7 @@
                 carMassage = data;
             }
         });
-        
+        var vip = userData.nature
         for(var i = 0;i<carMassage.length;i++){
             var nature = carMassage[i].nature;
             var textForNatureId = "";
@@ -200,22 +203,31 @@
     });
   	
   	$("#grxx").click(function() {
-        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=1&phone="+$("#phone").val();
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=changeGeneralInfo&phone="+$("#phone").val();
     });
     $("#addCar").click(function() {
         window.location.href=getProjectName()+"/"+"jumpToUrl?carId=null&url=carInfo&phone="+$("#phone").val();
     });
     $("#changePhone").click(function() {
-        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=2&phone="+$("#phone").val();
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=changePhone&phone="+$("#phone").val();
+    });
+    $("#changeEmail").click(function() {
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=changeEmail&phone="+$("#phone").val();
     });
     $("#changeSensitiveMessage").click(function() {
-        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=3&phone="+$("#phone").val();
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=changeSensitiveMessage&phone="+$("#phone").val();
     });
     $("#activeEmail").click(function() {
         window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=activeEmail&phone="+$("#phone").val();
     });
     $("#activePhone").click(function() {
         window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=activePhone&phone="+$("#phone").val();
+    });
+    $("#changePassword").click(function() {
+    	window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=changePassword&phone="+$("#phone").val();
+    })
+    $("#completionPersonInfo").click(function(){
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=completionPersonInfo&phone="+$("#phone").val();
     });
   </script>
 </html>
