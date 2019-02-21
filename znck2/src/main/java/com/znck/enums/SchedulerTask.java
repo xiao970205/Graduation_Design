@@ -16,8 +16,6 @@ import com.znck.service.AllService;
 @Component
 public class SchedulerTask {
 
-    private int count = 0;
-
     private AllService allService;
     
     @Scheduled(cron = "0 0 1 * * ?")
