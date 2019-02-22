@@ -17,6 +17,7 @@ import com.znck.entity.ContrastEntity;
 import com.znck.entity.ParkingEntity;
 import com.znck.entity.ParkingSaveEntity;
 import com.znck.entity.SpaceEntity;
+import com.znck.service.AllparkingService;
 import com.znck.service.ContrastServiceImpl;
 import com.znck.service.ParkingSaveServiceImpl;
 import com.znck.service.ParkingServiceImpl;
@@ -36,9 +37,14 @@ public class Scheduler2Task {
     @Scheduled(fixedRate = 5000)
     public void reportCurrentTime() throws ParseException {
         System.out.println("现在时间：" + DATEFORMAT.format(new Date()));
-        getCar();
+//        getCar();
+        List<ParkingEntity> parkings = InitDataListener.parkings;
+        parkings.forEach(a ->{
+            System.out.println(a.toString());
+        });
+        allParkingService.getCar();
     }
-
+    
     /**
      * id:729352f0e3b74fee91bf15baa7187e58 realName:出口
      */
@@ -95,6 +101,9 @@ public class Scheduler2Task {
 
     @Autowired
     private ParkingSaveServiceImpl parkingSaveService;
+    
+    @Autowired
+    private AllparkingService allParkingService;
 
     public void setAllContrast() {
         this.setCkZy(contrastService.getContrastByRealName("车库-占用"));

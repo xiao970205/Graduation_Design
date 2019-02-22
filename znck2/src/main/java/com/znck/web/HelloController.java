@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.znck.entity.CarEntity;
 import com.znck.entity.ContrastEntity;
 import com.znck.entity.UserEntity;
-import com.znck.enums.InitDataListener;
 import com.znck.service.AllService;
 
 /**
@@ -130,8 +129,6 @@ public class HelloController {
     @RequestMapping("/landing")
     @ResponseBody
     public UserEntity landing(@RequestBody UserEntity data,HttpServletRequest request) {
-        System.out.println("textInfo:"+InitDataListener.textInfo);
-        InitDataListener.textInfo = "2";
         HttpSession session = request.getSession();
         UserEntity user = allService.landing(data);
         if(user != null){

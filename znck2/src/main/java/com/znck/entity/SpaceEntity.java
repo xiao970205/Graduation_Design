@@ -3,6 +3,7 @@ package com.znck.entity;
 /**
  * 
  * SpaceEntity
+ * 
  * @author 肖舒翔
  * @version 1.0
  *
@@ -16,6 +17,18 @@ public class SpaceEntity {
     private int z;
     private String nature;
     private String carId;
+    private int weight;
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public void setWeight(int max_x, int max_y, int max_z) {
+        int weight_x = 1;
+        int weight_y = weight_x * max_x;
+        int weight_z = weight_y * max_y + weight_y;
+        this.weight = weight_x * (22-x) + weight_y * y + weight_z * z;
+    }
 
     public SpaceEntity() {
         super();

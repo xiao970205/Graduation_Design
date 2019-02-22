@@ -6,6 +6,7 @@ import java.util.Date;
 /**
  * 
  * ParkingEntity
+ * 
  * @author 肖舒翔
  * @version 1.0
  *
@@ -21,12 +22,40 @@ public class ParkingEntity {
     private String nature;
     private String way;
 
-    public ParkingEntity(){
+    private Date saveInPlaceTime;
+
+    private Date outInPlaceTime;
+
+    private String saveSpaceId;
+
+    private String nature2;
+
+    public ParkingEntity() {
         super();
     }
+
+    public int getInTimeSizeInt(){
+        return this.inTime.getDate();
+    }
     
-    public ParkingEntity(String id,String carId,String nowSpaceId
-        ,String fetureSpaceId,Date inTime,Date outTime,String nature){
+    public int getOutTimeSizeInt(){
+        return this.outTime.getDate();
+    }
+    
+    public ParkingEntity(String id,String carId,String nowSpaceId,String fetureSpaceId,Date inTime,Date outTime,String nature,String way,String saveSpaceId){
+        this.id = id;
+        this.carId = carId;
+        this.nowSpaceId = nowSpaceId;
+        this.fetureSpaceId = fetureSpaceId;
+        this.inTime = inTime;
+        this.outTime = outTime;
+        this.nature = nature;
+        this.way = way;
+        this.saveSpaceId = saveSpaceId;
+    }
+    
+    public ParkingEntity(String id, String carId, String nowSpaceId, String fetureSpaceId, Date inTime, Date outTime,
+        String nature) {
         super();
         this.id = id;
         this.carId = carId;
@@ -36,28 +65,26 @@ public class ParkingEntity {
         this.outTime = outTime;
         this.nature = nature;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS");
         String inTime = null;
         String outTime = null;
-        if(this.inTime == null){
+        if (this.inTime == null) {
             inTime = "null";
-        }else{
+        } else {
             inTime = format.format(this.inTime);
         }
-        if(this.outTime == null){
+        if (this.outTime == null) {
             outTime = "null";
-        }else{
+        } else {
             outTime = format.format(this.inTime);
         }
-        return "Id: "+this.id+" ,CarId:"+this.carId
-            +", NowSpaceId:" + this.nowSpaceId
-            +" ,inTime:"+inTime+", OutTime:"+outTime
-            +" ,nature"+this.nature;
+        return "Id: " + this.id + " ,CarId:" + this.carId + ", NowSpaceId:" + this.nowSpaceId + " ,inTime:" + inTime
+            + ", OutTime:" + outTime + " ,nature" + this.nature;
     }
-    
+
     public String getId() {
         return id;
     }
@@ -125,4 +152,37 @@ public class ParkingEntity {
     public static long getSerialversionuid() {
         return serialVersionUID;
     }
+
+    public Date getSaveInPlaceTime() {
+        return saveInPlaceTime;
+    }
+
+    public void setSaveInPlaceTime(Date saveInPlaceTime) {
+        this.saveInPlaceTime = saveInPlaceTime;
+    }
+
+    public Date getOutInPlaceTime() {
+        return outInPlaceTime;
+    }
+
+    public void setOutInPlaceTime(Date outInPlaceTime) {
+        this.outInPlaceTime = outInPlaceTime;
+    }
+
+    public String getSaveSpaceId() {
+        return saveSpaceId;
+    }
+
+    public void setSaveSpaceId(String saveSpaceId) {
+        this.saveSpaceId = saveSpaceId;
+    }
+
+    public String getNature2() {
+        return nature2;
+    }
+
+    public void setNature2(String nature2) {
+        this.nature2 = nature2;
+    }
+
 }
