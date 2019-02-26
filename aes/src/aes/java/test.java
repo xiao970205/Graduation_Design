@@ -10,7 +10,10 @@ public class test {
 
     public static void main(String[] args) throws Exception {
         // TODO Auto-generated method stub
-        getDate2();
+//        getDate2();
+        AESUtil aes1 = new AESUtil();
+        System.out.println(aes1.encrypt3("admin", "1234567890asdfgj"));
+        System.out.println(aes1.decrypt3(aes1.encrypt("admin", "1234567890asdfgj"), "1234567890asdfgj"));
     }
 
     public static Date getDate() throws ParseException {

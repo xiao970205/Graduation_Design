@@ -2,7 +2,7 @@
   <head>
     <meta charset="UTF-8">
     <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
-    <script type="text/javascript" th:src="@{/jspublicFunction.js}"></script>
+    <script type="text/javascript" th:src="@{/js/publicFunction.js}"></script>
   </head>
   <body>
     <input type = "hidden" th:value = "${nature}" id = "nature"/>
@@ -96,7 +96,6 @@
             url = url + '/parkingStopCar';
             message = "尊敬的vip用户！您已停车成功！"
         }
-        
         $.ajax({
             async:false,
             type:'POST',

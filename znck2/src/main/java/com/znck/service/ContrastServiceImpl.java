@@ -3,6 +3,7 @@ package com.znck.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.znck.entity.ContrastEntity;
@@ -43,6 +44,7 @@ public class ContrastServiceImpl implements ContrastService {
     }
 
     @Override
+    @Cacheable(value = "contrasts")
     public ContrastEntity getContrastByRealName(String realName) {
         return contrastMapper.getContrastByRealName(realName);
     }

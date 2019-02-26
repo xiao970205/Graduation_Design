@@ -16,9 +16,9 @@
     <p id="p2"></p>
     <script type="text/javascript">
         $("#bu").click(function() {
-    		var data = null;
-            var key = CryptoJS.enc.Latin1.parse('qwertyuiasdfghjk');
-            var iv = CryptoJS.enc.Latin1.parse('qwertyuiasdfghjk');
+    		var data = "admin";
+            var key = CryptoJS.enc.Latin1.parse('1234567890asdfgj');
+            var iv = CryptoJS.enc.Latin1.parse('1234567890asdfgj');
 
             //加密
             var encrypted = CryptoJS.AES.encrypt(data, key, {

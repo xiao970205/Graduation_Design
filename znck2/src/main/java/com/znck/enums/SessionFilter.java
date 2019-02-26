@@ -13,10 +13,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * 监听器方法
+ * SessionFilter
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 @WebFilter(filterName = "sessionFilter")
 public class SessionFilter implements Filter {
 
-    String NO_LOGIN = "您还未登陆";
+    static String NO_LOGIN = "您还未登陆";
 
     String[] includerUrls = new String[] {"templates/index.html","js/publicFunction.js","js/jquery.js","landing","registPhone"};
 
@@ -35,24 +42,27 @@ public class SessionFilter implements Filter {
         
         String url = request.getRequestURI();
         
-        System.out.println("filter url:"+url);
         boolean needFilter = isNeedFilter(url,request.getContextPath());
         
-        if(url.equals("/znck/jumpToUrl")){
-            if("phone".equals(request.getParameter("url"))){
+        String jumpUrl = "/znck/jumpToUrl";
+        String phoneString ="phone";
+        String urlString = "url";
+        if(url.equals(jumpUrl)){
+            if(phoneString.equals(request.getParameter(urlString))){
                 needFilter = false;
             }
         }
         if(!needFilter){
             filterChain.doFilter(servletRequest, servletResponse);
         }else{
-            if(session!=null&&session.getAttribute("user")!=null){
+            String userString = "user";
+            if(session!=null&&session.getAttribute(userString)!=null){
                 filterChain.doFilter(request, response);
             }else{
                 String requestType = request.getHeader("X-Requested-With");
-                
-                if(requestType != null && "XMLHttpRequest".equals(requestType)){
-                    response.getWriter().write(this.NO_LOGIN);
+                String xMLHttpRequestString = "XMLHttpRequest";
+                if(requestType != null && xMLHttpRequestString.equals(requestType)){
+                    response.getWriter().write(NO_LOGIN);
                 }else{
                     response.sendRedirect(request.getContextPath()+"/templates/index.html");
                 }
@@ -62,12 +72,15 @@ public class SessionFilter implements Filter {
     }
 
     public boolean isNeedFilter(String url,String projectName) {
+        System.out.println(url);
+        if(url.split("/")[2].equals("public")){
+            return false;
+        }
         for (String includerUrl : includerUrls) {
             if ((projectName+"/"+includerUrl).equals(url)) {
                 return false;
             }
         }
-
         return true;
     }
 

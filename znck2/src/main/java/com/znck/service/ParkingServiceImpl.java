@@ -62,4 +62,10 @@ public class ParkingServiceImpl implements ParkingService {
     public void delete(String id) {
         parkingMapper.delete(id);
     }
+
+    @Override
+    public void truncateTable() {
+        // TODO Auto-generated method stub
+         parkingMapper.truncateTable();
+    }
 }

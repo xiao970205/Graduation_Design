@@ -67,4 +67,6 @@ public interface ParkingService {
      * @param parking
      */
     public void save(ParkingEntity parking);
+    
+    public void truncateTable();
 }

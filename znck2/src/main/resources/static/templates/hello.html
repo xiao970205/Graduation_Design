@@ -30,9 +30,6 @@
     <input type = "button" id="addCar" value = "添加新车辆"/>
   </body>
   <script type="text/javascript">
-    function updateCar(userId){
-        //alert(userId);
-    }
     $(document).ready(function() {
     	setInterval(function() {
     	   var phone = $("#phone").val();
@@ -127,9 +124,9 @@
                 }
                 textForNatureRealName = '<input type = "button" value = "停车" class = "saveCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;";
                 textForDeleteCar = '<input type = "button" value = "删除车辆" class="deleteCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;";
-            }else if (nature == "存车中"){
+            }else if (nature == "停车中"){
                 textForNatureId = '<input type = "hidden" id = "savingCar"/>';
-            }else if(nature == "停车中"){
+            }else if(nature == "存车中"){
                 textForNatureId = '<input type = "hidden" id = "canGet"/>';
                 if(vip != 0 && vip !=1){
                     textForNatureId = '<input type = "hidden" id = "canGetVip"/>';

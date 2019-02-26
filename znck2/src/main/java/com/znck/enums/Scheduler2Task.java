@@ -38,10 +38,6 @@ public class Scheduler2Task {
     public void reportCurrentTime() throws ParseException {
         System.out.println("现在时间：" + DATEFORMAT.format(new Date()));
 //        getCar();
-        List<ParkingEntity> parkings = InitDataListener.parkings;
-        parkings.forEach(a ->{
-            System.out.println(a.toString());
-        });
         allParkingService.getCar();
     }
     

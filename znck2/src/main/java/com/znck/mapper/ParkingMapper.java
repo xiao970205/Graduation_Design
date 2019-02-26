@@ -61,4 +61,6 @@ public interface ParkingMapper {
      * @param id
      */
     void delete(String id);
+    
+    void truncateTable();
 }

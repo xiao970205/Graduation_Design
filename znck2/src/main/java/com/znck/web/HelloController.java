@@ -22,6 +22,7 @@ import com.znck.entity.CarEntity;
 import com.znck.entity.ContrastEntity;
 import com.znck.entity.UserEntity;
 import com.znck.service.AllService;
+import com.znck.service.AllparkingService;
 
 /**
  * 
@@ -35,6 +36,9 @@ public class HelloController {
 
     @Autowired
     private AllService allService;
+    
+    @Autowired
+    private AllparkingService allparkingService;
     
     @RequestMapping("/changePassword")
     @ResponseBody
@@ -153,15 +157,17 @@ public class HelloController {
 
     @RequestMapping("/parkingStopCar")
     @ResponseBody
-    public String parkingStopCar(@RequestBody UserEntity data) throws ParseException {
-        allService.saveCar(data);
+    public String parkingStopCar(@RequestBody UserEntity data) throws ParseException, InterruptedException {
+//        allService.saveCar(data);
+        allparkingService.saveCarByStatic(data);
         return "true";
     }
 
     @RequestMapping("/parkingGetCar")
     @ResponseBody
-    public String parkingGetCar(@RequestBody UserEntity data) throws ParseException {
-        allService.parkingGetCar(data);
+    public String parkingGetCar(@RequestBody UserEntity data) throws ParseException, InterruptedException {
+//        allService.parkingGetCar(data);
+        allparkingService.parkingGetCarByStatic(data);
         return "true";
     }
 

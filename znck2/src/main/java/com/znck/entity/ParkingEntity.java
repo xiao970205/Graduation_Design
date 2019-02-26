@@ -35,11 +35,11 @@ public class ParkingEntity {
     }
 
     public int getInTimeSizeInt(){
-        return this.inTime.getDate();
+        return (int)this.inTime.getTime();
     }
     
     public int getOutTimeSizeInt(){
-        return this.outTime.getDate();
+        return (int)this.outTime.getTime();
     }
     
     public ParkingEntity(String id,String carId,String nowSpaceId,String fetureSpaceId,Date inTime,Date outTime,String nature,String way,String saveSpaceId){

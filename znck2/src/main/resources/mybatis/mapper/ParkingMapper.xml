@@ -82,5 +82,7 @@
        WHERE 
              id =#{id}
 	</delete>
-
+    <update id = "truncateTable">
+        truncate table parking    	
+    </update>
 </mapper>
