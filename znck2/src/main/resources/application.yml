@@ -9,6 +9,24 @@ spring:
     prefix: classpath:static/templates/ 
   mvc:
     static-path-pattern: /**
+  mail:
+    host: smtp.qq.com
+    username: 1037426886@qq.com
+    password: plmxrbbmedksbfdi
+    default-encoding: utf-8
+    port: 456
+    properties:
+      mail: 
+        smtp:
+          ssl:
+            enable: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
 mybatis:
   config-location: classpath:mybatis/mybatis-config.xml

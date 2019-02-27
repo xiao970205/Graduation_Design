@@ -19,54 +19,54 @@ import com.znck.service.serviceimpl.UserService;
  */
 @Service
 public class UserServiceImpl implements UserService {
-    @Autowired
-    private UserMapper userMapper;
+	@Autowired
+	private UserMapper userMapper;
 
-    @Override
-    public UserEntity findByUserNameAndPassword(String phone, String password) {
-        // TODO Auto-generated method stub
-        return userMapper.findByUserNameAndPassword(phone, password);
-    }
+	@Override
+	public UserEntity findByUserNameAndPassword(String phone, String password) {
+		// TODO Auto-generated method stub
+		return userMapper.findByUserNameAndPassword(phone, password);
+	}
 
-    @Override
-    public UserEntity getUserByPhone(String phone) {
-        // TODO Auto-generated method stub
-        return userMapper.getUserByPhone(phone);
-    }
+	@Override
+	public UserEntity getUserByPhone(String phone) {
+		// TODO Auto-generated method stub
+		return userMapper.getUserByPhone(phone);
+	}
 
-    @Override
-    public List<UserEntity> getAll() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	@Override
+	public List<UserEntity> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    @Override
-    public UserEntity getOne(String id) {
-        // TODO Auto-generated method stub
-        return userMapper.getOne(id);
-    }
+	@Override
+	public UserEntity getOne(String id) {
+		// TODO Auto-generated method stub
+		return userMapper.getOne(id);
+	}
 
-    @Override
-    public void insert(UserEntity user) {
-        // TODO Auto-generated method stub
-        userMapper.insert(user);
-    }
+	@Override
+	public void insert(UserEntity user) {
+		// TODO Auto-generated method stub
+		userMapper.insert(user);
+	}
 
-    @Override
-    public void update(UserEntity user) {
-        // TODO Auto-generated method stub
-        userMapper.update(user);
-    }
+	@Override
+	public void update(UserEntity user) {
+		// TODO Auto-generated method stub
+		userMapper.update(user);
+	}
 
-    @Override
-    public void delete(String id) {
-        // TODO Auto-generated method stub
-        userMapper.delete(id);
-    }
+	@Override
+	public void delete(String id) {
+		// TODO Auto-generated method stub
+		userMapper.delete(id);
+	}
 
-    @Override
-    public List<UserEntity> getUserByEmail(String email) {
-        // TODO Auto-generated method stub
-         return userMapper.getUserByEmail(email);
-    }
+	@Override
+	public List<UserEntity> getUserByEmail(String email) {
+		// TODO Auto-generated method stub
+		return userMapper.getUserByEmail(email);
+	}
 }

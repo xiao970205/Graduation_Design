@@ -20,38 +20,38 @@ import com.znck.service.serviceimpl.ContrastService;
  */
 @Service
 public class ContrastServiceImpl implements ContrastService {
-    @Autowired
-    private ContrastMapper contrastMapper;
+	@Autowired
+	private ContrastMapper contrastMapper;
 
-    @Override
-    public List<ContrastEntity> getAll() {
-        return contrastMapper.getAll();
-    }
+	@Override
+	public List<ContrastEntity> getAll() {
+		return contrastMapper.getAll();
+	}
 
-    @Override
-    public ContrastEntity getOne(String id) {
-        return contrastMapper.getOne(id);
-    }
+	@Override
+	public ContrastEntity getOne(String id) {
+		return contrastMapper.getOne(id);
+	}
 
-    @Override
-    public void update(ContrastEntity contrastEntity) {
-        contrastMapper.update(contrastEntity);
-    }
+	@Override
+	public void update(ContrastEntity contrastEntity) {
+		contrastMapper.update(contrastEntity);
+	}
 
-    @Override
-    public void delete(String id) {
-        contrastMapper.delete(id);
-    }
+	@Override
+	public void delete(String id) {
+		contrastMapper.delete(id);
+	}
 
-    @Override
-    @Cacheable(value = "contrasts")
-    public ContrastEntity getContrastByRealName(String realName) {
-        return contrastMapper.getContrastByRealName(realName);
-    }
+	@Override
+	@Cacheable(value = "contrasts")
+	public ContrastEntity getContrastByRealName(String realName) {
+		return contrastMapper.getContrastByRealName(realName);
+	}
 
-    @Override
-    public void insert(ContrastEntity car) {
-        // TODO Auto-generated method stub
-        contrastMapper.insert(car);
-    }
+	@Override
+	public void insert(ContrastEntity car) {
+		// TODO Auto-generated method stub
+		contrastMapper.insert(car);
+	}
 }

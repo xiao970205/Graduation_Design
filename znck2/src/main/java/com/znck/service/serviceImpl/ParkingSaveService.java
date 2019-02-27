@@ -13,35 +13,40 @@ import com.znck.entity.ParkingSaveEntity;
  *
  */
 public interface ParkingSaveService {
-    
-    /**
-     * 获得所有方法
-     * @return
-     */
-    public List<ParkingSaveEntity> getAll();
 
-    /**
-     * 获得一个方法
-     * @param id
-     * @return
-     */
-    public ParkingSaveEntity getOne(String id);
+	/**
+	 * 获得所有方法
+	 * 
+	 * @return
+	 */
+	public List<ParkingSaveEntity> getAll();
 
-    /**
-     * 插入方法
-     * @param parkingSave
-     */
-    public void insert(ParkingSaveEntity parkingSave);
+	/**
+	 * 获得一个方法
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public ParkingSaveEntity getOne(String id);
 
-    /**
-     * 更新方法
-     * @param parkingSave
-     */
-    public void update(ParkingSaveEntity parkingSave);
+	/**
+	 * 插入方法
+	 * 
+	 * @param parkingSave
+	 */
+	public void insert(ParkingSaveEntity parkingSave);
 
-    /**
-     * 删除方法
-     * @param id
-     */
-    public void delete(String id);
+	/**
+	 * 更新方法
+	 * 
+	 * @param parkingSave
+	 */
+	public void update(ParkingSaveEntity parkingSave);
+
+	/**
+	 * 删除方法
+	 * 
+	 * @param id
+	 */
+	public void delete(String id);
 }

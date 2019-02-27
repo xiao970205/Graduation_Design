@@ -1,5 +1,12 @@
 package com.znck.entity;
 
+/**
+ * 手机激活实体类
+ * 
+ * @author 肖舒翔
+ * 2019-02-27
+ * @version 1.0
+ */
 public class PhoneActiveEntity {
     private static final long serialVersionUID = 1L;
 

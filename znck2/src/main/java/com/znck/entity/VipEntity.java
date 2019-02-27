@@ -2,6 +2,13 @@ package com.znck.entity;
 
 import java.util.Date;
 
+/**
+ * vip激活实体类
+ * 
+ * @author 肖舒翔
+ * 2019-02-27
+ * @version 1.0
+ */
 public class VipEntity {
     private static final long serialVersionUID = 1L;
     private String id;

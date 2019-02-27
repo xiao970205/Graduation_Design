@@ -16,10 +16,10 @@ import com.znck.service.AllService;
 @Component
 public class SchedulerTask {
 
-    private AllService allService;
-    
-    @Scheduled(cron = "0 0 1 * * ?")
-    private void process() {
-        allService.endVip();
-    }
+	private AllService allService;
+
+	@Scheduled(cron = "0 0 1 * * ?")
+	private void process() {
+		allService.endVip();
+	}
 }

@@ -13,42 +13,48 @@ import com.znck.entity.ContrastEntity;
  *
  */
 public interface ContrastService {
-    
-    /**
-     * 获得所有方法
-     * @return
-     */
-    public List<ContrastEntity> getAll();
 
-    /**
-     * 获得一个方法
-     * @param id
-     * @return
-     */
-    public ContrastEntity getOne(String id);
+	/**
+	 * 获得所有方法
+	 * 
+	 * @return
+	 */
+	public List<ContrastEntity> getAll();
 
-    /**
-     * 插入方法
-     * @param car
-     */
-    public void insert(ContrastEntity car);
+	/**
+	 * 获得一个方法
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public ContrastEntity getOne(String id);
 
-    /**
-     * 更新方法
-     * @param car
-     */
-    public void update(ContrastEntity car);
+	/**
+	 * 插入方法
+	 * 
+	 * @param car
+	 */
+	public void insert(ContrastEntity car);
 
-    /**
-     * 删除方法
-     * @param id
-     */
-    public void delete(String id);
+	/**
+	 * 更新方法
+	 * 
+	 * @param car
+	 */
+	public void update(ContrastEntity car);
 
-    /**
-     * 通过真实名称获得
-     * @param realName
-     * @return
-     */
-    public ContrastEntity getContrastByRealName(String realName);
+	/**
+	 * 删除方法
+	 * 
+	 * @param id
+	 */
+	public void delete(String id);
+
+	/**
+	 * 通过真实名称获得
+	 * 
+	 * @param realName
+	 * @return
+	 */
+	public ContrastEntity getContrastByRealName(String realName);
 }

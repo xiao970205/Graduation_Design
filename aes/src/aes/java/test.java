@@ -4,16 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import com.sun.xml.internal.ws.api.Cancelable;
 
 public class test {
 
     public static void main(String[] args) throws Exception {
         // TODO Auto-generated method stub
 //        getDate2();
-        AESUtil aes1 = new AESUtil();
-        System.out.println(aes1.encrypt3("admin", "1234567890asdfgj"));
-        System.out.println(aes1.decrypt3(aes1.encrypt("admin", "1234567890asdfgj"), "1234567890asdfgj"));
     }
 
     public static Date getDate() throws ParseException {
@@ -22,7 +18,7 @@ public class test {
         Date date = new Date();
         String dateStr = format.format(date);
         Date date2 = format.parse(dateStr);
-        date2.setMonth(date2.getMonth() + 1);
+//        date2.setMonth(date2.getMonth() + 1);
         return date2;
     }
 

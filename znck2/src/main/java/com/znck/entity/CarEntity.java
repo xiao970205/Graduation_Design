@@ -16,24 +16,6 @@ public class CarEntity {
     private String carInfo;
     private String nature;
 
-    public void encrypt(String password) {
-        this.id = AESUtil.encrypt(id, password);
-        this.id = AESUtil.encrypt(userId, password);
-        this.id = AESUtil.encrypt(carCard, password);
-        this.id = AESUtil.encrypt(carName, password);
-        this.id = AESUtil.encrypt(carInfo, password);
-        this.id = AESUtil.encrypt(nature, password);
-    }
-
-    public void decrypt(String password) {
-        this.id = AESUtil.decrypt(id, password);
-        this.id = AESUtil.decrypt(userId, password);
-        this.id = AESUtil.decrypt(carCard, password);
-        this.id = AESUtil.decrypt(carName, password);
-        this.id = AESUtil.decrypt(carInfo, password);
-        this.id = AESUtil.decrypt(nature, password);
-    }
-
     public CarEntity() {
         super();
     }

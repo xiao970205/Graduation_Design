@@ -1,5 +1,12 @@
 package com.znck.entity;
 
+/**
+ * 激活邮件的实体类
+ * EmailActiveEntity
+ * @author huayu
+ * @version 1.0
+ *
+ */
 public class EmailActiveEntity {
 
     private static final long serialVersionUID = 1L;

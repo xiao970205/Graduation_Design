@@ -1,20 +1,59 @@
- package com.znck.mapper;
+package com.znck.mapper;
 
 import java.util.List;
 
 import com.znck.entity.EmailActiveEntity;
 
+/**
+ * 激活邮件的mapper接口 EmailActiveMapper
+ * 
+ * @author 肖舒翔
+ * @version 1.0
+ *
+ */
 public interface EmailActiveMapper {
 
-      List<EmailActiveEntity> getAll();
+	/**
+	 * 获得所有方法
+	 * 
+	 * @return
+	 */
+	List<EmailActiveEntity> getAll();
 
-      EmailActiveEntity getOne(String id);
+	/**
+	 * 根据id获得方法
+	 * 
+	 * @param id
+	 * @return
+	 */
+	EmailActiveEntity getOne(String id);
 
-      void insert(EmailActiveEntity car);
+	/**
+	 * 插入一条新数据
+	 * 
+	 * @param car
+	 */
+	void insert(EmailActiveEntity car);
 
-      void update(EmailActiveEntity car);
+	/**
+	 * 更新方法
+	 * 
+	 * @param car
+	 */
+	void update(EmailActiveEntity car);
 
-      void delete(String id);
+	/**
+	 * 根据id删除方法
+	 * 
+	 * @param id
+	 */
+	void delete(String id);
 
-      EmailActiveEntity getEmailActiveByUserId(String userId);
+	/**
+	 * 根据用户id获得数据
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	EmailActiveEntity getEmailActiveByUserId(String userId);
 }

@@ -9,51 +9,57 @@ import com.znck.entity.VipEntity;
 import com.znck.mapper.VipMapper;
 import com.znck.service.serviceimpl.VipService;
 
+/**
+ * vip激活放弃service
+ * 
+ * @author 肖舒翔 2019-02-27
+ * @version 1.0
+ */
 @Service
 public class VipServiceImpl implements VipService {
 
-    @Autowired
-    private VipMapper vipMapper;
+	@Autowired
+	private VipMapper vipMapper;
 
-    @Override
-    public List<VipEntity> getAll() {
-        // TODO Auto-generated method stub
-        return vipMapper.getAll();
-    }
+	@Override
+	public List<VipEntity> getAll() {
+		// TODO Auto-generated method stub
+		return vipMapper.getAll();
+	}
 
-    @Override
-    public VipEntity getOne(String id) {
-        // TODO Auto-generated method stub
-        return vipMapper.getOne(id);
-    }
+	@Override
+	public VipEntity getOne(String id) {
+		// TODO Auto-generated method stub
+		return vipMapper.getOne(id);
+	}
 
-    @Override
-    public void insert(VipEntity vip) {
-        // TODO Auto-generated method stub
-        vipMapper.insert(vip);
-    }
+	@Override
+	public void insert(VipEntity vip) {
+		// TODO Auto-generated method stub
+		vipMapper.insert(vip);
+	}
 
-    @Override
-    public void update(VipEntity vip) {
-        // TODO Auto-generated method stub
-        vipMapper.update(vip);
-    }
+	@Override
+	public void update(VipEntity vip) {
+		// TODO Auto-generated method stub
+		vipMapper.update(vip);
+	}
 
-    @Override
-    public void delete(String id) {
-        // TODO Auto-generated method stub
-        vipMapper.delete(id);
-    }
+	@Override
+	public void delete(String id) {
+		// TODO Auto-generated method stub
+		vipMapper.delete(id);
+	}
 
-    @Override
-    public VipEntity getVipByUserId(String userId) {
-        // TODO Auto-generated method stub
-         return vipMapper.getVipByUserId(userId);
-    }
+	@Override
+	public VipEntity getVipByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return vipMapper.getVipByUserId(userId);
+	}
 
-    @Override
-    public void deleteNowBiggerEndDate() {
-        // TODO Auto-generated method stub
-         vipMapper.deleteNowBiggerEndDate();
-    }
+	@Override
+	public void deleteNowBiggerEndDate() {
+		// TODO Auto-generated method stub
+		vipMapper.deleteNowBiggerEndDate();
+	}
 }

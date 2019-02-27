@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * 监听器方法
- * SessionFilter
+ * 监听器方法 SessionFilter
+ * 
  * @author 肖舒翔
  * @version 1.0
  *
@@ -23,69 +23,87 @@ import javax.servlet.http.HttpSession;
 @WebFilter(filterName = "sessionFilter")
 public class SessionFilter implements Filter {
 
-    static String NO_LOGIN = "您还未登陆";
+	static String NO_LOGIN = "您还未登陆";
 
-    String[] includerUrls = new String[] {"templates/index.html","js/publicFunction.js","js/jquery.js","landing","registPhone"};
+	String[] includerUrls = new String[] { "templates/index.html", "js/publicFunction.js", "js/jquery.js", "landing",
+			"registPhone", "adminLanding" };
 
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
 
-    }
+	}
 
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-        throws IOException, ServletException {
-        // TODO Auto-generated method stub
-        HttpServletRequest request = (HttpServletRequest) servletRequest;
-        HttpServletResponse response = (HttpServletResponse) servletResponse;
-        HttpSession session = request.getSession(false);
-        
-        String url = request.getRequestURI();
-        
-        boolean needFilter = isNeedFilter(url,request.getContextPath());
-        
-        String jumpUrl = "/znck/jumpToUrl";
-        String phoneString ="phone";
-        String urlString = "url";
-        if(url.equals(jumpUrl)){
-            if(phoneString.equals(request.getParameter(urlString))){
-                needFilter = false;
-            }
-        }
-        if(!needFilter){
-            filterChain.doFilter(servletRequest, servletResponse);
-        }else{
-            String userString = "user";
-            if(session!=null&&session.getAttribute(userString)!=null){
-                filterChain.doFilter(request, response);
-            }else{
-                String requestType = request.getHeader("X-Requested-With");
-                String xMLHttpRequestString = "XMLHttpRequest";
-                if(requestType != null && xMLHttpRequestString.equals(requestType)){
-                    response.getWriter().write(NO_LOGIN);
-                }else{
-                    response.sendRedirect(request.getContextPath()+"/templates/index.html");
-                }
-                return;
-            }
-        }
-    }
+	@Override
+	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
+			throws IOException, ServletException {
+		// TODO Auto-generated method stub
+		HttpServletRequest request = (HttpServletRequest) servletRequest;
+		HttpServletResponse response = (HttpServletResponse) servletResponse;
+		HttpSession session = request.getSession(false);
 
-    public boolean isNeedFilter(String url,String projectName) {
-        System.out.println(url);
-        if(url.split("/")[2].equals("public")){
-            return false;
-        }
-        for (String includerUrl : includerUrls) {
-            if ((projectName+"/"+includerUrl).equals(url)) {
-                return false;
-            }
-        }
-        return true;
-    }
+		String url = request.getRequestURI();
 
-    @Override
-    public void destroy() {
+		boolean needFilter = isNeedFilter(url, request.getContextPath());
 
-    }
+		String jumpUrl = "/znck/jumpToUrl";
+		String phoneString = "phone";
+		String urlString = "url";
+		if (url.equals(jumpUrl)) {
+			if (phoneString.equals(request.getParameter(urlString))) {
+				needFilter = false;
+			}
+		}
+		System.out.println("isNeedFilter:" + needFilter);
+		if (!needFilter) {
+			filterChain.doFilter(servletRequest, servletResponse);
+		} else {
+			String userString = "user";
+			String adminString = "admin";
+			if (session != null && session.getAttribute(userString) != null) {
+				System.out.println(111);
+				filterChain.doFilter(request, response);
+			} else if (session != null && session.getAttribute(adminString) != null) {
+				System.out.println(222);
+				filterChain.doFilter(request, response);
+			} else {
+				System.out.println(666);
+				String requestType = request.getHeader("X-Requested-With");
+				String xMLHttpRequestString = "XMLHttpRequest";
+				if (requestType != null && xMLHttpRequestString.equals(requestType)) {
+					response.getWriter().write(NO_LOGIN);
+				} else {
+					response.sendRedirect(request.getContextPath() + "/templates/index.html");
+				}
+				return;
+			}
+		}
+	}
+
+	public boolean isAdmin(String url) {
+		System.out.println(url);
+		return true;
+	}
+
+	public boolean isNeedFilter(String url, String projectName) {
+		String[] urls = url.split("/");
+		int sizeThree = 3;
+		if (urls.length >= sizeThree) {
+			String publicString = "public";
+			int sizeTwo = 2;
+			if (urls[sizeTwo].equals(publicString)) {
+				return false;
+			}
+		}
+		for (String includerUrl : includerUrls) {
+			if ((projectName + "/" + includerUrl).equals(url)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public void destroy() {
+
+	}
 }

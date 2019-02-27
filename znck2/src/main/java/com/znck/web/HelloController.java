@@ -27,6 +27,7 @@ import com.znck.service.AllparkingService;
 /**
  * 
  * HelloController
+ * 
  * @author 肖舒翔
  * @version 1.0
  *
@@ -34,176 +35,185 @@ import com.znck.service.AllparkingService;
 @Controller
 public class HelloController {
 
-    @Autowired
-    private AllService allService;
-    
-    @Autowired
-    private AllparkingService allparkingService;
-    
-    @RequestMapping("/changePassword")
-    @ResponseBody
-    public String changePassword(@RequestBody UserEntity data) {
-        return allService.changePassword(data);
-    }
-    
-    @RequestMapping("/changePhone")
-    @ResponseBody
-    public String changePhone(@RequestBody UserEntity data) {
-        return allService.changePhone(data);
-    }
-    
-    @RequestMapping("/changeEmail")
-    @ResponseBody
-    public String changeEmail(@RequestBody UserEntity data) {
-        return allService.changeEmail(data);
-    }
-    
-    @RequestMapping("/changeSensitiveMessage")
-    @ResponseBody
-    public String changeSensitiveMessage(@RequestBody UserEntity data) {
-        return allService.changeSensitiveMessage(data);
-    }
-    
-    @RequestMapping("/changeGeneralInfo")
-    @ResponseBody
-    public String changeGeneralInfo(@RequestBody UserEntity data) {
-        return allService.changeGeneralInfo(data);
-    }
-    
-    @RequestMapping("/addUserSensitiveInfo")
-    @ResponseBody
-    public String addUserSensitiveInfo(@RequestBody UserEntity data) {
-        System.out.println(666);
-        allService.addUserSensitiveInfo(data);
-        
-        return "true";
-    }    
-    
-    @RequestMapping("/sendVerificationCode")
-    @ResponseBody
-    public String sendVerificationCode(@RequestBody UserEntity data) throws ParseException {
-        allService.sendVerificationCode(data);
-        return "true";
-    }
-    
-    @RequestMapping("/activeVerificationCode")
-    @ResponseBody
-    public String activeVerificationCode(@RequestBody UserEntity data) throws ParseException {
-        allService.activeVerificationCode(data);
-        return "true";
-    }
-    
-    @RequestMapping("/registPhone")
-    @ResponseBody
-    public ContrastEntity registPhone(@RequestBody UserEntity data) {
-        return allService.regist(data);
-    }
+	@Autowired
+	private AllService allService;
 
-    @RequestMapping("/getUserByPhone")
-    @ResponseBody
-    public UserEntity getUserByPhone(@RequestBody UserEntity data) {
-        return allService.getUserByPhone(data);
-    }
+	@Autowired
+	private AllparkingService allparkingService;
 
-    @RequestMapping("/toBeVip")
-    @ResponseBody
-    public UserEntity toBeVip(@RequestBody UserEntity data) {
-        return allService.toBeVip(data);
-    }
+	@RequestMapping("/adminLanding")
+	@ResponseBody
+	public ContrastEntity adminLanding(@RequestBody UserEntity data, HttpServletRequest request) {
+		ContrastEntity contrast = allService.adminLanding(data);
+		String trueString = "true";
+		if (trueString.equals(contrast.getId())) {
+			request.getSession().setAttribute("admin", "true");
+		}
+		return allService.adminLanding(data);
+	}
 
-    @RequestMapping("/getCarByUserId")
-    @ResponseBody
-    public List<CarEntity> getCarByUserId(@RequestBody ContrastEntity data) {
-        return this.allService.getCardByUserId(data);
-    }
+	@RequestMapping("/changePassword")
+	@ResponseBody
+	public String changePassword(@RequestBody UserEntity data) {
+		return allService.changePassword(data);
+	}
 
-    @RequestMapping("/getCarById")
-    @ResponseBody
-    public CarEntity getCarById(@RequestBody CarEntity data) {
-        return allService.getCarById(data);
-    }
+	@RequestMapping("/changePhone")
+	@ResponseBody
+	public String changePhone(@RequestBody UserEntity data) {
+		return allService.changePhone(data);
+	}
 
-    @RequestMapping("/deleteCarById")
-    @ResponseBody
-    public boolean deleteCarById(@RequestBody CarEntity data) {
-        allService.deleteCarById(data);
-        return true;
-    }
+	@RequestMapping("/changeEmail")
+	@ResponseBody
+	public String changeEmail(@RequestBody UserEntity data) {
+		return allService.changeEmail(data);
+	}
 
-    @RequestMapping("/landing")
-    @ResponseBody
-    public UserEntity landing(@RequestBody UserEntity data,HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        UserEntity user = allService.landing(data);
-        if(user != null){
-            session.setAttribute("user", user);
-        }
-        return user;
-    }
+	@RequestMapping("/changeSensitiveMessage")
+	@ResponseBody
+	public String changeSensitiveMessage(@RequestBody UserEntity data) {
+		return allService.changeSensitiveMessage(data);
+	}
 
-    @RequestMapping("/saveNewCar")
-    @ResponseBody
-    public String saveNewCarByUserPhone(@RequestBody CarEntity data) {
-        this.allService.saveNewCarByUserPhone(data);
-        return "true";
-    }
+	@RequestMapping("/changeGeneralInfo")
+	@ResponseBody
+	public String changeGeneralInfo(@RequestBody UserEntity data) {
+		return allService.changeGeneralInfo(data);
+	}
 
-    @RequestMapping("/updateCarWithoutUserId")
-    @ResponseBody
-    public String updateCarWithoutUserId(@RequestBody CarEntity data) {
-        this.allService.updateCarWithoutUserId(data);
-        return "true";
-    }
+	@RequestMapping("/addUserSensitiveInfo")
+	@ResponseBody
+	public String addUserSensitiveInfo(@RequestBody UserEntity data) {
+		System.out.println(666);
+		allService.addUserSensitiveInfo(data);
 
-    @RequestMapping("/parkingStopCar")
-    @ResponseBody
-    public String parkingStopCar(@RequestBody UserEntity data) throws ParseException, InterruptedException {
-//        allService.saveCar(data);
-        allparkingService.saveCarByStatic(data);
-        return "true";
-    }
+		return "true";
+	}
 
-    @RequestMapping("/parkingGetCar")
-    @ResponseBody
-    public String parkingGetCar(@RequestBody UserEntity data) throws ParseException, InterruptedException {
-//        allService.parkingGetCar(data);
-        allparkingService.parkingGetCarByStatic(data);
-        return "true";
-    }
+	@RequestMapping("/sendVerificationCode")
+	@ResponseBody
+	public String sendVerificationCode(@RequestBody UserEntity data) throws ParseException {
+		allService.sendVerificationCode(data);
+		return "true";
+	}
 
-    @RequestMapping("/jumpToUrl")
-    public String jumpToHello(Model model,
-        @RequestParam(value = "name", required = false, defaultValue = "World") String name,
-        HttpServletRequest request) {
-        Map<String, String> nameValue = parseFrom(request);
-        for (Entry<String, String> m : nameValue.entrySet()) {
-            model.addAttribute(m.getKey(), m.getValue());
-        }
-        return request.getParameter("url");
-    }
+	@RequestMapping("/activeVerificationCode")
+	@ResponseBody
+	public String activeVerificationCode(@RequestBody UserEntity data) throws ParseException {
+		allService.activeVerificationCode(data);
+		return "true";
+	}
 
-    @RequestMapping("/sendEmailForActive")
-    @ResponseBody
-    public ContrastEntity sendEmailForActive(@RequestBody UserEntity data) {
-        return allService.sendEmailForActive(data);
-    }
-    
-    @RequestMapping("/activeEmail")
-    public String activeEmail(Model model,
-        @RequestParam(value = "name", required = false, defaultValue = "World") String name,
-        HttpServletRequest request) {
-        allService.activeEmail(request.getParameter("code"), request.getParameter("email"));
-        return "index";
-    }
-    
-    public static Map<String, String> parseFrom(HttpServletRequest request) {
-        Map<String, String> parameters = new HashMap<>(200);
-        Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            String parameterName = parameterNames.nextElement();
-            parameters.put(parameterName, request.getParameter(parameterName));
-        }
-        return parameters;
-    }
+	@RequestMapping("/registPhone")
+	@ResponseBody
+	public ContrastEntity registPhone(@RequestBody UserEntity data) {
+		return allService.regist(data);
+	}
+
+	@RequestMapping("/getUserByPhone")
+	@ResponseBody
+	public UserEntity getUserByPhone(@RequestBody UserEntity data) {
+		return allService.getUserByPhone(data);
+	}
+
+	@RequestMapping("/toBeVip")
+	@ResponseBody
+	public UserEntity toBeVip(@RequestBody UserEntity data) {
+		return allService.toBeVip(data);
+	}
+
+	@RequestMapping("/getCarByUserId")
+	@ResponseBody
+	public List<CarEntity> getCarByUserId(@RequestBody ContrastEntity data) {
+		return this.allService.getCardByUserId(data);
+	}
+
+	@RequestMapping("/getCarById")
+	@ResponseBody
+	public CarEntity getCarById(@RequestBody CarEntity data) {
+		return allService.getCarById(data);
+	}
+
+	@RequestMapping("/deleteCarById")
+	@ResponseBody
+	public boolean deleteCarById(@RequestBody CarEntity data) {
+		allService.deleteCarById(data);
+		return true;
+	}
+
+	@RequestMapping("/landing")
+	@ResponseBody
+	public UserEntity landing(@RequestBody UserEntity data, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		UserEntity user = allService.landing(data);
+		if (user != null) {
+			session.setAttribute("user", user);
+		}
+		return user;
+	}
+
+	@RequestMapping("/saveNewCar")
+	@ResponseBody
+	public String saveNewCarByUserPhone(@RequestBody CarEntity data) {
+		this.allService.saveNewCarByUserPhone(data);
+		return "true";
+	}
+
+	@RequestMapping("/updateCarWithoutUserId")
+	@ResponseBody
+	public String updateCarWithoutUserId(@RequestBody CarEntity data) {
+		this.allService.updateCarWithoutUserId(data);
+		return "true";
+	}
+
+	@RequestMapping("/parkingStopCar")
+	@ResponseBody
+	public String parkingStopCar(@RequestBody UserEntity data) throws ParseException, InterruptedException {
+		allparkingService.saveCarByStatic(data);
+		return "true";
+	}
+
+	@RequestMapping("/parkingGetCar")
+	@ResponseBody
+	public String parkingGetCar(@RequestBody UserEntity data) throws ParseException, InterruptedException {
+		allparkingService.parkingGetCarByStatic(data);
+		return "true";
+	}
+
+	@RequestMapping("/jumpToUrl")
+	public String jumpToHello(Model model,
+			@RequestParam(value = "name", required = false, defaultValue = "World") String name,
+			HttpServletRequest request) {
+		Map<String, String> nameValue = parseFrom(request);
+		for (Entry<String, String> m : nameValue.entrySet()) {
+			model.addAttribute(m.getKey(), m.getValue());
+		}
+		return request.getParameter("url");
+	}
+
+	@RequestMapping("/sendEmailForActive")
+	@ResponseBody
+	public ContrastEntity sendEmailForActive(@RequestBody UserEntity data) {
+		return allService.sendEmailForActive(data);
+	}
+
+	@RequestMapping("/activeEmail")
+	public String activeEmail(Model model,
+			@RequestParam(value = "name", required = false, defaultValue = "World") String name,
+			HttpServletRequest request) {
+		allService.activeEmail(request.getParameter("code"), request.getParameter("email"));
+		return "index";
+	}
+
+	public static Map<String, String> parseFrom(HttpServletRequest request) {
+		Map<String, String> parameters = new HashMap<>(200);
+		Enumeration<String> parameterNames = request.getParameterNames();
+		while (parameterNames.hasMoreElements()) {
+			String parameterName = parameterNames.nextElement();
+			parameters.put(parameterName, request.getParameter(parameterName));
+		}
+		return parameters;
+	}
 
 }

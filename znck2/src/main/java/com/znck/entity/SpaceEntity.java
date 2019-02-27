@@ -23,11 +23,11 @@ public class SpaceEntity {
         return weight;
     }
 
-    public void setWeight(int max_x, int max_y, int max_z) {
-        int weight_x = 1;
-        int weight_y = weight_x * max_x;
-        int weight_z = weight_y * max_y + weight_y;
-        this.weight = weight_x * (22-x) + weight_y * y + weight_z * z;
+    public void setWeight(int maxX, int maxY, int maxZ) {
+        int weightX = 1;
+        int weightY = weightX * maxX;
+        int weightZ = weightY * maxY + weightY;
+        this.weight = weightX * (22-x) + weightY * y + weightZ * z;
     }
 
     public SpaceEntity() {

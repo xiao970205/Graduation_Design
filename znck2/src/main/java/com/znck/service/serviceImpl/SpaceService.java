@@ -13,57 +13,65 @@ import com.znck.entity.SpaceEntity;
  *
  */
 public interface SpaceService {
-    
-    /**
-     * 通过真实名称查找方法
-     * @param cRk
-     * @return
-     */
-    public SpaceEntity getCrk(String cRk);
 
-    /**
-     * 通过坐标查找方法
-     * @param x
-     * @param y
-     * @param z
-     * @return
-     */
-    public SpaceEntity getSpaceByXYZ(int x, int y, int z);
+	/**
+	 * 通过真实名称查找方法
+	 * 
+	 * @param cRk
+	 * @return
+	 */
+	public SpaceEntity getCrk(String cRk);
 
-    /**
-     * 获得所有方法
-     * @return
-     */
-    public List<SpaceEntity> getAll();
+	/**
+	 * 通过坐标查找方法
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @return
+	 */
+	public SpaceEntity getSpaceByXYZ(int x, int y, int z);
 
-    /**
-     * 获得可以停的地方的方法
-     * @return
-     */
-    public List<SpaceEntity> getSaveSpace();
+	/**
+	 * 获得所有方法
+	 * 
+	 * @return
+	 */
+	public List<SpaceEntity> getAll();
 
-    /**
-     * 通过id获得方法
-     * @param id
-     * @return
-     */
-    public SpaceEntity getOne(String id);
+	/**
+	 * 获得可以停的地方的方法
+	 * 
+	 * @return
+	 */
+	public List<SpaceEntity> getSaveSpace();
 
-    /**
-     * 插入方法
-     * @param user
-     */
-    public void insert(SpaceEntity user);
+	/**
+	 * 通过id获得方法
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public SpaceEntity getOne(String id);
 
-    /**
-     * 更新方法
-     * @param user
-     */
-    public void update(SpaceEntity user);
+	/**
+	 * 插入方法
+	 * 
+	 * @param user
+	 */
+	public void insert(SpaceEntity user);
 
-    /**
-     * 删除方法
-     * @param id
-     */
-    public void delete(String id);
+	/**
+	 * 更新方法
+	 * 
+	 * @param user
+	 */
+	public void update(SpaceEntity user);
+
+	/**
+	 * 删除方法
+	 * 
+	 * @param id
+	 */
+	public void delete(String id);
 }

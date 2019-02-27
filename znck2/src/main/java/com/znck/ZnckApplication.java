@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 /**
  * 
  * ZnckApplication
+ * 
  * @author 肖舒翔
  * @version 1.0
  *
@@ -21,7 +22,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching
 public class ZnckApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(ZnckApplication.class, args);
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(ZnckApplication.class, args);
+	}
 }

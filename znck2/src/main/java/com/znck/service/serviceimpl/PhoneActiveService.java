@@ -4,20 +4,70 @@ import java.util.List;
 
 import com.znck.entity.PhoneActiveEntity;
 
+/**
+ * 手机激活service接口
+ * 
+ * @author 肖舒翔 2019-02-27
+ * @version 1.0
+ */
 public interface PhoneActiveService {
-    public List<PhoneActiveEntity> getAll();
 
-    public PhoneActiveEntity getOne(String id);
+	/**
+	 * 获得所有数据
+	 * 
+	 * @return
+	 */
+	public List<PhoneActiveEntity> getAll();
 
-    public void insert(PhoneActiveEntity car);
+	/**
+	 * 根据主键获得数据
+	 * 
+	 * @param id
+	 * @return
+	 */
+	public PhoneActiveEntity getOne(String id);
 
-    public void update(PhoneActiveEntity car);
+	/**
+	 * 插入一条数据
+	 * 
+	 * @param car
+	 */
+	public void insert(PhoneActiveEntity car);
 
-    public void delete(String id);
+	/**
+	 * 根据主键更新数据
+	 * 
+	 * @param car
+	 */
+	public void update(PhoneActiveEntity car);
 
-    public PhoneActiveEntity getPhoneActiveByUserId(String userId);
-    
-    public List<PhoneActiveEntity> getPhoneActiveByUserPhone(String phone);
-    
-    public void deleteByUserId(String userId);
+	/**
+	 * 根据主键删除数据
+	 * 
+	 * @param id
+	 */
+	public void delete(String id);
+
+	/**
+	 * 根据用户主键获得数据
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	public PhoneActiveEntity getPhoneActiveByUserId(String userId);
+
+	/**
+	 * 根据用户主键获得多条数据
+	 * 
+	 * @param phone
+	 * @return
+	 */
+	public List<PhoneActiveEntity> getPhoneActiveByUserPhone(String phone);
+
+	/**
+	 * 根据用户主键删除数据
+	 * 
+	 * @param userId
+	 */
+	public void deleteByUserId(String userId);
 }
