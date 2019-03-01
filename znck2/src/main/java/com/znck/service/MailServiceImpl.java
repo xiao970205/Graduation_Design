@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  */
 @Service
+@Component
 public class MailServiceImpl {
 
 	private static final Logger logger = LoggerFactory.getLogger(MailServiceImpl.class);
@@ -26,68 +29,24 @@ public class MailServiceImpl {
 	public void setJavaMailSender(JavaMailSender javaMailSender) {
 		this.mailSender = javaMailSender;
 	}
-
-	/**
-	 * 发送邮件方法，新线程
-	 * 
-	 * @param from
-	 * @param to
-	 * @param title
-	 * @param text
-	 */
-	public void sendSimpleMail(String from, String to, String title, String text) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					SimpleMailMessage mailMessage = new SimpleMailMessage();
-					mailMessage.setFrom(from);
-					// 发送人
-					mailMessage.setTo(to);
-					// 接收人
-					mailMessage.setSubject(title);
-					// 标题
-					mailMessage.setText(text);
-					// 内容
-
-					mailSender.send(mailMessage);
-				} catch (Exception e) {
-					logger.error("发送邮件失败");
-				}
-				logger.info("发送邮件完毕");
-			}
-		}).start();
-	}
-
-	/**
-	 * 发送html邮件方法
-	 * 
-	 * @param from
-	 * @param to
-	 * @param title
-	 * @param text
-	 */
-	public void sendHtmlMail(String from, String to, String title, String text) {
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					MimeMessage message = mailSender.createMimeMessage();
-					MimeMessageHelper helper = new MimeMessageHelper(message, true);
-					helper.setFrom(from);
-					// 发送人
-					helper.setTo(to);
-					// 接收人
-					helper.setSubject(title);
-					// 标题
-					helper.setText(text, true);
-					// 内容
-					mailSender.send(message);
-				} catch (Exception e) {
-					logger.error("发送邮件失败");
-				}
-				logger.info("发送邮件完毕");
-			}
-		}).start();
+	
+	@Async("testExecutorPool")
+	public void sendHtmlMailByThread(String from, String to, String title, String text) {
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			helper.setFrom(from);
+			// 发送人
+			helper.setTo(to);
+			// 接收人
+			helper.setSubject(title);
+			// 标题
+			helper.setText(text, true);
+			// 内容
+			mailSender.send(message);
+		} catch (Exception e) {
+			logger.error("发送邮件失败");
+		}
+		logger.info("发送邮件完毕");
 	}
 }

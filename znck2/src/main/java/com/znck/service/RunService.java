@@ -1,9 +1,7 @@
 package com.znck.service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.znck.entity.ContrastEntity;
 import com.znck.entity.ParkingEntity;
 import com.znck.entity.ParkingSaveEntity;
+import com.znck.entity.PublicMethods;
 import com.znck.entity.SpaceEntity;
 
 /**
@@ -86,7 +85,7 @@ public class RunService {
 
 		// 获得入口id
 		SpaceEntity inSpaceId = spaceService.getCrk(this.getRk().getRealName());
-		Date inTime = getDate();
+		Date inTime = PublicMethods.getDate();
 
 		String nature = this.getcCc().getId();
 
@@ -97,7 +96,7 @@ public class RunService {
 		// 锁定空间
 		spaceService.update(fetureSpace);
 
-		parking.setId(getId());
+		parking.setId(PublicMethods.getId());
 		parking.setCarId(carId);
 		parking.setNowSpaceId(inSpaceId.getId());
 		parking.setFetureSpaceId(fetureSpaceId);
@@ -117,14 +116,6 @@ public class RunService {
 		parkingService.insert(parking);
 	}
 
-	public Date getDate() throws ParseException {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS");
-		Date date = new Date();
-		String dateStr = format.format(date);
-		Date date2 = format.parse(dateStr);
-		return date2;
-	}
-
 	/**
 	 * 分两种情况 正常取车 用户强制取车
 	 * 
@@ -141,7 +132,7 @@ public class RunService {
 
 		Date outTime = parking.getOutTime();
 		if (outTime == null) {
-			outTime = getDate();
+			outTime = PublicMethods.getDate();
 		}
 		parking.setOutTime(outTime);
 		parking.setFetureSpaceId(fetureSpaceId);
@@ -154,16 +145,6 @@ public class RunService {
 		parkingSave.setOutTime(parking.getOutTime());
 		parkingSaveService.update(parkingSave);
 		return parking;
-	}
-
-	/**
-	 * 获得自生成id
-	 * 
-	 * @return
-	 */
-	public String getId() {
-		UUID uuid = UUID.randomUUID();
-		return uuid.toString().replace("-", "");
 	}
 
 	public ContrastEntity getCkZy() {

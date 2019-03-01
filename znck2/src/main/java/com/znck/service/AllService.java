@@ -1,12 +1,9 @@
 package com.znck.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +16,7 @@ import com.znck.entity.ContrastEntity;
 import com.znck.entity.EmailActiveEntity;
 import com.znck.entity.ParkingEntity;
 import com.znck.entity.PhoneActiveEntity;
+import com.znck.entity.PublicMethods;
 import com.znck.entity.UserEntity;
 import com.znck.entity.VipEntity;
 import com.znck.enums.InitDataListener;
@@ -67,14 +65,6 @@ public class AllService {
 		return contrastEntity;
 	}
 
-	public Date getDate() throws ParseException {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS");
-		Date date = new Date();
-		String dateStr = format.format(date);
-		Date date2 = format.parse(dateStr);
-		return date2;
-	}
-
 	public ContrastEntity regist(UserEntity data) {
 		String phone = data.getPhone();
 		ContrastEntity contrast = new ContrastEntity();
@@ -84,7 +74,7 @@ public class AllService {
 		} else {
 			// 未注册
 			UserEntity user = new UserEntity();
-			user.setId(getId());
+			user.setId(PublicMethods.getId());
 			user.setNickName("新用户" + phone);
 			user.setPassword("123456");
 			user.setPhone(phone);
@@ -94,7 +84,7 @@ public class AllService {
 			userServiceImpl.insert(user);
 			user = userServiceImpl.getUserByPhone(phone);
 			contrast.setId("true");
-			EmailActiveEntity emailActiveEntity = new EmailActiveEntity(getId(), user.getId());
+			EmailActiveEntity emailActiveEntity = new EmailActiveEntity(PublicMethods.getId(), user.getId());
 			emailActiveServiceImpl.insert(emailActiveEntity);
 		}
 		return contrast;
@@ -135,11 +125,6 @@ public class AllService {
 		return "true";
 	}
 
-	public static String getId() {
-		UUID uuid = UUID.randomUUID();
-		return uuid.toString().replace("-", "");
-	}
-
 	public List<CarEntity> getCardByUserId(ContrastEntity data) {
 		List<CarEntity> allCarByUserIdWithOutNature = carServiceImpl.getCarsHaveNatureByUserId(data.getId());
 		List<CarEntity> allCarByUserId = new ArrayList<CarEntity>();
@@ -170,7 +155,7 @@ public class AllService {
 
 	public void saveNewCarByUserPhone(CarEntity carEntity) {
 		carEntity.setUserId(userServiceImpl.getUserByPhone(carEntity.getId()).getId());
-		carEntity.setId(getId());
+		carEntity.setId(PublicMethods.getId());
 		carServiceImpl.insert(carEntity);
 	}
 
@@ -190,7 +175,7 @@ public class AllService {
 			Date date = new Date();
 			cal.setTime(date);
 			cal.add(Calendar.MONTH, 1);
-			vip = new VipEntity(getId(), user.getId(), cal.getTime());
+			vip = new VipEntity(PublicMethods.getId(), user.getId(), cal.getTime());
 			vipActiveServiceImpl.insert(vip);
 		} else {
 			Date date = vip.getEndDate();
@@ -222,7 +207,7 @@ public class AllService {
 		EmailActiveEntity emailActiveEntity = emailActiveServiceImpl.getEmailActiveByUserId(user.getId());
 		String info = "<html><head></head><body><h1>这是一封激活邮件,激活请点击以下链接</h1><h3><a href='http://localhost:8080/znck/activeEmail?code="
 				+ emailActiveEntity.getId() + "&email=" + userEmail + "'>点击激活</href></h3></body></html>";
-		mailServiceImpl.sendHtmlMail("1037426886@qq.com", userEmail, "智能车库邮件激活", info);
+		mailServiceImpl.sendHtmlMailByThread("1037426886@qq.com", userEmail, "智能车库邮件激活", info);
 		return contrast;
 	}
 
@@ -240,7 +225,7 @@ public class AllService {
 		String phone = user.getPhone();
 		int code = (int) ((Math.random() * 9 + 1) * 1000);
 		user = userServiceImpl.getUserByPhone(phone);
-		PhoneActiveEntity phoneActive = new PhoneActiveEntity(getId(), user.getId(), code + "");
+		PhoneActiveEntity phoneActive = new PhoneActiveEntity(PublicMethods.getId(), user.getId(), code + "");
 		phoneActiveServiceImpl.insert(phoneActive);
 		// 需要发送验证码接口
 	}
