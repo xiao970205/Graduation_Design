@@ -1,0 +1,75 @@
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+    <script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" th:src="@{/js/publicFunction.js}"></script>
+    <script type="text/javascript" src="../js/publicFunction.js"></script>
+  </head>
+  <body>
+    <input type = "hidden" th:value = "${phone}" id = "phone"/>
+    <input type = "hidden" th:value = "${carId}" id = "carId" />
+            车牌号<input type = "text" id = "carCard"/><br>
+            汽车名<input type = "text" id = "carName"/><br>
+            车辆信息<input type = "text" id = "carInfo"/><br>
+    
+    <input type = "button" value="确认" id = "qr"/>
+  </body>
+  <script type="text/javascript">
+    $(function() {
+        var carId = $("#carId").val();
+        if(carId == "null"){
+            //alert("添加车辆");
+            return ;
+        }
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:getUrl()+'/getCarById',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify({"id":carId}),
+            success:function(data){
+                $("#carCard").val(data.carCard);
+                $("#carName").val(data.carName);
+                $("#carInfo").val(data.carInfo);
+            }
+        });
+    });
+    
+    $("#qr").click(function() {
+        var carCard = $("#carCard").val();
+        var carName = $("#carName").val();
+        var carInfo = $("#carInfo").val();
+        var phone = $("#phone").val();
+        var url = getUrl();
+        var data = null;
+        var carId = $("#carId").val();
+        var message = null;
+        if(carId == "null"){
+            //添加车辆
+            url = url + 'saveNewCar';
+            data = JSON.stringify({"id":phone,"carCard":carCard,"carInfo":carInfo,"carName":carName});
+            message = "添加成功!";
+        }else{
+            //修改车辆
+            url = url + 'updateCarWithoutUserId';
+            data = JSON.stringify({"id":carId,"carCard":carCard,"carInfo":carInfo,"carName":carName});
+            message = "修改成功!";
+        }
+        
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:url,
+            contentType:'application/json;charset=UTF-8',
+            data:data,
+            success:function(data){
+                alert(message);
+                window.location.href=getProjectName()+"/"+"jumpToUrl?phone="+phone+"&url=hello";
+            }
+        });
+    })
+  </script>
+</html>

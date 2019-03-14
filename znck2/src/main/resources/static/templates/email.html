@@ -1,0 +1,35 @@
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/js/publicFunction.js}"></script>
+</head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	邮箱：
+	<input type="text" id="email" />
+	<br>
+	<input>
+	<input type = "button" value="确认" id = "qr"/>
+</body>
+<script type="text/javascript">
+	$(function() {
+		var userData = null;
+        $.ajax({
+                async:false,
+                type:'POST',
+                dataType:'json',
+                url:getUrl()+'getUserByPhone',
+                contentType:'application/json;charset=UTF-8',
+                data:JSON.stringify({"phone":phone}),
+                success:function(data){
+                    userData = data;
+                }
+            });
+
+	});
+	
+</script>
+</html>

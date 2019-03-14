@@ -53,7 +53,9 @@ public class SessionFilter implements Filter {
 				needFilter = false;
 			}
 		}
-		System.out.println("isNeedFilter:" + needFilter);
+		//测试阶段，直接通过
+		needFilter = false;
+		
 		if (!needFilter) {
 			filterChain.doFilter(servletRequest, servletResponse);
 		} else {

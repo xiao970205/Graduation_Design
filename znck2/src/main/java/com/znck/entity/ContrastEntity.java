@@ -11,10 +11,6 @@ public class ContrastEntity {
     private static final long serialVersionUID = 1L;
     private String id;
     private String realName;
-
-    public void encrypt(String password){
-        
-    }
     
     public ContrastEntity() {
         super();

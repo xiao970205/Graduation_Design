@@ -1,0 +1,259 @@
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{/js/publicFunction.js}"></script>
+  </head>
+  <body>
+    <input type = "hidden" th:value = "${phone}" id = "phone"/>
+    <input type = "hidden" th:value = "${changeLevel}" id = "changeLevel"/>
+    <input type = "hidden" id = "userId" value = "222"/>
+    <div id = "showUserPhone" >
+                        电话：                 <input type = "text" id = "userphone" oninput="value=value.replace(/[^\d]/g,'')"/><br>
+    </div>
+    <div id = "showNickName">
+                        用户名:        <input type = "text" id = "nickName"/><br>
+    </div>
+    <div id = "showRealName">
+                         真实姓名：<input type = "text" id = "realName"/><br>
+    </div>
+    <div id = "showPassword">
+                          密码：<input type = "text" id = "password"/><br>
+    </div>
+    <div id = "showEmail">
+                          邮箱：<input type = "text" id = "email"/><br>
+    </div>
+    <div id = "showidcard">
+                          身份证号码：<input type = "text" id = "idCard" oninput="value=value.replace(/[^\d]/g,'')"/><br>
+    </div>
+    <div id = "showVerificationCode">
+                            验证码：<input type = "text" id = "verificationCode"/><br>
+    </div>
+    <div id = "showGetVerificationCode">
+         <input type = "button" id = "getVerificationCode" value = "获得验证码"/><br>
+    </div>
+    <input type = "button" value="确认" id = "qr"/>
+  </body>
+  <script type="text/javascript">
+    $(function() {
+        var phone = $("#phone").val();
+        $("#userphone").val(phone);
+        var userData = null;
+        $.ajax({
+                async:false,
+                type:'POST',
+                dataType:'json',
+                url:getUrl()+'getUserByPhone',
+                contentType:'application/json;charset=UTF-8',
+                data:JSON.stringify({"phone":phone}),
+                success:function(data){
+                    userData = data;
+                }
+            });
+    
+        if($("#changeLevel").val() == "activeEmail"){
+            $("#showUserPhone").hide();
+            $("#showNickName").hide();
+            $("#showRealName").hide();
+            $("#showPassword").hide();
+            $("#showidcard").hide();
+            $("#showVerificationCode").hide();
+            $("#showGetVerificationCode").hide();
+            return ;
+        }else if($("#changeLevel").val() == "activePhone"){
+            $("#showNickName").hide();
+            $("#showRealName").hide();
+            $("#showPassword").hide();
+            $("#showidcard").hide();
+            $("#showEmail").hide();
+            $('#qr').attr('disabled',true);
+            $('#userphone').attr('disabled',true);
+            return ;
+        }else if($("#changeLevel").val() == "completionPersonInfo"){
+            $("#showUserPhone").hide();
+            $("#showNickName").hide();
+            $("#showPassword").hide();
+            $("#showEmail").hide();
+            $("#showVerificationCode").hide();
+            $("#showGetVerificationCode").hide();
+        }else if($("#changeLevel").val() == "changeGeneralInfo"){
+            $("#showUserPhone").hide();
+            $("#showPassword").hide();
+            $("#showEmail").hide();
+            $("#showRealName").hide();
+            $("#showidcard").hide();
+            $("#showVerificationCode").hide();
+            $("#showGetVerificationCode").hide();
+        }else if($("#changeLevel").val() == "changePhone"){
+            $("#showPassword").hide();
+            $("#showEmail").hide();
+            $("#showRealName").hide();
+            $("#showidcard").hide();
+            $("#showVerificationCode").hide();
+            $("#showGetVerificationCode").hide();
+            $("#showNickName").hide();
+        }else if($("#changeLevel").val() == "changeEmail"){
+            $("#showUserPhone").hide();
+            $("#showPassword").hide();
+            $("#showRealName").hide();
+            $("#showidcard").hide();
+            $("#showVerificationCode").hide();
+            $("#showGetVerificationCode").hide();
+            $("#showNickName").hide();
+        }else if($("#changeLevel").val() == "changeSensitiveMessage"){
+            $("#showUserPhone").hide();
+            $("#showPassword").hide();
+            $("#showEmail").hide();
+            $("#showVerificationCode").hide();
+            $("#showGetVerificationCode").hide();
+            $("#showNickName").hide();
+        }else if($("#changeLevel").val() == "changePassword"){
+            $("#showUserPhone").hide();
+            $("#showEmail").hide();
+            $("#showRealName").hide();
+            $("#showidcard").hide();
+            $("#showVerificationCode").hide();
+            $("#showGetVerificationCode").hide();
+            $("#showNickName").hide();
+        }else{
+            $("#showUserPhone").hide();
+            $("#showPassword").hide();
+            $("#showEmail").hide();
+            $("#showRealName").hide();
+            $("#showidcard").hide();
+            $("#showVerificationCode").hide();
+            $("#showGetVerificationCode").hide();
+            $("#showNickName").hide();
+        }
+
+         $("#userId").val(userData.id);
+         $("#nickName").val(userData.nickName);
+         $("#realName").val(userData.realName);
+         $("#email").val(userData.email);
+         $("#idCard").val(userData.idCard);
+    });
+    $("#qr").click(function() {
+        var phone = $("#userphone").val();
+        var nickName = $("#nickName").val();
+        var realName = $("#realName").val();
+        var password = $("#password").val();
+        var email = $("#email").val();
+        var idcard = $("#idcard").val();
+        var userid = $("#userId").val();
+        var jsonInfo = null;
+        var urlForServer = null;
+        var urlForJump = null;
+        if($("#changeLevel").val() == "activeEmail"){
+            jsonInfo = {phone:$("#phone").val(),email:email};
+            urlForServer = getUrl() + "sendEmailForActive";
+            urlForJump = getProjectName()+"/"+"jumpToUrl?url=index&name=null";
+        }else if($("#changeLevel").val() == "activePhone"){
+            jsonInfo = {phone:$("#phone").val(),id:$("#verificationCode").val()};
+            urlForServer = getUrl() + "activeVerificationCode";
+            urlForJump = getProjectName()+"/"+"jumpToUrl?phone="+$("#phone").val()+"&url=hello";
+        }else if($("#changeLevel").val() == "completionPersonInfo"){
+            if(realName.search(' ')>-1){
+                alert("真实姓名不能含有空格！");
+                return;
+            };
+            if(isNullOrUndefined(realName)){
+                alert("真实姓名不能为空");
+                return;
+            }
+            if(IdentityCodeValid(idcard)==false){
+                return;
+            }
+            jsonInfo = {phone:$("#phone").val(),realName:realName,idCard:idcard};
+            urlForServer = getUrl() + "addUserSensitiveInfo";
+            urlForJump = getProjectName() + "/" + "jumpToUrl?phone="+$("#phone").val()+"&url=hello";
+        }else if($("#changeLevel").val() == "changeGeneralInfo"){
+            if(nickName.search(' ')>-1){
+                alert("用户名不能含有空格！");
+                return;
+            };
+            if(isNullOrUndefined(nickName)){
+                alert("用户名不能为空");
+                return;
+            }
+            jsonInfo = {phone:$("#phone").val(),nickName:nickName};
+            urlForServer = getUrl() + "changeGeneralInfo";
+            urlForJump = getProjectName() + "/" + "jumpToUrl?phone="+$("#phone").val()+"&url=hello";
+        }else if($("#changeLevel").val() == "changePhone"){
+            var oldPhone = $("#phone").val();
+            if(isNullOrUndefined(phone)){
+                alert("电话不能为空");
+                return;
+            }
+            jsonInfo = {id:oldPhone,phone:phone};
+            urlForServer = getUrl() + "changePhone";
+            urlForJump = getProjectName() + "/" + "jumpToUrl?url=index&name=null";
+        }else if($("#changeLevel").val() == "changeEmail"){
+            if(isNullOrUndefined(email)){
+                alert("邮箱不能为空");
+                return;
+            }
+            jsonInfo = {id:oldPhone,phone:phone};
+            urlForServer = getUrl() + "changeEmail";
+            urlForJump = getProjectName() + "/" + "jumpToUrl?phone="+$("#phone").val()+"&url=hello";
+        }else if($("#changeLevel").val() == "changeSensitiveMessage"){
+            if(realName.search(' ')>-1){
+                alert("真实姓名不能含有空格！");
+                return;
+            };
+            if(isNullOrUndefined(realName)){
+                alert("真实姓名不能为空");
+                return;
+            }
+            if(IdentityCodeValid(idcard)==false){
+                return;
+            }
+            jsonInfo = {phone:$("#phone").val(),realName:realName,idCard:idcard};
+            urlForServer = getUrl() + "changeSensitiveMessage";
+            urlForJump = getProjectName() + "/" + "jumpToUrl?phone="+$("#phone").val()+"&url=hello";
+        }else if($("#changeLevel").val() == "changePassword"){
+            if(password.search(' ')>-1){
+                alert("密码不能含有空格！");
+                return;
+            };
+            if(isNullOrUndefined(password)){
+                alert("密码不能为空");
+                return;
+            }
+            jsonInfo = {phone:$("#phone").val(),password:password};
+            urlForServer = getUrl() + "changePassword";
+            urlForJump = getProjectName() + "/" + "jumpToUrl?url=index&name=null";
+        }else{
+            return;
+        }
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:urlForServer,
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify(jsonInfo),
+            success:function(data){
+                window.location.href=urlForJump;
+            }
+        });
+    })
+    
+    $("#getVerificationCode").click(function() {
+        var jsonInfo = {phone:$("#userphone").val()};
+        urlForServer = getUrl() + "sendVerificationCode";
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:urlForServer,
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify(jsonInfo),
+            success:function(data){
+                alert("发送成功！");
+                $('#qr').attr('disabled',false);
+                $('#getVerificationCode').attr('disabled',true);
+            }
+        });
+    })
+  </script>
+</html>

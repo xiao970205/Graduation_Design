@@ -113,7 +113,8 @@ public class HelloController {
 
 	@RequestMapping("/getUserByPhone")
 	@ResponseBody
-	public UserEntity getUserByPhone(@RequestBody UserEntity data) {
+	public UserEntity getUserByPhone(@RequestBody UserEntity data,HttpServletRequest request) {
+		System.out.println(request.getSession().getAttribute("user"));
 		return allService.getUserByPhone(data);
 	}
 
