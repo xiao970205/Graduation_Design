@@ -1,10 +1,8 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8">
-    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
-    <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript" th:src="@{/js/publicFunction.js}"></script>
-    <script type="text/javascript" src="../js/publicFunction.js"></script>
+    <script type="text/javascript" th:src="@{templates/user/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{templates/user/js/publicFunction.js}"></script>
   </head>
   <body>
   <form action=""></form>
@@ -21,7 +19,7 @@
     $("#zc").click(function() {
         var pathName=window.document.location.pathname;
         var projectName=pathName.substring(0,pathName.substr(1).indexOf('/')+1);
-        window.location.href=getProjectName()+"/"+"jumpToUrl?url=phone";
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/phone";
     })
   
     $("#dl").click(function() {
@@ -47,7 +45,7 @@
                 contentType:'application/json;charset=UTF-8',
                 data:JSON.stringify({"phone":userName,"password":password}),
                 success:function(data){
-                    window.location.href=getProjectName()+"/"+"jumpToUrl?phone="+data["phone"]+"&url=hello";
+                    window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/hello";
                 },
                 error: function(){
                     alert("登陆失败！请检查用户名或密码");

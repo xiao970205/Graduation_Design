@@ -113,9 +113,8 @@ public class HelloController {
 
 	@RequestMapping("/getUserByPhone")
 	@ResponseBody
-	public UserEntity getUserByPhone(@RequestBody UserEntity data,HttpServletRequest request) {
-		System.out.println(request.getSession().getAttribute("user"));
-		return allService.getUserByPhone(data);
+	public UserEntity getUserByPhone(HttpServletRequest request) {
+		return allService.getUserByPhone(((UserEntity)request.getSession().getAttribute("user")).getPhone());
 	}
 
 	@RequestMapping("/toBeVip")
@@ -180,6 +179,11 @@ public class HelloController {
 	public String parkingGetCar(@RequestBody UserEntity data) throws ParseException, InterruptedException {
 		allparkingService.parkingGetCarByStatic(data);
 		return "true";
+	}
+
+	@RequestMapping("index")
+	public String userIndex(Model mode, HttpServletRequest request) {
+		return "user/index";
 	}
 
 	@RequestMapping("/jumpToUrl")

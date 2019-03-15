@@ -68,9 +68,10 @@ public class AllService {
 	public ContrastEntity regist(UserEntity data) {
 		String phone = data.getPhone();
 		ContrastEntity contrast = new ContrastEntity();
+		System.out.println(phone);
 		if (userServiceImpl.getUserByPhone(phone) != null) {
 			// 已注册
-			contrast.setId("false");
+			contrast=null;
 		} else {
 			// 未注册
 			UserEntity user = new UserEntity();
@@ -94,8 +95,8 @@ public class AllService {
 		return userServiceImpl.findByUserNameAndPassword(massage.getPhone(), massage.getPassword());
 	}
 
-	public UserEntity getUserByPhone(UserEntity data) {
-		return userServiceImpl.getUserByPhone(data.getPhone());
+	public UserEntity getUserByPhone(String phone) {
+		return userServiceImpl.getUserByPhone(phone);
 	}
 
 	public String changePhone(UserEntity data) {
