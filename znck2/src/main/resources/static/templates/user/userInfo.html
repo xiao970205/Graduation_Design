@@ -39,8 +39,6 @@
 </body>
 <script type="text/javascript">
 	$(function() {
-		var phone = $("#phone").val();
-		$("#userphone").val(phone);
 		var userData = null;
 		$.ajax({
 			async : false,
@@ -53,7 +51,7 @@
 				userData = data;
 			}
 		});
-
+		$("#userphone").val(userData.phone);
 		if ($("#changeLevel").val() == "activeEmail") {
 			$("#showUserPhone").hide();
 			$("#showNickName").hide();
@@ -134,6 +132,7 @@
 		$("#realName").val(userData.realName);
 		$("#email").val(userData.email);
 		$("#idCard").val(userData.idCard);
+		$("#userphone").val(userData.phone);
 	});
 	$("#qr")
 			.click(
@@ -264,12 +263,11 @@
 								return;
 							}
 							jsonInfo = {
-								phone : $("#phone").val(),
 								password : password
 							};
 							urlForServer = getUrl() + "changePassword";
 							urlForJump = getProjectName() + "/"
-									+ "jumpToUrl?url=index&name=null";
+									+ "jumpToUrl?url=user/index&name=null";
 						} else {
 							return;
 						}

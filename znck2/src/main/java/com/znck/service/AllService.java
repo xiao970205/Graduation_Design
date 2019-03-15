@@ -126,8 +126,9 @@ public class AllService {
 		return "true";
 	}
 
-	public List<CarEntity> getCardByUserId(ContrastEntity data) {
-		List<CarEntity> allCarByUserIdWithOutNature = carServiceImpl.getCarsHaveNatureByUserId(data.getId());
+	public List<CarEntity> getCardByUserId(String phone) {
+		String userId = userServiceImpl.getUserByPhone(phone).getId();
+		List<CarEntity> allCarByUserIdWithOutNature = carServiceImpl.getCarsHaveNatureByUserId(userId);
 		List<CarEntity> allCarByUserId = new ArrayList<CarEntity>();
 		allCarByUserIdWithOutNature.forEach(car -> {
 			CarEntity carWithNature = car;
@@ -287,10 +288,10 @@ public class AllService {
 		return "true";
 	}
 
-	public String changePassword(UserEntity data) {
+	public String changePassword(String phone,String password) {
 		// TODO Auto-generated method stub
-		UserEntity user = userServiceImpl.getUserByPhone(data.getPhone());
-		user.setPassword(data.getPassword());
+		UserEntity user = userServiceImpl.getUserByPhone(phone);
+		user.setPassword(password);
 		userServiceImpl.update(user);
 		return "true";
 	}

@@ -74,9 +74,138 @@
 		} else {
 			$("#message").text('尊敬的会员用户您好，你可享用vip停车取车业务！');
 		}
+		
+		var carMassage = null;
+		$.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:getUrl()+'getCarByUserId',
+            contentType:'application/json;charset=UTF-8',
+            data:null,
+            success:function(data){
+                $("#carinfos").text("汽车数量："+JSON.stringify(data.length));
+                carMassage = data;
+            }
+        });
+		var vip = userData.nature
+        for(var i = 0;i<carMassage.length;i++){
+            var nature = carMassage[i].nature;
+            var textForNatureId = "";
+            var textForNatureRealName = "";
+            var textForDeleteCar = "";
+            if(nature == "" || nature == null || nature == undefined){
+                
+                nature = "可以停车";
+                
+                if(vip != 0 && vip !=1){
+                    textForNatureId = '<input type = "hidden" id = "canSaveVip"/>';
+                }else{
+                    textForNatureId = '<input type = "hidden" id = "canSave"/>';
+                }
+                textForNatureRealName = '<input type = "button" value = "停车" class = "saveCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;";
+                textForDeleteCar = '<input type = "button" value = "删除车辆" class="deleteCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;";
+            }else if (nature == "停车中"){
+                textForNatureId = '<input type = "hidden" id = "savingCar"/>';
+            }else if(nature == "存车中"){
+                textForNatureId = '<input type = "hidden" id = "canGet"/>';
+                if(vip != 0 && vip !=1){
+                    textForNatureId = '<input type = "hidden" id = "canGetVip"/>';
+                }else{
+                    textForNatureId = '<input type = "hidden" id = "canGet"/>';
+                }
+                textForNatureRealName = '<input type = "button" value = "取车" class = "saveCar"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;";
+            }else{
+                //取车中
+                textForNatureId = '<input type = "hidden" id = "stopCar"/>';
+            }
+            
+            var carName1 = carMassage[i].carName;
+            var text = '<div id = "'+carMassage[i].id+'" style=\"border:1px solid #000000\;width:300px;padding-left:20px;padding-bottom:20px;margin-bottom:20px;">'
+                +"<div><p>车牌号："+carMassage[i].carCard+"</p></div>"
+                +"<div><p>车名称："+carMassage[i].carName+"</p></div>"
+                +"<div><p>信息："+carMassage[i].carInfo+"</p></div>"
+                +"<div><p>汽车状态："+nature+"</p></div>"
+                +textForNatureId
+                +textForNatureRealName
+                +'<input type = "button" value = "修改车辆信息" class="changeCarMassage"/>'+"&nbsp;"+"&nbsp;"+"&nbsp;"
+                +textForDeleteCar
+                +'</div>';
+            $("#allCars").append(text);
+        }
 	})
     $("#changePassword").click(function() {
     	window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/userInfo&changeLevel=changePassword";
     })
+    
+    $("body").on("click", ".saveCar",saveCar );
+　         function saveCar(){
+        var carId = $(this).parent().attr('id');
+        var nature = $(this).prev().attr('id');
+        var phone = $("#phone").val();
+        window.location.href=getProjectName()+"/"+"jumpToUrl?carId="+carId+"&url=carToDo&nature="+nature+"&phone="+phone;
+    }
+    $("body").on("click", ".changeCarMassage",changeCarMassage );
+　         function changeCarMassage(){
+        var carId = $(this).parent().attr('id');
+        window.location.href=getProjectName()+"/"+"jumpToUrl?carId="+carId+"&url=carInfo&phone="+$("#phone").val();
+    }
+    $("body").on("click", ".deleteCar",deleteCar );
+　         function deleteCar(){
+        var carId = $(this).parent().attr('id');
+        var phone = $("#phone").val();
+        alert("删除车辆");
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:getUrl()+'deleteCarById',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify({"id":carId}),
+            success:function(data){
+                window.location.href=getProjectName()+"/"+"jumpToUrl?phone="+phone+"&url=hello";
+            }
+        });
+    };
+  	
+  	$("#toBeVip").click(function() {
+  	    var phone = $("#phone").val();
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:getUrl()+'/toBeVip',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify({"phone":phone}),
+            success:function(data){
+                window.location.href=getProjectName()+"/"+"jumpToUrl?phone="+phone+"&url=hello";
+            }
+        });
+    });
+  	
+  	$("#grxx").click(function() {
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=changeGeneralInfo&phone="+$("#phone").val();
+    });
+    $("#addCar").click(function() {
+        window.location.href=getProjectName()+"/"+"jumpToUrl?carId=null&url=carInfo&phone="+$("#phone").val();
+    });
+    $("#changePhone").click(function() {
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=changePhone&phone="+$("#phone").val();
+    });
+    $("#changeEmail").click(function() {
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=changeEmail&phone="+$("#phone").val();
+    });
+    $("#changeSensitiveMessage").click(function() {
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=changeSensitiveMessage&phone="+$("#phone").val();
+    });
+    $("#activeEmail").click(function() {
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/userInfo&changeLevel=activeEmail";
+    });
+    $("#activePhone").click(function() {
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/userInfo&changeLevel=activePhone";
+    });
+    $("#completionPersonInfo").click(function(){
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=userInfo&changeLevel=completionPersonInfo&phone="+$("#phone").val();
+    });
 </script>
 </html>

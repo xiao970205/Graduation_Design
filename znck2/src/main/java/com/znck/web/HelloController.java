@@ -54,8 +54,10 @@ public class HelloController {
 
 	@RequestMapping("/changePassword")
 	@ResponseBody
-	public String changePassword(@RequestBody UserEntity data) {
-		return allService.changePassword(data);
+	public String changePassword(@RequestBody UserEntity data,HttpServletRequest request) {
+		String phone = ((UserEntity)request.getSession().getAttribute("user")).getPhone();
+		request.getSession().removeAttribute("user");
+		return allService.changePassword(phone,data.getPassword());
 	}
 
 	@RequestMapping("/changePhone")
@@ -125,8 +127,8 @@ public class HelloController {
 
 	@RequestMapping("/getCarByUserId")
 	@ResponseBody
-	public List<CarEntity> getCarByUserId(@RequestBody ContrastEntity data) {
-		return this.allService.getCardByUserId(data);
+	public List<CarEntity> getCarByUserId(HttpServletRequest request) {
+		return this.allService.getCardByUserId(((UserEntity)request.getSession().getAttribute("user")).getPhone());
 	}
 
 	@RequestMapping("/getCarById")
