@@ -147,9 +147,9 @@
 						var jsonInfo = null;
 						var urlForServer = null;
 						var urlForJump = null;
+						alert($("#changeLevel").val());
 						if ($("#changeLevel").val() == "activeEmail") {
 							jsonInfo = {
-								phone : $("#phone").val(),
 								email : email
 							};
 							urlForServer = getUrl() + "sendEmailForActive";
@@ -271,6 +271,8 @@
 						} else {
 							return;
 						}
+						alert(jsonInfo);
+						alert(urlForServer);
 						$.ajax({
 							async : false,
 							type : 'POST',

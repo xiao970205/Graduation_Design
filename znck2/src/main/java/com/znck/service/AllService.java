@@ -209,7 +209,7 @@ public class AllService {
 		EmailActiveEntity emailActiveEntity = emailActiveServiceImpl.getEmailActiveByUserId(user.getId());
 		String info = "<html><head></head><body><h1>这是一封激活邮件,激活请点击以下链接</h1><h3><a href='http://localhost:8080/znck/activeEmail?code="
 				+ emailActiveEntity.getId() + "&email=" + userEmail + "'>点击激活</href></h3></body></html>";
-		mailServiceImpl.sendHtmlMailByThread("1037426886@qq.com", userEmail, "智能车库邮件激活", info);
+//		mailServiceImpl.sendHtmlMailByThread("1037426886@qq.com", userEmail, "智能车库邮件激活", info);
 		return contrast;
 	}
 

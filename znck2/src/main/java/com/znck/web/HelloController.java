@@ -201,8 +201,10 @@ public class HelloController {
 
 	@RequestMapping("/sendEmailForActive")
 	@ResponseBody
-	public ContrastEntity sendEmailForActive(@RequestBody UserEntity data) {
-		return allService.sendEmailForActive(data);
+	public ContrastEntity sendEmailForActive(@RequestBody UserEntity data,HttpServletRequest request) {
+		UserEntity user = (UserEntity)request.getSession().getAttribute("user");
+		user.setEmailNature(data.getEmail());
+		return allService.sendEmailForActive(user);
 	}
 
 	@RequestMapping("/activeEmail")
