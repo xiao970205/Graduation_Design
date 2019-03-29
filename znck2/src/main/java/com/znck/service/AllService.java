@@ -195,20 +195,19 @@ public class AllService {
 		return user;
 	}
 
-	public ContrastEntity sendEmailForActive(UserEntity data) {
+	public ContrastEntity sendEmailForActive(String email,String phone) {
 		ContrastEntity contrast = new ContrastEntity();
-		String userEmail = data.getEmail();
-		if (userServiceImpl.getUserByEmail(userEmail).size() != 0) {
+		if (userServiceImpl.getUserByEmail(email).size() != 0) {
 			contrast.setRealName("false");
 			return contrast;
 		}
 		contrast.setRealName("true");
-		UserEntity user = userServiceImpl.getUserByPhone(data.getPhone());
+		UserEntity user = userServiceImpl.getUserByPhone(phone);
 		userServiceImpl.update(user);
 		EmailActiveEntity emailActiveEntity = emailActiveServiceImpl.getEmailActiveByUserId(user.getId());
 		String info = "<html><head></head><body><h1>这是一封激活邮件,激活请点击以下链接</h1><h3><a href='http://localhost:8080/znck/activeEmail?code="
-				+ emailActiveEntity.getId() + "&email=" + userEmail + "'>点击激活</href></h3></body></html>";
-		mailServiceImpl.sendHtmlMailByThread("1037426886@qq.com", userEmail, "智能车库邮件激活", info);
+				+ emailActiveEntity.getId() + "&email=" + email + "'>点击激活</href></h3></body></html>";
+		mailServiceImpl.sendHtmlMailByThread("1037426886@qq.com", email, "智能车库邮件激活", info);
 		return contrast;
 	}
 

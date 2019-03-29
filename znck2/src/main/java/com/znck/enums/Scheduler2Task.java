@@ -24,8 +24,8 @@ public class Scheduler2Task {
 
 	@Scheduled(fixedRate = 5000)
 	public void reportCurrentTime() throws ParseException {
-		System.out.println("现在时间：" + DATEFORMAT.format(new Date()));
-		allParkingService.getCar();
+		//System.out.println("现在时间：" + DATEFORMAT.format(new Date()));
+		//allParkingService.getCar();
 
 	}
 

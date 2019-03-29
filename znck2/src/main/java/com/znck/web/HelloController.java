@@ -194,13 +194,15 @@ public class HelloController {
 		for (Entry<String, String> m : nameValue.entrySet()) {
 			model.addAttribute(m.getKey(), m.getValue());
 		}
+		
 		return request.getParameter("url");
 	}
 
 	@RequestMapping("/sendEmailForActive")
 	@ResponseBody
-	public ContrastEntity sendEmailForActive(@RequestBody UserEntity data) {
-		return allService.sendEmailForActive(data);
+	public ContrastEntity sendEmailForActive(@RequestBody UserEntity data,HttpServletRequest request) {
+		String phone = ((UserEntity)request.getSession().getAttribute("user")).getPhone();
+		return allService.sendEmailForActive(data.getEmail(),phone);
 	}
 
 	@RequestMapping("/activeEmail")

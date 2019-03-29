@@ -150,12 +150,11 @@
 						var urlForJump = null;
 						if ($("#changeLevel").val() == "activeEmail") {
 							jsonInfo = {
-								phone : $("#phone").val(),
 								email : email
 							};
 							urlForServer = getUrl() + "sendEmailForActive";
 							urlForJump = getProjectName() + "/"
-									+ "jumpToUrl?url=index&name=null";
+									+ "jumpToUrl?url=user/index&name=null";
 						} else if ($("#changeLevel").val() == "activePhone") {
 							jsonInfo = {
 								phone : $("#phone").val(),
@@ -164,7 +163,7 @@
 							urlForServer = getUrl() + "activeVerificationCode";
 							urlForJump = getProjectName() + "/"
 									+ "jumpToUrl?phone=" + $("#phone").val()
-									+ "&url=hello";
+									+ "&url=user/hello";
 						} else if ($("#changeLevel").val() == "completionPersonInfo") {
 							if (realName.search(' ') > -1) {
 								alert("真实姓名不能含有空格！");
@@ -186,7 +185,7 @@
 							urlForServer = getUrl() + "addUserSensitiveInfo";
 							urlForJump = getProjectName() + "/"
 									+ "jumpToUrl?phone=" + $("#phone").val()
-									+ "&url=hello";
+									+ "&url=user/hello";
 						} else if ($("#changeLevel").val() == "changeGeneralInfo") {
 							if (nickName.search(' ') > -1) {
 								alert("用户名不能含有空格！");
@@ -204,7 +203,7 @@
 							urlForServer = getUrl() + "changeGeneralInfo";
 							urlForJump = getProjectName() + "/"
 									+ "jumpToUrl?phone=" + $("#phone").val()
-									+ "&url=hello";
+									+ "&url=user/hello";
 						} else if ($("#changeLevel").val() == "changePhone") {
 							var oldPhone = $("#phone").val();
 							if (isNullOrUndefined(phone)) {
@@ -217,7 +216,7 @@
 							};
 							urlForServer = getUrl() + "changePhone";
 							urlForJump = getProjectName() + "/"
-									+ "jumpToUrl?url=index&name=null";
+									+ "jumpToUrl?url=user/index&name=null";
 						} else if ($("#changeLevel").val() == "changeEmail") {
 							if (isNullOrUndefined(email)) {
 								alert("邮箱不能为空");
@@ -230,7 +229,7 @@
 							urlForServer = getUrl() + "changeEmail";
 							urlForJump = getProjectName() + "/"
 									+ "jumpToUrl?phone=" + $("#phone").val()
-									+ "&url=hello";
+									+ "&url=user/hello";
 						} else if ($("#changeLevel").val() == "changeSensitiveMessage") {
 							if (realName.search(' ') > -1) {
 								alert("真实姓名不能含有空格！");
@@ -252,7 +251,7 @@
 							urlForServer = getUrl() + "changeSensitiveMessage";
 							urlForJump = getProjectName() + "/"
 									+ "jumpToUrl?phone=" + $("#phone").val()
-									+ "&url=hello";
+									+ "&url=user/hello";
 						} else if ($("#changeLevel").val() == "changePassword") {
 							if (password.search(' ') > -1) {
 								alert("密码不能含有空格！");
@@ -269,7 +268,7 @@
 							};
 							urlForServer = getUrl() + "changePassword";
 							urlForJump = getProjectName() + "/"
-									+ "jumpToUrl?url=index&name=null";
+									+ "jumpToUrl?url=user/index&name=null";
 						} else {
 							return;
 						}

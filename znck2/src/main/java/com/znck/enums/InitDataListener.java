@@ -13,6 +13,7 @@ import org.springframework.web.context.ServletContextAware;
 import com.mysql.cj.util.StringUtils;
 import com.znck.entity.ParkingEntity;
 import com.znck.entity.SpaceEntity;
+import com.znck.entity2.ParkingEntity2;
 import com.znck.service.ParkingServiceImpl;
 import com.znck.service.SpaceServiceImpl;
 
@@ -34,6 +35,8 @@ public class InitDataListener implements InitializingBean, ServletContextAware {
 	public static List<ParkingEntity> parkings;
 
 	public static List<SpaceEntity> spaces;
+	
+	public static List<ParkingEntity2> parkings2;
 
 	@Autowired
 	private ParkingServiceImpl parkingServiceImpl;

@@ -62,13 +62,10 @@ public class SessionFilter implements Filter {
 			String userString = "user";
 			String adminString = "admin";
 			if (session != null && session.getAttribute(userString) != null) {
-				System.out.println(111);
 				filterChain.doFilter(request, response);
 			} else if (session != null && session.getAttribute(adminString) != null) {
-				System.out.println(222);
 				filterChain.doFilter(request, response);
 			} else {
-				System.out.println(666);
 				String requestType = request.getHeader("X-Requested-With");
 				String xMLHttpRequestString = "XMLHttpRequest";
 				if (requestType != null && xMLHttpRequestString.equals(requestType)) {
@@ -82,7 +79,6 @@ public class SessionFilter implements Filter {
 	}
 
 	public boolean isAdmin(String url) {
-		System.out.println(url);
 		return true;
 	}
 
