@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript" src = "jquery.js"></script>
+</head>
+<body>
+	<input type="button" name="123" id = "change" class = "button">
+	<input type="button" value="fucfoff" name="123" id = "fucfoff" class = "button">
+</body>
+<script type="text/javascript">
+	$("body").on("click", ".button",button );
+　  function button(){
+        alert(666);
+        alert($(this).attr('id'));
+    }
+
+</script>
+</html>

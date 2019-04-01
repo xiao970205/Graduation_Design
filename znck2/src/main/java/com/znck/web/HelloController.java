@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.znck.entity.CarEntity;
 import com.znck.entity.ContrastEntity;
 import com.znck.entity.UserEntity;
+import com.znck.service.AllParkingService2;
 import com.znck.service.AllService;
 import com.znck.service.AllparkingService;
 
@@ -40,6 +41,9 @@ public class HelloController {
 
 	@Autowired
 	private AllparkingService allparkingService;
+	
+	@Autowired
+	private AllParkingService2 allparkingService2;
 
 	@RequestMapping("/adminLanding")
 	@ResponseBody
@@ -123,10 +127,11 @@ public class HelloController {
 		return allService.toBeVip(data);
 	}
 
-	@RequestMapping("/getCarByUserId")
+	@RequestMapping("/getUserCars")
 	@ResponseBody
-	public List<CarEntity> getCarByUserId(@RequestBody ContrastEntity data) {
-		return this.allService.getCardByUserId(data);
+	public List<CarEntity> getCarByUserId(HttpServletRequest request) {
+		String userId = ((UserEntity)request.getSession().getAttribute("user")).getId();
+		return this.allService.getCardByUserId(userId);
 	}
 
 	@RequestMapping("/getCarById")
@@ -181,7 +186,7 @@ public class HelloController {
 		return "true";
 	}
 
-	@RequestMapping("index")
+	@RequestMapping("/index")
 	public String userIndex(Model mode, HttpServletRequest request) {
 		return "user/index";
 	}

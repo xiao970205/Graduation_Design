@@ -12,6 +12,7 @@ import org.springframework.web.context.ServletContextAware;
 
 import com.mysql.cj.util.StringUtils;
 import com.znck.entity.ParkingEntity;
+import com.znck.entity.PublicMethods;
 import com.znck.entity.SpaceEntity;
 import com.znck.entity2.ParkingEntity2;
 import com.znck.service.ParkingServiceImpl;
@@ -52,12 +53,19 @@ public class InitDataListener implements InitializingBean, ServletContextAware {
 			this.onclock("0");
 
 			spaces = new ArrayList<SpaceEntity>();
-			parkings = parkingServiceImpl.getAll();
 			List<SpaceEntity> space0 = spaceServiceImpl.getAll();
 			space0.forEach(space -> {
 				space.setWeight(22, 9, 5);
 				spaces.add(space);
 			});
+			for(int i=0;i<10;i++) {
+				SpaceEntity spaceEntity = new SpaceEntity();
+				spaceEntity.setNature("缓冲区-空闲");
+				spaceEntity.setId(PublicMethods.getId());
+				spaceEntity.setWeight(22, 9, 5);
+			}
+			parkings = parkingServiceImpl.getAll();
+			parkings2 = new ArrayList<ParkingEntity2>();
 			this.offclock("0");
 			System.out.println("项目启动中，静态变量解锁");
 		} catch (InterruptedException e) {

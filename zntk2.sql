@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80012
 File Encoding         : 65001
 
-Date: 2019-02-21 10:26:20
+Date: 2019-04-01 17:33:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,18 +45,25 @@ CREATE TABLE `contrast` (
 -- ----------------------------
 -- Records of contrast
 -- ----------------------------
+INSERT INTO `contrast` VALUES ('00c22592d1e04cc78497a572e12510f1', 'vip停车中');
+INSERT INTO `contrast` VALUES ('170724f359d443b7a50c0cdbe4c4278d', '等待用户停车中');
 INSERT INTO `contrast` VALUES ('1e95f2208c7f4dd9b584889bba7e3164', '入口');
 INSERT INTO `contrast` VALUES ('351cc2cdda6547528e20c6444e4a3bbd', '存车中');
+INSERT INTO `contrast` VALUES ('4d1ac247e1aa407eb99c684fd7a1a972', '等待用户取车中');
 INSERT INTO `contrast` VALUES ('729352f0e3b74fee91bf15baa7187e58', '出口');
 INSERT INTO `contrast` VALUES ('7bd42e7aad7645e4ad586349691a87e6', '车库-占用');
+INSERT INTO `contrast` VALUES ('7ed4087188714c10ba084c58b2118f99', 'vip取车中');
 INSERT INTO `contrast` VALUES ('8184c5aec4b043d4b5b2b4ee8d0acd6e', '可通过');
+INSERT INTO `contrast` VALUES ('85b1caf1686a444f8f963adcfb4a4fd4', 'vip预约取车中');
 INSERT INTO `contrast` VALUES ('85f8320ee6004d5eb7f21a470fadb366', '取车中');
+INSERT INTO `contrast` VALUES ('8d17c3296fea43e390b0c40b14ca3d83', '缓冲区-空置');
 INSERT INTO `contrast` VALUES ('920005b52e54468ca653be0b593e6025', '通道-可通过');
 INSERT INTO `contrast` VALUES ('9774f488d8054ebab4c9e843ff7e86a4', '通道-占用');
 INSERT INTO `contrast` VALUES ('aa8d80e74dd84a418fcf73f2c5b493e0', '不可通过');
 INSERT INTO `contrast` VALUES ('aaaeeb3acc5e44899a5d1de5ca5ab11a', '车库-空置');
 INSERT INTO `contrast` VALUES ('b8dd53a77a1e4c809550dc1dc750f6ce', '停车中');
 INSERT INTO `contrast` VALUES ('d9a4f33ad6fc483fada40fe0e7f81618', '空间');
+INSERT INTO `contrast` VALUES ('f481983578d5426eb0860e4464a3b227', '缓冲区-占用');
 
 -- ----------------------------
 -- Table structure for emailactive
@@ -320,6 +327,7 @@ INSERT INTO `space` VALUES ('2fa396316c074396a0cce79bfe72e2e6', '7', '8', '5', '
 INSERT INTO `space` VALUES ('2fca4bdb40014f1696f20d309e8c9831', '1', '7', '1', '920005b52e54468ca653be0b593e6025', null);
 INSERT INTO `space` VALUES ('3067a752eb084859a4a1e653256b8ad2', '13', '3', '1', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('3068c63bc00a40ccbc4f4543f736a340', '19', '9', '2', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
+INSERT INTO `space` VALUES ('30995f3ed15845f1b46f78a70d0d2936', '0', '0', '0', '8d17c3296fea43e390b0c40b14ca3d83', null);
 INSERT INTO `space` VALUES ('30a5c16014e449c89da1be087a4841a2', '21', '9', '4', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('30db03ec47ad42088d0738b07f34c0cc', '16', '3', '4', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('30f60509525d4a02b4d665521fe45b08', '15', '1', '4', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
@@ -416,6 +424,7 @@ INSERT INTO `space` VALUES ('451a811ebd5b4591935dc4d9581d4a3f', '21', '2', '1', 
 INSERT INTO `space` VALUES ('457374216f6f41178d5780a1b35fdc6c', '18', '3', '2', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('45ceae3a954240c89c481733df28b325', '1', '4', '3', '920005b52e54468ca653be0b593e6025', null);
 INSERT INTO `space` VALUES ('45d875751e27417fb6afe4a0e3e0ef21', '12', '2', '3', '920005b52e54468ca653be0b593e6025', null);
+INSERT INTO `space` VALUES ('45e9ecfc7a1a4f5f86b230165b2a5dc4', '0', '0', '0', '8d17c3296fea43e390b0c40b14ca3d83', null);
 INSERT INTO `space` VALUES ('464dcf23f6f548b1a6e87978ff38fbfc', '10', '3', '5', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('46638c8277ce43d28530d01e3b75e23f', '5', '4', '2', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('47b6d991ffc141339773ef2890d4bd97', '12', '1', '1', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
@@ -1053,6 +1062,7 @@ INSERT INTO `space` VALUES ('e94d0e8e761948119fdd6763441bd14e', '14', '9', '1', 
 INSERT INTO `space` VALUES ('e9a2f962e0be4d79a244c3cc2a986b6f', '6', '6', '3', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('e9be66057041445e8c61dfeff80e3e6e', '13', '8', '2', '920005b52e54468ca653be0b593e6025', null);
 INSERT INTO `space` VALUES ('e9d19962ef244d77b2f4c47d6c2ee02d', '7', '7', '3', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
+INSERT INTO `space` VALUES ('ea16c79403314775adf120d5873641d3', '0', '0', '0', '8d17c3296fea43e390b0c40b14ca3d83', null);
 INSERT INTO `space` VALUES ('eb2a986530024a3197d0c4abd7e8b815', '12', '3', '2', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('eb33881734e6424abec5840a19259955', '9', '7', '2', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);
 INSERT INTO `space` VALUES ('eb4368b4fb9941bc9bc887aa750a828d', '11', '1', '3', 'aaaeeb3acc5e44899a5d1de5ca5ab11a', null);

@@ -22,13 +22,13 @@
 	<p id="carinfos"></p>
 	<div>
 		<div id="allCars">
-			<p></p>
 		</div>
 	</div>
 	<br>
 	<input type="button" id="addCar" value="添加新车辆" />
 </body>
 <script type="text/javascript">
+
 	$(function() {
 		var userData = null;
 		$.ajax({
@@ -42,6 +42,7 @@
 				userData = data;
 			}
 		});
+		
 		$("#userNickName").text(
 				$("#userNickName").text() + "  " + userData.nickName);
 		if (userData.nature == 0) {
@@ -71,15 +72,92 @@
 			$("#message").text(message);
 		} else if (userData.nature == 1) {
 			$("#message").text('用户您好，请选择您的业务');
+			$("#activeEmail").hide();
+			$("#activePhone").hide();
+			$("#completionPersonInfo").hide();
 		} else {
 			$("#message").text('尊敬的会员用户您好，你可享用vip停车取车业务！');
+			$("#activeEmail").hide();
+			$("#activePhone").hide();
+			$("#completionPersonInfo").hide();
+			$("#toBeVip").hide();
 		}
+		if(userData.nature == "0"){
+			return;
+		}
+		var carMassage = null;
+        //获得所有的车
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:getUrl()+'getUserCars',
+            contentType:'application/json;charset=UTF-8',
+            data:null,
+            success:function(data){
+                $("#carinfos").text("汽车数量："+JSON.stringify(data.length));
+                carMassage = data;
+            }
+        });
+        if(carMassage == null){
+        	return;
+        }
+        for(var i = 0;i<carMassage.length;i++){
+			var htmlForOneDiv = '';
+			if(isNullOrUndefined(nature)){
+				nature = '可以停车';
+				//修改，删除，停车，vip停车
+				htmlForOneDiv = '<input type = "button" id = "changeCarInfo" class = "clickToDo" />'
+					+'<input type = "button" id = "deleteCar" class = "clickToDo" />'
+					+'<input type = "button" id = "saveCar" class = "clickToDo" />'
+					+'<input type = "button" id = "vipAppSaveCar" class = "clickToDo" />'
+			}else if(nature == '等待用户停车中'){
+				//vip确认停车
+				//取消停车
+				htmlForOneDiv = '<input type = "button" id = "vipSaveCar" class = "clickToDo" />'
+					+'<input type = "button" id = "vipCancelSaveCar" class = "clickToDo" />'
+			}else if(nature == 'vip预约取车中'){
+				//取消取车
+				//立即取车
+				htmlForOneDiv = '<input type = "button" id = "vipCancelTakeOutCar" class = "clickToDo" />'
+					+'<input type = "button" id = "vipTakeOutCarNow" class = "clickToDo" />'
+			}else if(nature == '存车中'){
+				//取车
+				//vip取车
+				htmlForOneDiv = '<input type = "button" id = "takeOutCar" class = "clickToDo" />'
+					+'<input type = "button" id = "vipTakeOutCar" class = "clickToDo" />'
+			}else if(nature == '等待用户取车中'){
+				//确认取车取车
+				htmlForOneDiv = '<input type = "button" id = "getCar" class = "clickToDo" />'
+			}else {
+				//vip停车中
+				//vip取车中
+				//停车中
+				//驱车中
+			}
+			var text = '<div id = "'+carMassage[i].id+'" style=\"border:1px solid #000000\;width:300px;padding-left:20px;padding-bottom:20px;margin-bottom:20px;">'
+                +"<div><p>车牌号："+carMassage[i].carCard+"</p></div>"
+                +"<div><p>车名称："+carMassage[i].carName+"</p></div>"
+                +"<div><p>信息："+carMassage[i].carInfo+"</p></div>"
+                +"<div><p>汽车状态："+nature+"</p></div>"
+                +htmlForOneDiv
+                +'</div>';
+            $("#allCars").append(text);
+        }
 	})
+	$("#addCar").click(function() {
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/carInfo";
+    });
     $("#changePassword").click(function() {
     	window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/userInfo&changeLevel=changePassword";
     })
     $("#activeEmail").click(function() {
     	window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/userInfo&changeLevel=activeEmail";
     })
+	$("body").on("click", ".clickToDo",clickToDo);
+	function clickToDo(){
+		alert($(this).parent().attr('id'));
+		alert($(this).attr('id'));
+	}
 </script>
 </html>

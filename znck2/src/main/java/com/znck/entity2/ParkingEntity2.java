@@ -3,6 +3,8 @@ package com.znck.entity2;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.znck.entity.ParkingEntity;
+
 public class ParkingEntity2 {
 
 	private static final long serialVersionUID = 1L;
@@ -41,6 +43,18 @@ public class ParkingEntity2 {
 
 	private String way;
 	
+	public int getOutTimeForSort() {
+		return (int)this.getOutTime().getTime();
+	}
+	
+	public int getInPlaceTimeForSort() {
+		return (int)this.getInPlaceTime().getTime();
+	}
+	
+	public int getVipAppGetTimeForSort() {
+		return (int)this.vipAppGetTime.getTime();
+	}
+	
 	public int getVipSendTimeForSort() {
 		return (int)this.vipSendTime.getTime();
 	}
@@ -52,7 +66,7 @@ public class ParkingEntity2 {
 	public void addWay(String way) {
 		setWay(this.getWay() + way);
 	}
-
+	
 	public ParkingEntity2(String id, String carId, String inSpaceId, String nowSpaceId, String saveSpaceId,
 			String outSpaceId, Date vipSendTime, Date vipAppParkingTime, Date inPlaceTime, Date inTime, Date vipGetTime,
 			Date vipAppGetTime, Date outTime, Date outPlaceTime, Date getTime, String nature, String way) {

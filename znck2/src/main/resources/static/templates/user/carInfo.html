@@ -1,13 +1,10 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8">
-    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
-    <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript" th:src="@{/js/publicFunction.js}"></script>
-    <script type="text/javascript" src="../js/publicFunction.js"></script>
+    <script type="text/javascript" th:src="@{templates/user/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{templates/user/js/publicFunction.js}"></script>
   </head>
   <body>
-    <input type = "hidden" th:value = "${phone}" id = "phone"/>
     <input type = "hidden" th:value = "${carId}" id = "carId" />
             车牌号<input type = "text" id = "carCard"/><br>
             汽车名<input type = "text" id = "carName"/><br>
@@ -19,7 +16,6 @@
     $(function() {
         var carId = $("#carId").val();
         if(carId == "null"){
-            //alert("添加车辆");
             return ;
         }
         $.ajax({
@@ -67,7 +63,7 @@
             data:data,
             success:function(data){
                 alert(message);
-                window.location.href=getProjectName()+"/"+"jumpToUrl?phone="+phone+"&url=hello";
+                window.location.href=getProjectName()+"/"+"jumpToUrl?phone="+phone+"&url=user/hello";
             }
         });
     })

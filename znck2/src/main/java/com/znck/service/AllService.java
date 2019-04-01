@@ -126,8 +126,8 @@ public class AllService {
 		return "true";
 	}
 
-	public List<CarEntity> getCardByUserId(ContrastEntity data) {
-		List<CarEntity> allCarByUserIdWithOutNature = carServiceImpl.getCarsHaveNatureByUserId(data.getId());
+	public List<CarEntity> getCardByUserId(String userId) {
+		List<CarEntity> allCarByUserIdWithOutNature = carServiceImpl.getCarsHaveNatureByUserId(userId);
 		List<CarEntity> allCarByUserId = new ArrayList<CarEntity>();
 		allCarByUserIdWithOutNature.forEach(car -> {
 			CarEntity carWithNature = car;

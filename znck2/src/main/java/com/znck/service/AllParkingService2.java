@@ -6,9 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysql.cj.util.StringUtils;
-import com.znck.entity.ParkingEntity;
 import com.znck.entity.PublicMethods;
 import com.znck.entity.SpaceEntity;
 import com.znck.entity2.ParkingEntity2;
@@ -26,10 +23,10 @@ import com.znck.enums.InitDataListener;
 public class AllParkingService2 {
 	@Autowired
 	private ContrastServiceImpl contrastServiceImpl;
+	
+	private AllParkingServiceForRuning allParkingServiceForRuning;
 
 	private final static String ENTRANCE = "入口";
-
-	private final static String PUTIN_CAR = "存车中";
 
 	private final static String EXPORT = "出口";
 
@@ -37,20 +34,23 @@ public class AllParkingService2 {
 
 	private final static String GETIN_CAR = "取车中";
 
-	private final static String CHANNEL_PASSABLE = "通道-可通过";
-
-	private final static String CHANNEL_TAKE_UP = "通道-占用";
-
 	private final static String GARAGE_VACANCY = "车库-空置";
 
 	private final static String IN_THE_PARKING = "停车中";
+	
+	private final static String BUFFER_VACANCY = "缓冲区-空置";
+	
+	private final static String BUFFER_TAKE_UP = "缓冲区-占用";
+	
+	private final static String VIP_WAIT_USER_PARKING = "等待用户停车中";
 
-	private final static int SIZETWO = 2;
-
-	private final static int SIZETHREE = 3;
-
-	private final static int SIZETWENTYTWO = 22;
-
+	private final static String VIP_IN_THE_PARKING = "vip停车中";
+	
+	private final static String VIP_APP_GETCAR = "vip预约取车中";
+	
+	private final static String VIP_GETCAR = "vip取车中";
+	
+	
 	public void onclock(String threadId) throws InterruptedException {
 		do {
 			if (StringUtils.isNullOrEmpty(InitDataListener.lockForParking)) {
@@ -68,34 +68,88 @@ public class AllParkingService2 {
 		InitDataListener.lockForSpace = null;
 	}
 
-	public void parkingRun() throws InterruptedException {
+	public void parkingRun() throws InterruptedException,ParseException {
 		// 上锁
 		String threadId = PublicMethods.getId();
 		onclock(threadId);
 		//等待用户存车运行方法
-		InitDataListener.parkings2.stream().filter(parking -> parking.getNature().equals("等待用户停车中")).collect(Collectors.toList()).forEach(parking ->{
-			try {
-				appSaveCarIfOutTime(parking);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
+		InitDataListener.parkings2.stream()
+			.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(VIP_WAIT_USER_PARKING).getId()))
+			.collect(Collectors.toList())
+			.forEach(parking ->{
+					try {
+						allParkingServiceForRuning.appSaveCarIfOutTime(parking);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			});
 		//vip用户停车方法
 		InitDataListener.parkings2.stream()
-			.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(IN_THE_PARKING)) & parking.getVipAppGetTime() != null)
+			.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(VIP_IN_THE_PARKING).getId()) & parking.getVipAppGetTime() != null)
 			.sorted(Comparator.comparing(ParkingEntity2::getVipSendTimeForSort))
-			.collect(Collectors.toList());
-		//vip用户预约停车等待方法
+			.collect(Collectors.toList()).forEach(parking ->{
+				try {
+					allParkingServiceForRuning.saveCarNextTodo(parking);
+				} catch (ParseException | InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
+		//vip用户预约取车等待方法
+		InitDataListener.parkings2.stream()
+			.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(VIP_APP_GETCAR).getId()))
+			.sorted(Comparator.comparing(ParkingEntity2::getVipAppGetTimeForSort))
+			.collect(Collectors.toList()).forEach(parking -> {
+				try {
+					allParkingServiceForRuning.appGetCarIfOutTime(parking);
+				} catch (ParseException | InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
 		//vip用户取车方法
+		InitDataListener.parkings2.stream()
+			.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(VIP_GETCAR).getId()))
+			.sorted(Comparator.comparing(ParkingEntity2::getVipAppGetTimeForSort))
+			.collect(Collectors.toList()).forEach(parking ->{
+				try {
+					allParkingServiceForRuning.getCarNextToDo(parking);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
 		//普通用户停车方法
+		InitDataListener.parkings2.stream()
+			.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(IN_THE_PARKING)) & parking.getVipAppGetTime() == null)
+			.sorted(Comparator.comparing(ParkingEntity2::getInPlaceTimeForSort))
+			.collect(Collectors.toList()).forEach(parking ->{
+				try {
+					allParkingServiceForRuning.saveCarNextTodo(parking);
+				} catch (ParseException | InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
 		//普通用户取车方法
+		InitDataListener.parkings2.stream()
+			.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(GETIN_CAR)))
+			.sorted(Comparator.comparing(ParkingEntity2::getOutTimeForSort))
+			.collect(Collectors.toList()).forEach(parking ->{
+				try {
+					allParkingServiceForRuning.getCarNextToDo(parking);
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			});
 		
 		offclock(threadId);
 	}
 	
 	/**
-	 * 用户预约停车-预约
+	 * 	用户预约停车-预约
 	 * 
 	 * @param carId
 	 * @param vipAppParingTimeByString
@@ -119,7 +173,7 @@ public class AllParkingService2 {
 			return "没有车位，请等待车位";
 		}
 		// 获得缓冲区，没有缓冲区则返回请选择普通停车方法
-		List<SpaceEntity> spacesForApp = spaces.stream().filter(a -> a.getNature().equals("缓冲区-空闲"))
+		List<SpaceEntity> spacesForApp = spaces.stream().filter(a -> a.getNature().equals(contrastServiceImpl.getContrastByRealName(BUFFER_VACANCY).getId()))
 				.collect(Collectors.toList());
 		if (spacesForApp.size() == 0) {
 			offclock(threadId);
@@ -131,7 +185,7 @@ public class AllParkingService2 {
 		spaceForSave.setCarId(carId);
 		SpaceEntity spaceForApp = spacesForApp.get(0);
 		spaceForApp.setCarId(carId);
-		spaceForApp.setNature("缓冲区-占用");
+		spaceForApp.setNature(contrastServiceImpl.getContrastByRealName(BUFFER_TAKE_UP).getId());
 		Collections.replaceAll(spaces, spacesForFeture.get(0), spaceForSave);
 		Collections.replaceAll(spaces, spacesForApp.get(0), spaceForApp);
 		// 新建停车信息
@@ -147,7 +201,7 @@ public class AllParkingService2 {
 		Date vipAppParkingTime = formatter.parse(vipAppParingTimeByString + " " + (r.nextInt(899) + 100), pos);
 		parkingEntity2.setVipAppParkingTime(vipAppParkingTime);
 		parkingEntity2.setVipSendTime(PublicMethods.getDate());
-		parkingEntity2.setNature("等待用户存车中");
+		parkingEntity2.setNature(contrastServiceImpl.getContrastByRealName(VIP_WAIT_USER_PARKING).getId());
 		parkingEntity2.setWay("");
 		parkings.add(parkingEntity2);
 		InitDataListener.parkings2 = parkings;
@@ -156,30 +210,7 @@ public class AllParkingService2 {
 
 	}
 
-	/**
-	 * 预约车辆（没来的处理方法）如果超时，返回ture，没超时返回false
-	 * 
-	 * @param parking
-	 * @return
-	 * @throws ParseException
-	 */
-	public void appSaveCarIfOutTime(ParkingEntity2 parking) throws ParseException {
-		if (PublicMethods.getDate().compareTo(parking.getVipAppParkingTime()) == 1) {
-			List<SpaceEntity> spaces = InitDataListener.spaces;
-			SpaceEntity appSpaceOld = spaces.stream().filter(space -> space.getId().equals(parking.getInSpaceId())).collect(Collectors.toList()).get(0);
-			SpaceEntity appSpace = appSpaceOld;
-			SpaceEntity saveSPlaceOld = spaces.stream().filter(space -> space.getId().equals(parking.getSaveSpaceId())).collect(Collectors.toList()).get(0);
-			SpaceEntity saveSpace = saveSPlaceOld;
-			appSpace.setCarId(null);
-			appSpace.setNature("缓冲区-空置");
-			saveSpace.setCarId(null);
-			saveSpace.setNature(contrastServiceImpl.getContrastByRealName(GARAGE_VACANCY).getId());
-			Collections.replaceAll(spaces, appSpaceOld, appSpace);
-			Collections.replaceAll(spaces, saveSPlaceOld, saveSpace);
-			InitDataListener.spaces = spaces;
-			InitDataListener.parkings2.remove(parking);
-		}
-	}
+
 
 	/**
 	 * 预约停车-用户已经来了并且扫码
@@ -207,11 +238,11 @@ public class AllParkingService2 {
 				.filter(a -> a.getNature().equals(contrastServiceImpl.getContrastByRealName(ENTRANCE).getId()))
 				.collect(Collectors.toList()).get(0);
 		// 更新数据
-		spaceForApp.setNature("缓冲区-空置");
+		spaceForApp.setNature(contrastServiceImpl.getContrastByRealName(BUFFER_VACANCY).getId());
 		spaceForApp.setCarId(null);
 		Collections.replaceAll(spaces, spaceForAppOld, spaceForApp);
 		parking.setInPlaceTime(PublicMethods.getDate());
-		parking.setNature(contrastServiceImpl.getContrastByRealName(IN_THE_PARKING).getId());
+		parking.setNature(contrastServiceImpl.getContrastByRealName(VIP_IN_THE_PARKING).getId());
 		parking.setNowSapceId(nowSpace.getId());
 		parking.setWay(nowSpace.getX() + "," + nowSpace.getY() + "," + nowSpace.getZ());
 		Collections.replaceAll(parkings, parkingOld, parking);
@@ -272,98 +303,6 @@ public class AllParkingService2 {
 	}
 
 	/**
-	 * 正在开往停车位的方法
-	 * 
-	 * @param parking
-	 * @throws ParseException
-	 * @throws InterruptedException
-	 */
-	public void saveCarNextTodo(ParkingEntity2 parking) throws ParseException, InterruptedException {
-		ParkingEntity2 parkingOral = parking;
-		SpaceEntity nowSpace = InitDataListener.spaces.stream()
-				.filter(space -> space.getId().equals(parking.getNowSapceId())).collect(Collectors.toList()).get(0);
-		SpaceEntity nowSpaceOral = nowSpace;
-		SpaceEntity fetureSpace = InitDataListener.spaces.stream()
-				.filter(space -> space.getId().equals(parking.getSaveSpaceId())).collect(Collectors.toList()).get(0);
-		SpaceEntity fetureSpaceOral = fetureSpace;
-		final String x = "x";
-		final String y = "y";
-		final String z = "z";
-		final Map<String, Integer> nextSpaceMap = this.getNextSpaceWhenSavingCar(nowSpace.getX(), nowSpace.getY(),
-				nowSpace.getZ(), fetureSpace.getX(), fetureSpace.getY(), fetureSpace.getZ());
-		SpaceEntity nextSpace = InitDataListener.spaces.stream().filter(space -> space.getX() == nextSpaceMap.get(x)
-				&& space.getY() == nextSpaceMap.get(y) && space.getZ() == nextSpaceMap.get(z))
-				.collect(Collectors.toList()).get(0);
-		if (StringUtils.isNullOrEmpty(nextSpace.getCarId())) {
-			nextSpace.setCarId(parking.getCarId());
-			nowSpace.setCarId(null);
-			parking.setNowSapceId(nextSpace.getId());
-			if (nowSpace.getNature().equals(contrastServiceImpl.getContrastByRealName(ENTRANCE).getId())) {
-				nowSpace.setNature(contrastServiceImpl.getContrastByRealName(ENTRANCE).getId());
-			} else {
-				nowSpace.setNature(contrastServiceImpl.getContrastByRealName(CHANNEL_PASSABLE).getId());
-			}
-			if (nextSpaceMap.get(x) == fetureSpace.getX() && nextSpaceMap.get(y) == fetureSpace.getY()
-					&& nextSpaceMap.get(z) == fetureSpace.getZ()) {
-				parking.setNature(contrastServiceImpl.getContrastByRealName(PUTIN_CAR).getId());
-				parking.setInTime(PublicMethods.getDate());
-				parking.setSaveSpaceId(nextSpace.getId());
-			} else {
-				nextSpace.setNature(contrastServiceImpl.getContrastByRealName(CHANNEL_TAKE_UP).getId());
-			}
-			parking.setWay(parking.getWay() + "|" + nextSpace.getX() + "," + nextSpace.getY() + "," + nextSpace.getZ());
-		} else {
-			parking.setWay(parking.getWay() + "|wait");
-		}
-		Collections.replaceAll(InitDataListener.spaces, nowSpaceOral, nowSpace);
-		Collections.replaceAll(InitDataListener.spaces, fetureSpaceOral, fetureSpace);
-		Collections.replaceAll(InitDataListener.parkings2, parkingOral, parking);
-	}
-
-	/**
-	 * 获得存车时候获得下一步路径放法
-	 * 
-	 * @param nX
-	 * @param nY
-	 * @param nZ
-	 * @param fX
-	 * @param fY
-	 * @param fZ
-	 * @return
-	 */
-	public Map<String, Integer> getNextSpaceWhenSavingCar(int nX, int nY, int nZ, int fX, int fY, int fZ) {
-		Map<String, Integer> zb = new HashMap<String, Integer>(3);
-		if (fZ - nZ != 0) {
-			zb = getNextSpaceMapStringInteger(nX, nY, nZ + 1);
-		} else if (nX == 1 & Math.abs(fY - nY) != 1) {
-			zb = getNextSpaceMapStringInteger(nX, nY + 1, nZ);
-		} else if (nY % SIZETHREE == SIZETWO & Math.abs(fY - nY) == 1 & nX != fX) {
-			zb = getNextSpaceMapStringInteger(nX + 1, nY, nZ);
-		} else if (nY > fY) {
-			zb = getNextSpaceMapStringInteger(nX, nY - 1, nZ);
-		} else {
-			zb = getNextSpaceMapStringInteger(nX, nY + 1, nZ);
-		}
-		return zb;
-	}
-
-	/**
-	 * 获得map类型映射的下一步xyz
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @return
-	 */
-	public Map<String, Integer> getNextSpaceMapStringInteger(int x, int y, int z) {
-		Map<String, Integer> zb = new HashMap<String, Integer>(3);
-		zb.put("x", x);
-		zb.put("y", y);
-		zb.put("z", z);
-		return zb;
-	}
-
-	/**
 	 * vip用户取车方法，需要两个参数：汽车id和时间
 	 * 
 	 * @param carId
@@ -378,7 +317,7 @@ public class AllParkingService2 {
 		List<SpaceEntity> spaces = InitDataListener.spaces;
 		// 获得缓冲区，没有缓冲区则返回请选择普通停车方法
 
-		List<SpaceEntity> spacesForAppGet = spaces.stream().filter(a -> a.getNature().equals("缓冲区-空闲"))
+		List<SpaceEntity> spacesForAppGet = spaces.stream().filter(a -> a.getNature().equals(contrastServiceImpl.getContrastByRealName(BUFFER_VACANCY).getId()))
 				.collect(Collectors.toList());
 		if (spacesForAppGet.size() == 0) {
 			offclock(clockId);
@@ -398,9 +337,9 @@ public class AllParkingService2 {
 		parking.setOutSpaceId(appGetSpace.getId());
 		parking.setVipGetTime(PublicMethods.getDate());
 		parking.setVipAppGetTime(vipAppGetTime);
-		parking.setNature("vip预约取车中");
+		parking.setNature(contrastServiceImpl.getContrastByRealName(VIP_APP_GETCAR).getId());
 		appGetSpace.setCarId(parking.getCarId());
-		appGetSpace.setNature("缓冲区-占用");
+		appGetSpace.setNature(contrastServiceImpl.getContrastByRealName(BUFFER_TAKE_UP).getId());
 		// 更新数据
 		Collections.replaceAll(parkings, oldParking, parking);
 		Collections.replaceAll(spaces, appGetSpaceOld, appGetSpace);
@@ -411,29 +350,7 @@ public class AllParkingService2 {
 	}
 
 	/**
-	 * 预约取辆（没来的处理方法）如果超时，则开始取车
-	 * 
-	 * @param parking
-	 * @return
-	 * @throws ParseException
-	 * @throws InterruptedException
-	 */
-	public void appGetCarIfOutTime(ParkingEntity2 parkingOld) throws ParseException, InterruptedException {
-		if (PublicMethods.getDate().compareTo(parkingOld.getVipGetTime()) == 1) {
-			// 获得数据
-			List<ParkingEntity2> parkings = InitDataListener.parkings2;
-			ParkingEntity2 parking = parkingOld;
-			// 修改数据
-			parking.setOutTime(PublicMethods.getDate());
-			parking.setNature(contrastServiceImpl.getContrastByRealName(GETIN_CAR).getId());
-			// 更新数据
-			Collections.replaceAll(parkings, parkingOld, parking);
-			InitDataListener.parkings2 = parkings;
-		}
-	}
-
-	/**
-	 * 普通用户取车方法
+	 * 	普通用户取车方法
 	 * 
 	 * @param carId
 	 * @throws InterruptedException
@@ -460,52 +377,6 @@ public class AllParkingService2 {
 		offclock(clockId);
 	}
 
-	public void getCarNextToDo(ParkingEntity2 parking) throws ParseException {
-		ParkingEntity2 parkingOral = parking;
-		SpaceEntity nowSpace = InitDataListener.spaces.stream()
-				.filter(space -> space.getId().equals(parking.getNowSapceId())).collect(Collectors.toList()).get(0);
-		SpaceEntity nowSpaceOral = nowSpace;
-		SpaceEntity fetureSpace = InitDataListener.spaces.stream()
-				.filter(space -> space.getId().equals(parking.getOutSpaceId())).collect(Collectors.toList()).get(0);
-		final String x = "x";
-		final String y = "y";
-		final String z = "z";
-		final Map<String, Integer> nextSpaceMap = this.getNextSpaceWhenTakingOutCar(nowSpace.getX(), nowSpace.getY(),
-				nowSpace.getZ(), fetureSpace.getX(), fetureSpace.getY(), fetureSpace.getZ());
-		SpaceEntity nextSpaceOld = InitDataListener.spaces.stream().filter(space -> space.getX() == nextSpaceMap.get(x)
-				&& space.getY() == nextSpaceMap.get(y) && space.getZ() == nextSpaceMap.get(z))
-				.collect(Collectors.toList()).get(0);
-		SpaceEntity nextSpace = nextSpaceOld;
-		if (StringUtils.isNullOrEmpty(nextSpace.getCarId())) {
-			nowSpace.setCarId(null);
-			if (nextSpaceMap.get(x) == fetureSpace.getX() && nextSpaceMap.get(y) == fetureSpace.getY()
-					&& nextSpaceMap.get(z) == fetureSpace.getZ()) {
-				nowSpace.setNature(contrastServiceImpl.getContrastByRealName(CHANNEL_PASSABLE).getId());
-				String way = parking.getWay() + "|" + fetureSpace.getX() + "," + fetureSpace.getY() + ","
-						+ fetureSpace.getZ();
-				parking.setOutPlaceTime(PublicMethods.getDate());
-				parking.setWay(way);
-				parking.setNature("等待用户取车中");
-			} else {
-				nextSpace.setCarId(parking.getCarId());
-				nextSpace.setNature(contrastServiceImpl.getContrastByRealName(CHANNEL_TAKE_UP).getId());
-				if (nowSpace.getNature().equals(contrastServiceImpl.getContrastByRealName(GARAGE_TAKE_UP).getId())) {
-					nowSpace.setNature(contrastServiceImpl.getContrastByRealName(GARAGE_VACANCY).getId());
-				} else {
-					nowSpace.setNature(contrastServiceImpl.getContrastByRealName(CHANNEL_PASSABLE).getId());
-				}
-				parking.setNowSapceId(nextSpace.getId());
-				parking.setWay(
-						parking.getWay() + "|" + nextSpace.getX() + "," + nextSpace.getY() + "," + nextSpace.getZ());
-			}
-		} else {
-			parking.setWay(parking.getWay() + "|wait");
-		}
-		Collections.replaceAll(InitDataListener.parkings2, parkingOral, parking);
-		Collections.replaceAll(InitDataListener.spaces, nowSpaceOral, nowSpace);
-		Collections.replaceAll(InitDataListener.spaces, nextSpaceOld, nextSpace);
-	}
-
 	/**
 	 * 用户开走车辆的方法
 	 * @param carId
@@ -524,52 +395,5 @@ public class AllParkingService2 {
 //		parkingSaveServiceImpl.insert(parkingSave);
 		InitDataListener.parkings.remove(parkingOld);
 		offclock(clockId);
-	}
-	
-	/**
-	 * 获得取车时候获得下一步路径算法
-	 * 
-	 * 取车的时候一共有几种情况 1.车辆没有入库在左侧通道被取走 1-1车辆在上下电梯上 nX = 1 & nY = 1 ; nY++ （被包括了）
-	 * 1-2车辆在左侧通道上 1-2-1 可以通向横向通道 nX = 1 & (nY % 3) == 2 ;nX++ 1-2-2 不可以通向横向通道 nX =
-	 * 1 & (nY % 3) != 2 ;nY++ （用） 1-3车辆在横向通道上 nX != maxX & nX != 1 ; nX++ （用）
-	 * 2.车辆在车库中 nY % 3 != 2 2-1 在第一排，下挪 nY % 3 != 2 & nY == 1 ; nY++ 2-2不再第一排，上挪 nY
-	 * % 3 != 2 & nY != 1 ; nY-- 3.车辆在取车路上 3-1在横向通道中，右挪 nX != maxX & nX == 1 ; nX++
-	 * （重复） 3-2在右侧通道中，上挪 nX == maxX & nY != 1; nY-- 3-3在升降电梯，上挪 nX == maxX & nY == 1
-	 * ; nZ--
-	 * 
-	 * 
-	 * @param nX
-	 * @param nY
-	 * @param nZ
-	 * @param fX
-	 * @param fY
-	 * @param fZ
-	 * @return
-	 */
-	public Map<String, Integer> getNextSpaceWhenTakingOutCar(int nX, int nY, int nZ, int fX, int fY, int fZ) {
-		Map<String, Integer> zb = new HashMap<String, Integer>(3);
-		if (nX == 1 & nY % SIZETHREE == SIZETWO) {
-			// 在左侧通道并且可以往右移动
-			zb = getNextSpaceMapStringInteger(nX + 1, nY, nZ);
-		} else if (nX == 1 & nY % SIZETHREE != SIZETWO) {
-			// 在左侧通道但是不能往右移动，只能向下移动
-			zb = getNextSpaceMapStringInteger(nX, nY + 1, nZ);
-		} else if ((nY % SIZETHREE != SIZETWO) & nY == 1) {
-			// 在车位上，且在第一排，往下挪动。
-			zb = getNextSpaceMapStringInteger(nX, nY + 1, nZ);
-		} else if ((nY % SIZETHREE != SIZETWO) & nY != 1) {
-			// 在车位上，且不在第一排，可以上下移动。
-			zb = getNextSpaceMapStringInteger(nX, nY - 1, nZ);
-		} else if (nX != SIZETWENTYTWO) {
-			// 不在车位上，且不在最右侧通道，只能向右移动。
-			zb = getNextSpaceMapStringInteger(nX + 1, nY, nZ);
-		} else if (nY != fY) {
-			// 不在车位上，且不在同一排，所以只能在右侧通道,只能往前挪动
-			zb = getNextSpaceMapStringInteger(nX, nY - 1, nZ);
-		} else {
-			// 只能是楼层不同.
-			zb = getNextSpaceMapStringInteger(nX, nY, nZ - 1);
-		}
-		return zb;
 	}
 }
