@@ -104,31 +104,34 @@
         }
         for(var i = 0;i<carMassage.length;i++){
 			var htmlForOneDiv = '';
+			var nature = carMassage[i].nature;
 			if(isNullOrUndefined(nature)){
 				nature = '可以停车';
 				//修改，删除，停车，vip停车
-				htmlForOneDiv = '<input type = "button" id = "changeCarInfo" class = "clickToDo" />'
-					+'<input type = "button" id = "deleteCar" class = "clickToDo" />'
-					+'<input type = "button" id = "saveCar" class = "clickToDo" />'
-					+'<input type = "button" id = "vipAppSaveCar" class = "clickToDo" />'
+				htmlForOneDiv = '<input type = "button" id = "changeCarInfo" class = "clickToDo" value = "修改车辆"/>'
+					+'<input type = "button" id = "deleteCar" class = "clickToDo" value = "删除车辆"/>'
+					+'<input type = "button" id = "saveCar" class = "clickToDo" value = "存车"/>'
+				if(userData.nature == 2){
+					htmlForOneDiv = htmlForOneDiv +'<input type = "button" id = "vipAppSaveCar" class = "clickToDo" value = "vip预约停车"/>';
+				}
 			}else if(nature == '等待用户停车中'){
 				//vip确认停车
 				//取消停车
-				htmlForOneDiv = '<input type = "button" id = "vipSaveCar" class = "clickToDo" />'
-					+'<input type = "button" id = "vipCancelSaveCar" class = "clickToDo" />'
+				htmlForOneDiv = '<input type = "button" id = "vipSaveCar" class = "clickToDo" value = "vip确认停车"/>'
+					+'<input type = "button" id = "vipCancelSaveCar" class = "clickToDo" value = "取消停车"/>'
 			}else if(nature == 'vip预约取车中'){
 				//取消取车
 				//立即取车
-				htmlForOneDiv = '<input type = "button" id = "vipCancelTakeOutCar" class = "clickToDo" />'
-					+'<input type = "button" id = "vipTakeOutCarNow" class = "clickToDo" />'
+				htmlForOneDiv = '<input type = "button" id = "vipCancelTakeOutCar" class = "clickToDo" value = "取消vip预约取车"/>'
+					+'<input type = "button" id = "vipTakeOutCarNow" class = "clickToDo" value = "立即取车"/>'
 			}else if(nature == '存车中'){
 				//取车
 				//vip取车
-				htmlForOneDiv = '<input type = "button" id = "takeOutCar" class = "clickToDo" />'
-					+'<input type = "button" id = "vipTakeOutCar" class = "clickToDo" />'
+				htmlForOneDiv = '<input type = "button" id = "takeOutCar" class = "clickToDo" value = "取车"/>'
+					+'<input type = "button" id = "vipTakeOutCar" class = "clickToDo" value = "vip预约取车"/>'
 			}else if(nature == '等待用户取车中'){
 				//确认取车取车
-				htmlForOneDiv = '<input type = "button" id = "getCar" class = "clickToDo" />'
+				htmlForOneDiv = '<input type = "button" id = "getCar" class = "clickToDo" value = "我已到达指定位置，可以取车"/>'
 			}else {
 				//vip停车中
 				//vip取车中
@@ -156,8 +159,24 @@
     })
 	$("body").on("click", ".clickToDo",clickToDo);
 	function clickToDo(){
-		alert($(this).parent().attr('id'));
-		alert($(this).attr('id'));
+		var toDo = $(this).parent().attr('id');
+		var carId = $(this).attr('id');
+		if('deleteCar' == toDo){
+			$.ajax({
+	            async:false,
+	            type:'POST',
+	            dataType:'json',
+	            url:getUrl()+'deleteCarById',
+	            contentType:'application/json;charset=UTF-8',
+	            data:JSON.stringify({"id":$(this).parent().attr('id')}),
+	            success:function(data){
+	            	alert("删除成功");
+	                window.location.href=getProjectName()+"/"+"jumpToUrl?phone="+phone+"&url=user/hello";
+	            }
+	        });
+			return;
+		}
+		window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/userInfo&changeLevel=activeEmail";
 	}
 </script>
 </html>

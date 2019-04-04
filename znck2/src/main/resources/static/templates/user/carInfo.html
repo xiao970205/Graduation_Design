@@ -42,18 +42,17 @@
         var data = null;
         var carId = $("#carId").val();
         var message = null;
-        if(carId == "null"){
+        if(carId == ''){
             //添加车辆
             url = url + 'saveNewCar';
-            data = JSON.stringify({"id":phone,"carCard":carCard,"carInfo":carInfo,"carName":carName});
+            data = JSON.stringify({"carCard":carCard,"carInfo":carInfo,"carName":carName});
             message = "添加成功!";
         }else{
             //修改车辆
-            url = url + 'updateCarWithoutUserId';
+            url = url + 'updateCar';
             data = JSON.stringify({"id":carId,"carCard":carCard,"carInfo":carInfo,"carName":carName});
             message = "修改成功!";
         }
-        
         $.ajax({
             async:false,
             type:'POST',
@@ -63,7 +62,7 @@
             data:data,
             success:function(data){
                 alert(message);
-                window.location.href=getProjectName()+"/"+"jumpToUrl?phone="+phone+"&url=user/hello";
+                window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/hello";
             }
         });
     })

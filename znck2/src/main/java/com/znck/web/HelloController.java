@@ -160,15 +160,17 @@ public class HelloController {
 
 	@RequestMapping("/saveNewCar")
 	@ResponseBody
-	public String saveNewCarByUserPhone(@RequestBody CarEntity data) {
-		this.allService.saveNewCarByUserPhone(data);
+	public String saveNewCarByUserPhone(@RequestBody CarEntity data,HttpServletRequest request) {
+		String userId = ((UserEntity)request.getSession().getAttribute("user")).getId();
+		this.allService.saveNewCarByUserPhone(data,userId);
 		return "true";
 	}
 
-	@RequestMapping("/updateCarWithoutUserId")
+	@RequestMapping("/updateCar")
 	@ResponseBody
-	public String updateCarWithoutUserId(@RequestBody CarEntity data) {
-		this.allService.updateCarWithoutUserId(data);
+	public String updateCar(@RequestBody CarEntity data,HttpServletRequest request) {
+		String userId = ((UserEntity)request.getSession().getAttribute("user")).getId();
+		this.allService.updateCar(data, userId);
 		return "true";
 	}
 

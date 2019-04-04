@@ -154,16 +154,14 @@ public class AllService {
 		carServiceImpl.delete(data.getId());
 	}
 
-	public void saveNewCarByUserPhone(CarEntity carEntity) {
-		carEntity.setUserId(userServiceImpl.getUserByPhone(carEntity.getId()).getId());
+	public void saveNewCarByUserPhone(CarEntity carEntity,String userId) {
+		carEntity.setUserId(userId);
 		carEntity.setId(PublicMethods.getId());
 		carServiceImpl.insert(carEntity);
 	}
 
-	public void updateCarWithoutUserId(CarEntity car) {
-		CarEntity oldCar = carServiceImpl.getOne(car.getId());
-		car.setId(oldCar.getId());
-		car.setUserId(oldCar.getUserId());
+	public void updateCar(CarEntity car,String userId) {
+		car.setUserId(userId);
 		this.carServiceImpl.update(car);
 	}
 
