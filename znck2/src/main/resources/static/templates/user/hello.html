@@ -159,8 +159,8 @@
     })
 	$("body").on("click", ".clickToDo",clickToDo);
 	function clickToDo(){
-		var toDo = $(this).parent().attr('id');
-		var carId = $(this).attr('id');
+		var carId = $(this).parent().attr('id');
+		var toDo = $(this).attr('id');
 		if('deleteCar' == toDo){
 			$.ajax({
 	            async:false,
@@ -168,15 +168,19 @@
 	            dataType:'json',
 	            url:getUrl()+'deleteCarById',
 	            contentType:'application/json;charset=UTF-8',
-	            data:JSON.stringify({"id":$(this).parent().attr('id')}),
+	            data:JSON.stringify({"id":carId}),
 	            success:function(data){
 	            	alert("删除成功");
-	                window.location.href=getProjectName()+"/"+"jumpToUrl?phone="+phone+"&url=user/hello";
+	                window.location.href=getProjectName()+"/"+"jumpToUrl?&url=user/hello";
 	            }
 	        });
 			return;
 		}
-		window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/userInfo&changeLevel=activeEmail";
+		if(toDo == 'changeCarInfo'){
+            window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/carInfo&carId="+carId;
+            return;
+        }
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/userInfo&carId="+carId+"nature="+toDo;
 	}
 </script>
 </html>

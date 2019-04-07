@@ -2,13 +2,12 @@ package com.znck.service;
 
 import java.util.List;
 
+import com.znck.service.serviceImpl.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.znck.entity.ParkingEntity;
-import com.znck.entity.SpaceEntity;
 import com.znck.mapper.ParkingMapper;
-import com.znck.service.serviceimpl.ParkingService;
 
 /**
  * 
@@ -45,7 +44,7 @@ public class ParkingServiceImpl implements ParkingService {
 	}
 
 	@Override
-	public SpaceEntity getOne(String id) {
+	public ParkingEntity getOne(String id) {
 		return parkingMapper.getOne(id);
 	}
 

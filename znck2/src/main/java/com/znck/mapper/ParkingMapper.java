@@ -47,7 +47,7 @@ public interface ParkingMapper {
 	 * @param id
 	 * @return
 	 */
-	SpaceEntity getOne(String id);
+	ParkingEntity getOne(String id);
 
 	/**
 	 * 插入方法

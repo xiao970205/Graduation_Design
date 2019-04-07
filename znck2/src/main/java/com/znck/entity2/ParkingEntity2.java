@@ -15,7 +15,7 @@ public class ParkingEntity2 {
 
 	private String inSpaceId;
 
-	private String nowSapceId;
+	private String nowSpaceId;
 
 	private String saveSpaceId;
 
@@ -74,7 +74,7 @@ public class ParkingEntity2 {
 		this.carId = carId;
 		this.inSpaceId = inSpaceId;
 		
-		this.nowSapceId = nowSpaceId;
+		this.nowSpaceId = nowSpaceId;
 		this.saveSpaceId = saveSpaceId;
 		this.outSpaceId = outSpaceId;
 		
@@ -166,11 +166,11 @@ public class ParkingEntity2 {
 	}
 
 	public String getNowSapceId() {
-		return nowSapceId;
+		return nowSpaceId;
 	}
 
 	public void setNowSapceId(String nowSapceId) {
-		this.nowSapceId = nowSapceId;
+		this.nowSpaceId = nowSapceId;
 	}
 
 	public String getSaveSpaceId() {
