@@ -7,99 +7,31 @@
   <body>
     <input type = "hidden" th:value = "${nature}" id = "nature"/>
     <input type = "hidden" th:value = "${carId}" id = "carId" />
-    <label id = "textForSaveCar">存车时间</label>
-    <input id = "vipAppSaveCarTime" type = "datetime-local"/>
-    <input id = "vipAppSaveCar" type = "button" value="vip预约存车"/>
-    <input id = "saveCar" type = "button" value="停车"/>
-    <input id = "vipSaveCar" type = "button" value = "vip确认停车"/>
-    <input id = "vipCancelSaveCar" type="button" value="取消停车"/>
-    <label id = "textForGetCarTime">取车时间</label>
-    <input id = "vipAppGetCarTime" type="datetime-local" />
-    <input id = "vipTakeOutCar" type="button" value = "vip预约取车"/>
-    <input id = "vipTakeOutCarNow" type="button" value="vip立即取车"/>
-    <input id = "takeOutCar" type="button" value="取车"/>
-    <input id = "getCar" type="button" value = "开走车辆"/>
+    <input type = "hidden" th:value = "${phone}" id = "phone"/>
+    <label id = "text">取车时间：</label>
+    <input id="inTime" type="datetime-local"/>
+    <input type = "button" id = "saveCar" value = "停车"/>
   </body>
   <script type="text/javascript">
     $(function() {
+        var carId = $("#carId").val();
         var nature = $("#nature").val();
-        if(nature == "vipAppSaveCar"){
-          $("#textForSaveCar").hide();
-          $("#vipAppSaveCarTime").hide();
-          $("#vipAppSaveCar").hide();
-        }else if(nature == "saveCar"){
-          $("#saveCar").hide();
-        }else if(nature == "vipSaveCar"){
-          $("#vipSaveCar").hide();
-        }else if(nature == "vipCancelSaveCar"){
-          $("#vipCancelSaveCar").hide();
-        }else if(nature == "vipTakeOutCarNow"){
-          $("#vipTakeOutCarNow").hide();
-        }else if(nature == "takeOutCar"){
-          $("#takeOutCar").hide();
-        }else if(nature == "vipTakeOutCar"){
-          $("#textForGetCarTime").hide();
-          $("#vipAppGetCarTime").hide();
-          $("#vipTakeOutCar").hide();
-        }else{
-          //nature == "getCar";
-          $("#getCar").hide();
+        if(nature == "canSave"){
+            $("#text").hide();
+            $("#inTime").hide();
+        }else if(nature =="canGet"){
+            $("#inTime").hide();
+            $("#text").hide();
+            $("#saveCar").val("取车");
+        }else if(nature =="canGetVip"){
+            $("#saveCar").val("取车");
+        }else {
+            //预约取车
+            $("#text").text("预约取车时间");
+            $("#saveCar").val("存车");
         }
     });
-
-    $("#vipAppSaveCar").click(function () {
-      var vipAppSaveCarTime = $("#vipAppSaveCarTime").val();
-      if(isNullOrUndefined(vipAppSaveCarTime)){
-        alert("请填写具体时间！");
-        return;
-      }
-      var carId = $("#carId").val();
-      var appTime = vipAppSaveCarTime.split("T")[0]+" " +vipAppSaveCarTime.split("T")[1]+":00";
-    });
-    $("#saveCar").click(function () {
-      //普通停车
-      var carId = $("#carId").val();
-    });
-    $("#vipSaveCar").click(function () {
-      //vip预约停车
-      var carId = $("#carId").val();
-    });
-    $("#vipCancelSaveCar").click(function () {
-      var carId = $("#carId").val();
-    });
-    $("#vipTakeOutCar").click(function () {
-      var carId = $("#carId").val();
-      var vipAppGetCarTime = $("#vipAppGetCarTime").val();
-      if(isNullOrUndefined(vipAppGetCarTime)){
-        alert("请填写具体时间！");
-        return;
-      }
-    });
-    $("#vipTakeOutCarNow").click(function () {
-      var carId = $("#carId").val();
-    })
-    $("#takeOutCar").click(function () {
-      var carId = $("#carId").val();
-    })
-    $("#getCar").click(function () {
-      var carId = $("#carId").val();
-    })
-
-    function carToDoForAjax(url,time){
-      var json_data = JSON.stringify({"id":$("#carId").val(),"realName":time});
-      $.ajax({
-        async:false,
-        type:'POST',
-        dataType:'json',
-        url:getUrl() + url,
-        contentType:'application/json;charset=UTF-8',
-        data:json_data,
-        success:function(data){
-          window.location.href=getProjectName()+"/"+"jumpToUrl?url=hello";
-        }
-      });
-    }
-
+    
     Date.prototype.Format = function(fmt) {
         var o = {
         "M+" : this.getMonth() + 1,

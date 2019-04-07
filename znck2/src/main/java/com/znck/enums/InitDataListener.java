@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import com.znck.service.ParkingServiceImpl2;
-import com.znck.service.serviceImpl.ParkingService2;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,9 +43,6 @@ public class InitDataListener implements InitializingBean, ServletContextAware {
 	private ParkingServiceImpl parkingServiceImpl;
 
 	@Autowired
-	private ParkingServiceImpl2 parkingServiceImpl2;
-
-	@Autowired
 	private SpaceServiceImpl spaceServiceImpl;
 
 	@Override
@@ -70,13 +65,7 @@ public class InitDataListener implements InitializingBean, ServletContextAware {
 				spaceEntity.setWeight(22, 9, 5);
 			}
 			parkings = parkingServiceImpl.getAll();
-			parkings2 = parkingServiceImpl2.getAll();
-			if(parkings2 == null){
-				parkings2 = new ArrayList<ParkingEntity2>();
-			}
-			if(parkings2.size()==0){
-				parkings2 = new ArrayList<ParkingEntity2>();
-			}
+			parkings2 = new ArrayList<ParkingEntity2>();
 			this.offclock("0");
 			System.out.println("项目启动中，静态变量解锁");
 		} catch (InterruptedException e) {
