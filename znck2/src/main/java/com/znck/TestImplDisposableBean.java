@@ -37,7 +37,7 @@ public class TestImplDisposableBean implements DisposableBean, ExitCodeGenerator
 		// TODO Auto-generated method stub
 		System.out.println("<<<<<<<<<<<我被销毁了......................>>>>>>>>>>>>>>>");
 		System.out.println("正在更新数据。。。");
-		upDateData();
+		//upDateData();
 		System.out.println("更新数据完成");
 		System.out.println("<<<<<<<<<<<我被销毁了......................>>>>>>>>>>>>>>>");
 	}

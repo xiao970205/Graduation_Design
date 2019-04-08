@@ -118,8 +118,9 @@ public class HelloController {
 
 	@RequestMapping("/toBeVip")
 	@ResponseBody
-	public UserEntity toBeVip(@RequestBody UserEntity data) {
-		return allService.toBeVip(data);
+	public UserEntity toBeVip(HttpServletRequest request) {
+		String userId = ((UserEntity)request.getSession().getAttribute("user")).getId();
+		return allService.toBeVip(userId);
 	}
 
 	@RequestMapping("/getUserCars")
@@ -154,6 +155,14 @@ public class HelloController {
 	}
 
 
+	@RequestMapping("/saveNewCar")
+	@ResponseBody
+	public String saveNewCar(@RequestBody CarEntity data,HttpServletRequest request) {
+		String userId = ((UserEntity)request.getSession().getAttribute("user")).getId();
+		this.allService.saveNewCarByUserPhone(data, userId);
+		return "true";
+	}
+	
 	@RequestMapping("/updateCar")
 	@ResponseBody
 	public String updateCar(@RequestBody CarEntity data,HttpServletRequest request) {
@@ -193,17 +202,17 @@ public class HelloController {
 
 	@RequestMapping("/vipAppSaveCar")
 	@ResponseBody
-	public void vipAppSaveCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
+	public String vipAppSaveCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
 		String carId = data.getId();
 		String appTime = data.getRealName();
-		allparkingService2.vipAppSaveCar(carId,appTime);
+		return allparkingService2.vipAppSaveCar(carId,appTime);
 	}
-
+	
 	@RequestMapping("/saveCar")
 	@ResponseBody
-	public void saveCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
+	public String saveCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
 		String carId = data.getId();
-		allparkingService2.saveCar(carId);
+		return allparkingService2.saveCar(carId);
 	}
 
 	@RequestMapping("/vipSaveCar")
@@ -237,16 +246,19 @@ public class HelloController {
 
 	@RequestMapping("/takeOutCar")
 	@ResponseBody
-	public void takeOutCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
+	public String takeOutCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
 		String carId = data.getId();
 		allparkingService2.takeOutCar(carId);
+		System.out.println(carId);
+		return "true";
 	}
 
 	@RequestMapping("/getCar")
 	@ResponseBody
-	public void getCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
+	public String getCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
 		String carId = data.getId();
 		allparkingService2.getCar(carId);
+		return "true";
 	}
 
 	private static Map<String, String> parseFrom(HttpServletRequest request) {

@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
-import com.znck.service.ParkingServiceImpl2;
-import com.znck.service.serviceImpl.ParkingService2;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +16,7 @@ import com.znck.entity.PublicMethods;
 import com.znck.entity.SpaceEntity;
 import com.znck.entity2.ParkingEntity2;
 import com.znck.service.ParkingServiceImpl;
+import com.znck.service.ParkingServiceImpl2;
 import com.znck.service.SpaceServiceImpl;
 
 /**
@@ -56,20 +55,11 @@ public class InitDataListener implements InitializingBean, ServletContextAware {
 		System.out.println("项目启动中，静态变量上锁");
 		try {
 			this.onclock("0");
-
 			spaces = new ArrayList<SpaceEntity>();
-			List<SpaceEntity> space0 = spaceServiceImpl.getAll();
-			space0.forEach(space -> {
+			spaceServiceImpl.getAll().forEach(space -> {
 				space.setWeight(22, 9, 5);
 				spaces.add(space);
 			});
-			for(int i=0;i<10;i++) {
-				SpaceEntity spaceEntity = new SpaceEntity();
-				spaceEntity.setNature("缓冲区-空闲");
-				spaceEntity.setId(PublicMethods.getId());
-				spaceEntity.setWeight(22, 9, 5);
-			}
-			parkings = parkingServiceImpl.getAll();
 			parkings2 = parkingServiceImpl2.getAll();
 			if(parkings2 == null){
 				parkings2 = new ArrayList<ParkingEntity2>();

@@ -81,20 +81,5 @@ public class PublicMethods {
 		return rtn;
 	}
 
-	public static void onclock(String threadId) throws InterruptedException {
-		do {
-			if (StringUtils.isNullOrEmpty(InitDataListener.lockForParking)) {
-				InitDataListener.lockForParking = threadId;
-			}
-			if (StringUtils.isNullOrEmpty(InitDataListener.lockForSpace)) {
-				InitDataListener.lockForSpace = threadId;
-			}
-			Thread.sleep(100);
-		} while (!(InitDataListener.lockForParking.equals(threadId) & InitDataListener.lockForSpace.equals(threadId)));
-	}
 
-	public static void offclock() {
-		InitDataListener.lockForParking = null;
-		InitDataListener.lockForSpace = null;
-	}
 }

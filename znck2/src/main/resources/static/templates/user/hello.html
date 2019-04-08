@@ -127,8 +127,10 @@
 			}else if(nature == '存车中'){
 				//取车
 				//vip取车
-				htmlForOneDiv = '<input type = "button" id = "takeOutCar" class = "clickToDo" value = "取车"/>'
-					+'<input type = "button" id = "vipTakeOutCar" class = "clickToDo" value = "vip预约取车"/>'
+				htmlForOneDiv = '<input type = "button" id = "takeOutCar" class = "clickToDo" value = "取车"/>';
+				if(userData.nature == 2){
+					htmlForOneDiv = htmlForOneDiv +'<input type = "button" id = "vipTakeOutCar" class = "clickToDo" value = "vip预约取车"/>'
+				}
 			}else if(nature == '等待用户取车中'){
 				//确认取车取车
 				htmlForOneDiv = '<input type = "button" id = "getCar" class = "clickToDo" value = "我已到达指定位置，可以取车"/>'
@@ -153,7 +155,22 @@
     });
     $("#changePassword").click(function() {
     	window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/userInfo&changeLevel=changePassword";
+    });
+    $("#toBeVip").click(function(){
+    	$.ajax({
+            async:false,
+            type:'POST',
+            dataType:'json',
+            url:getUrl()+'toBeVip',
+            contentType:'application/json;charset=UTF-8',
+            data:null,
+            success:function(data){
+                window.location.href=getProjectName()+"/"+"jumpToUrl?&url=user/hello";
+            }
+        });
+		return;
     })
+    
     $("#activeEmail").click(function() {
     	window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/userInfo&changeLevel=activeEmail";
     })
@@ -180,7 +197,7 @@
             window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/carInfo&carId="+carId;
             return;
         }
-        window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/userInfo&carId="+carId+"nature="+toDo;
+        window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/carToDo&carId="+carId+"&nature="+toDo;
 	}
 </script>
 </html>

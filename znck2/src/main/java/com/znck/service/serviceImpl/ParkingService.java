@@ -1,9 +1,10 @@
-package com.znck.service.serviceImpl;
-
-import com.znck.entity.ParkingEntity;
-import org.apache.ibatis.annotations.Param;
+package com.znck.service.serviceimpl;
 
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
+import com.znck.entity.ParkingEntity;
 
 public interface ParkingService {
 

@@ -27,7 +27,7 @@ public class SpaceEntity {
         int weightX = 1;
         int weightY = weightX * maxX;
         int weightZ = weightY * maxY + weightY;
-        this.weight = weightX * (22-x) + weightY * y + weightZ * z;
+        this.weight = weightX * (maxX-x) + weightY * y + weightZ * z;
     }
 
     public SpaceEntity() {

@@ -55,10 +55,29 @@ public class AllParkingServiceForRuning {
 
 	private final static String VIP_APP_GETCAR = "vip预约取车中";
 
+	public void onclock(String threadId) throws InterruptedException {
+		do {
+			if (StringUtils.isNullOrEmpty(InitDataListener.lockForParking)) {
+				InitDataListener.lockForParking = threadId;
+			}
+			if (StringUtils.isNullOrEmpty(InitDataListener.lockForSpace)) {
+				InitDataListener.lockForSpace = threadId;
+			}
+			Thread.sleep(100);
+		} while (!(InitDataListener.lockForParking.equals(threadId) & InitDataListener.lockForSpace.equals(threadId)));
+	}
+
+	public void offclock() {
+		InitDataListener.lockForParking = null;
+		InitDataListener.lockForSpace = null;
+	}
+	
 	public void parkingRun() throws InterruptedException,ParseException {
+		System.out.println("");
+		System.out.println("车库运行中");
 		// 上锁
 		String threadId = PublicMethods.getId();
-		PublicMethods.onclock(threadId);
+		onclock(threadId);
 		//等待用户存车运行方法
 		InitDataListener.parkings2.stream()
 				.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(VIP_WAIT_USER_PARKING).getId()))
@@ -109,10 +128,11 @@ public class AllParkingServiceForRuning {
 		});
 		//普通用户停车方法
 		InitDataListener.parkings2.stream()
-				.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(IN_THE_PARKING)) & parking.getVipAppGetTime() == null)
-				.sorted(Comparator.comparing(ParkingEntity2::getInPlaceTimeForSort))
+			.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(IN_THE_PARKING).getId()) & parking.getVipAppGetTime() == null)
+			.sorted(Comparator.comparing(ParkingEntity2::getInPlaceTimeForSort))
 				.collect(Collectors.toList()).forEach(parking ->{
 			try {
+				System.out.println("存车一个");
 				saveCarNextTodo(parking);
 			} catch (ParseException | InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -121,7 +141,7 @@ public class AllParkingServiceForRuning {
 		});
 		//普通用户取车方法
 		InitDataListener.parkings2.stream()
-				.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(GETIN_CAR)))
+				.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(GETIN_CAR).getId()))
 				.sorted(Comparator.comparing(ParkingEntity2::getOutTimeForSort))
 				.collect(Collectors.toList()).forEach(parking ->{
 			try {
@@ -132,39 +152,37 @@ public class AllParkingServiceForRuning {
 			}
 		});
 
-		PublicMethods.offclock();
+		offclock();
+
+		System.out.println("");
 	}
 
 	public void showInfo(){
-
-		System.out.println("等待用户存车运行方法有"+InitDataListener.parkings2.stream()
-				.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(VIP_WAIT_USER_PARKING).getId()))
-				.collect(Collectors.toList()).size());
-
-		System.out.println("vip用户停车方法" +InitDataListener.parkings2.stream()
-				.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(VIP_IN_THE_PARKING).getId()) & parking.getVipAppGetTime() != null)
-				.sorted(Comparator.comparing(ParkingEntity2::getVipSendTimeForSort))
-				.collect(Collectors.toList()).size());
-
-		System.out.println("vip用户预约取车等待方法"+InitDataListener.parkings2.stream()
-				.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(VIP_APP_GETCAR).getId()))
-				.sorted(Comparator.comparing(ParkingEntity2::getVipAppGetTimeForSort))
-				.collect(Collectors.toList()).size());
-
-		System.out.println("vip用户取车方法"+InitDataListener.parkings2.stream()
-				.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(VIP_GETCAR).getId()))
-				.sorted(Comparator.comparing(ParkingEntity2::getVipAppGetTimeForSort))
-				.collect(Collectors.toList()).size());
-
-		System.out.println("普通用户停车方法"+InitDataListener.parkings2.stream()
-				.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(IN_THE_PARKING)) & parking.getVipAppGetTime() == null)
-				.sorted(Comparator.comparing(ParkingEntity2::getInPlaceTimeForSort))
-				.collect(Collectors.toList()).size());
-
-		System.out.println("普通用户取车方法"+InitDataListener.parkings2.stream()
-				.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(GETIN_CAR)))
-				.sorted(Comparator.comparing(ParkingEntity2::getOutTimeForSort))
-				.collect(Collectors.toList()).size());
+		System.out.println("总共一共有parking类："+InitDataListener.parkings2.size());
+		InitDataListener.parkings2.forEach(parking ->{
+			System.out.println(parking.toString());
+		});
+		System.out.println("总共有车位："+InitDataListener.spaces.stream().filter(space -> space.getNature().equals(contrastServiceImpl.getContrastByRealName(GARAGE_VACANCY).getId())).collect(Collectors.toList()).size());
+		System.out.println("一共开往停车位的车辆："+
+		InitDataListener.parkings2.stream()
+			.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(IN_THE_PARKING).getId()))
+			.collect(Collectors.toList()).size());
+		
+		System.out.println("普通的开往停车位的车辆："+
+				InitDataListener.parkings2.stream()
+					.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(IN_THE_PARKING).getId()) & parking.getVipAppGetTime() == null)
+					.collect(Collectors.toList()).size());
+		System.out.println("停放车辆数量："+InitDataListener.parkings2.stream()
+					.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName("存车中").getId()))
+					.collect(Collectors.toList()).size());
+		System.out.println("普通的开往出口的车辆："+
+				InitDataListener.parkings2.stream()
+					.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(GETIN_CAR).getId()))
+					.collect(Collectors.toList()).size());
+		System.out.println("等待取走的车辆："+InitDataListener.parkings2.stream()
+					.filter(parking -> parking.getNature().equals(contrastServiceImpl.getContrastByRealName(WAIT_USER_GET).getId()))
+					.collect(Collectors.toList()).size());
+		System.out.println("/n");
 	}
 
 	/**

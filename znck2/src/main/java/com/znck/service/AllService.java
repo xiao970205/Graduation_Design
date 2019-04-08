@@ -19,6 +19,7 @@ import com.znck.entity.PhoneActiveEntity;
 import com.znck.entity.PublicMethods;
 import com.znck.entity.UserEntity;
 import com.znck.entity.VipEntity;
+import com.znck.entity2.ParkingEntity2;
 import com.znck.enums.InitDataListener;
 
 /**
@@ -131,13 +132,13 @@ public class AllService {
 		List<CarEntity> allCarByUserId = new ArrayList<CarEntity>();
 		allCarByUserIdWithOutNature.forEach(car -> {
 			CarEntity carWithNature = car;
-			List<ParkingEntity> parkings = InitDataListener.parkings.stream()
+			List<ParkingEntity2> parkings = InitDataListener.parkings2.stream()
 					.filter(pa -> pa.getCarId().equals(car.getId())).collect(Collectors.toList());
 			if (parkings.size() == 0) {
 				carWithNature.setNature(null);
 			} else {
 				carWithNature.setNature(contrastServiceImpl
-						.getOne(InitDataListener.parkings.stream().filter(pa -> pa.getCarId().equals(car.getId()))
+						.getOne(InitDataListener.parkings2.stream().filter(pa -> pa.getCarId().equals(car.getId()))
 								.collect(Collectors.toList()).get(0).getNature())
 						.getRealName());
 			}
@@ -165,9 +166,9 @@ public class AllService {
 		this.carServiceImpl.update(car);
 	}
 
-	public UserEntity toBeVip(UserEntity data) {
+	public UserEntity toBeVip(String userId) {
 		// TODO Auto-generated method stub
-		UserEntity user = userServiceImpl.getUserByPhone(data.getPhone());
+		UserEntity user = userServiceImpl.getOne(userId);
 		VipEntity vip = vipActiveServiceImpl.getVipByUserId(user.getId());
 		if (vip == null) {
 			Calendar cal = Calendar.getInstance();
@@ -185,9 +186,14 @@ public class AllService {
 			vip.setEndDate(date);
 			vipActiveServiceImpl.update(vip);
 		}
-		final int sizeOne = 1;
+		final String sizeOne = "1";
+		user = userServiceImpl.getOne(userId);
+		System.out.println(user.getNature());
 		if (user.getNature().equals(sizeOne)) {
+			System.out.println(true);
 			user.setNature("2");
+		}else {
+			System.out.println(false);
 		}
 		userServiceImpl.update(user);
 		return user;

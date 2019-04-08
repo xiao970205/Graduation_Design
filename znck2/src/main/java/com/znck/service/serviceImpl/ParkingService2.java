@@ -1,4 +1,4 @@
-package com.znck.service.serviceImpl;
+package com.znck.service.serviceimpl;
 
 import com.znck.entity2.ParkingEntity2;
 

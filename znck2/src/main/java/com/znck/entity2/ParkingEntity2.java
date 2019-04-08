@@ -130,7 +130,7 @@ public class ParkingEntity2 {
 			outPlaceTime = format.format(this.outPlaceTime);
 		}
 		String getTime = "null";
-		if(this.getTime == null) {
+		if(this.getTime != null) {
 			getTime = format.format(this.getTime);
 		}
 		return "id: "+this.getId()+", carId: "+this.getCarId()+",inSpaceId: "+this.getInSpaceId()
