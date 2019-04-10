@@ -2,76 +2,47 @@ package com.znck.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.znck.entity.ParkingEntity;
-import com.znck.entity.SpaceEntity;
 
 /**
- * 
- * ParkingMapper
+ * mapper层
  * 
  * @author 肖舒翔
+ * 2019-04-09
  * @version 1.0
- *
  */
 public interface ParkingMapper {
 
-	/**
-	 * 通过汽车id获得方法
-	 * 
-	 * @param carId
-	 * @return
-	 */
-	ParkingEntity getParkingByCarid(String carId);
+    /**
+     * 获得所有方法
+     *
+     * @return
+     */
+    List<ParkingEntity> getAll();
 
-	/**
-	 * 通过性质获得方法，时间排序
-	 * 
-	 * @param nature
-	 * @param order
-	 * @return
-	 */
-	List<ParkingEntity> getParkingsByNature(@Param("nature") String nature, @Param("order") String order);
+    /**
+     * 插入方法
+     *
+     * @param parking
+     */
+    void insert(ParkingEntity parking);
 
-	/**
-	 * 获得所有方法
-	 * 
-	 * @return
-	 */
-	List<ParkingEntity> getAll();
+    /**
+     * 更新方法
+     *
+     * @param parking
+     */
+    void update(ParkingEntity parking);
 
-	/**
-	 * 获得一个方法
-	 * 
-	 * @param id
-	 * @return
-	 */
-	ParkingEntity getOne(String id);
+    /**
+     * 删除方法
+     *
+     * @param id
+     */
+    void delete(String id);
 
-	/**
-	 * 插入方法
-	 * 
-	 * @param parking
-	 */
-	void insert(ParkingEntity parking);
-
-	/**
-	 * 更新方法
-	 * 
-	 * @param parking
-	 */
-	void update(ParkingEntity parking);
-
-	/**
-	 * 删除方法
-	 * 
-	 * @param id
-	 */
-	void delete(String id);
-
-	/**
-	 * 清空整个表
-	 */
-	void truncateTable();
+    /**
+     * 清空整个表
+     */
+    void truncateTable();
 }

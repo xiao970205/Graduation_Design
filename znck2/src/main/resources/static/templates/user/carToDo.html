@@ -1,8 +1,8 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8">
-    <script type="text/javascript" th:src="@{/js/jquery.js}"></script>
-    <script type="text/javascript" th:src="@{/js/publicFunction.js}"></script>
+    <script type="text/javascript" th:src="@{templates/user/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{templates/user/js/publicFunction.js}"></script>
   </head>
   <body>
     <input type = "hidden" th:value = "${nature}" id = "nature"/>
@@ -16,6 +16,7 @@
     <label id = "textForGetCarTime">取车时间</label>
     <input id = "vipAppGetCarTime" type="datetime-local" />
     <input id = "vipTakeOutCar" type="button" value = "vip预约取车"/>
+    <input id = "vipCancelTakeOutCar" type="button" value="取消预约取车"/>
     <input id = "vipTakeOutCarNow" type="button" value="vip立即取车"/>
     <input id = "takeOutCar" type="button" value="取车"/>
     <input id = "getCar" type="button" value = "开走车辆"/>
@@ -32,6 +33,7 @@
           $("#textForGetCarTime").hide();
           $("#vipAppGetCarTime").hide();
           $("#vipTakeOutCar").hide();
+          $("#vipCancelTakeOutCar").hide();
           $("#getCar").hide();
         }else if(nature == "saveCar"){
           $("#textForSaveCar").hide();
@@ -43,6 +45,7 @@
           $("#takeOutCar").hide();
           $("#textForGetCarTime").hide();
           $("#vipAppGetCarTime").hide();
+          $("#vipCancelTakeOutCar").hide();
           $("#vipTakeOutCar").hide();
           $("#getCar").hide();
         }else if(nature == "vipSaveCar"){
@@ -56,6 +59,7 @@
           $("#textForGetCarTime").hide();
           $("#vipAppGetCarTime").hide();
           $("#vipTakeOutCar").hide();
+          $("#vipCancelTakeOutCar").hide();
           $("#getCar").hide();
         }else if(nature == "vipCancelSaveCar"){
           $("#textForSaveCar").hide();
@@ -67,8 +71,22 @@
           $("#takeOutCar").hide();
           $("#textForGetCarTime").hide();
           $("#vipAppGetCarTime").hide();
+          $("#vipCancelTakeOutCar").hide();
           $("#vipTakeOutCar").hide();
           $("#getCar").hide();
+        }else if(nature == "vipCancelTakeOutCar"){
+            $("#textForSaveCar").hide();
+            $("#vipAppSaveCarTime").hide();
+            $("#vipAppSaveCar").hide();
+            $("#saveCar").hide();
+            $("#vipSaveCar").hide();
+            $("#vipCancelSaveCar").hide();
+            $("#vipTakeOutCarNow").hide();
+            $("#takeOutCar").hide();
+            $("#textForGetCarTime").hide();
+            $("#vipAppGetCarTime").hide();
+            $("#vipTakeOutCar").hide();
+            $("#getCar").hide();
         }else if(nature == "vipTakeOutCarNow"){
           $("#textForSaveCar").hide();
           $("#vipAppSaveCarTime").hide();
@@ -76,10 +94,11 @@
           $("#saveCar").hide();
           $("#vipSaveCar").hide();
           $("#vipCancelSaveCar").hide();
-          $("#vipTakeOutCarNow").hide();
           $("#takeOutCar").hide();
           $("#textForGetCarTime").hide();
           $("#vipAppGetCarTime").hide();
+          $("#vipCancelTakeOutCar").hide();
+          $("#vipTakeOutCar").hide();
           $("#getCar").hide();
         }else if(nature == "takeOutCar"){
           $("#textForSaveCar").hide();
@@ -92,6 +111,7 @@
           $("#textForGetCarTime").hide();
           $("#vipAppGetCarTime").hide();
           $("#vipTakeOutCar").hide();
+          $("#vipCancelTakeOutCar").hide();
           $("#getCar").hide();
         }else if(nature == "vipTakeOutCar"){
           $("#textForSaveCar").hide();
@@ -102,6 +122,7 @@
           $("#vipCancelSaveCar").hide();
           $("#vipTakeOutCarNow").hide();
           $("#takeOutCar").hide();
+          $("#vipCancelTakeOutCar").hide();
           $("#getCar").hide();
         }else{
         	$("#saveCar").hide();
@@ -114,10 +135,60 @@
             $("#takeOutCar").hide();
             $("#textForGetCarTime").hide();
             $("#vipAppGetCarTime").hide();
+            $("#vipCancelTakeOutCar").hide();
             $("#vipTakeOutCar").hide();
         }
     });
-	
+    
+    $("#vipCancelTakeOutCar").click(function(){
+    	var carId = $("#carId").val();
+    	$.ajax({
+            async:false,
+            type:'POST',
+            dataType:'text',
+            url:getUrl()+'vipCancelTakeOutCar',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify({"id":carId}),
+            success:function(data){
+              window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/hello";
+            }
+         });
+    });
+    
+    $("#vipTakeOutCarNow").click(function(){
+    	var carId = $("#carId").val();
+    	$.ajax({
+            async:false,
+            type:'POST',
+            dataType:'text',
+            url:getUrl()+'vipTakeOutCarNow',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify({"id":carId}),
+            success:function(data){
+              window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/hello";
+            }
+         });
+    });
+	$("#vipTakeOutCar").click(function(){
+	    var vipAppGetCarTime = $("#vipAppGetCarTime").val();
+	    if(isNullOrUndefined(vipAppGetCarTime)){
+	      alert("请填写具体时间！");
+	      return;
+	    }
+	    var carId = $("#carId").val();
+	    var appTime = vipAppGetCarTime.split("T")[0]+" " +vipAppGetCarTime.split("T")[1]+":00";
+    	$.ajax({
+            async:false,
+            type:'POST',
+            dataType:'text',
+            url:getUrl()+'vipTakeOutCar',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify({"id":carId,"realName":appTime}),
+            success:function(data){
+              window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/hello";
+            }
+         });
+    });
     $("#vipSaveCar").click(function(){
     	var carId = $("#carId").val();
     	$.ajax({

@@ -4,70 +4,97 @@
     <resultMap id="BaseResultMap" type="com.znck.entity.ParkingSaveEntity" >
         <id column="id" property="id" jdbcType="VARCHAR" />
         <result column="carid" property="carId" jdbcType="VARCHAR" />
-        <result column="way" property="way" jdbcType="VARCHAR" />
-        <result column="intime" property="inTime" javaType="java.util.Date" />
-        <result column="saveinplacetime" property="saveInPlaceTime" javaType="java.util.Date" />
-        <result column="outtime" property="outTime" javaType="java.util.Date" />
-        <result column="outinplacetime" property="outInPlaceTime" javaType="java.util.Date" />
+        <result column="inspaceid" property="inSpaceId" jdbcType="VARCHAR" />
         <result column="savespaceid" property="saveSpaceId" jdbcType="VARCHAR" />
-        <result column="nature" property="nature" jdbcType="VARCHAR" />
+        <result column="outspaceid" property="nowSpaceId" jdbcType="VARCHAR" />
+        <result column="vipsendtime" property="vipSendTime" javaType="java.util.Date" />
+        <result column="vipappparkingtime" property="vipAppParkingTime" javaType="java.util.Date" />
+        <result column="inplacetime" property="inPlaceTime" javaType="java.util.Date" />
+        <result column="intime" property="inTime" javaType="java.util.Date" />
+        <result column="vipgettime" property="vipGetTime" javaType="java.util.Date" />
+        <result column="vipappgettime" property="vipAppGetTime" javaType="java.util.Date" />
+        <result column="outtime" property="outTime" javaType="java.util.Date" />
+        <result column="outplacetime" property="outPlaceTime" javaType="java.util.Date" />
+        <result column="gettime" property="getTime" javaType="java.util.Date" />
+        <result column="way" property="way" jdbcType="VARCHAR" />
     </resultMap>
-    
+
     <sql id="Base_Column_List" >
-        id,carId,way,inTime,saveInPlaceTime,outTime,outInPlaceTime,saveSpaceId,nature
+        id,carId,inSpaceId,saveSpaceId
+        ,outSpaceId,vipSendTime,vipAppParkingTime,inPlaceTime
+        ,inTime,vipGetTime,vipAppGetTime,outTime
+        ,outPlaceTime,getTime,nature,way
     </sql>
 
     <select id="getAll" resultMap="BaseResultMap"  >
-       SELECT 
+        SELECT
         <include refid="Base_Column_List" />
-       FROM parkingsave
+        FROM parkingsave
     </select>
 
     <select id="getOne" parameterType="String" resultMap="BaseResultMap" >
-        SELECT 
+        SELECT
         <include refid="Base_Column_List" />
-       FROM parkingsave
-       WHERE id = #{id}
+        FROM parkingsave
+        WHERE id = #{id}
     </select>
 
     <insert id="insert" parameterType="com.znck.entity.ParkingSaveEntity" >
-       INSERT INTO 
-            parkingsave
-            (id,
-            carid,
-            way,
-            intime,
-            saveinplacetime,
-            outtime,
-            outinplacetime,
-            savespaceid,nature) 
+        INSERT INTO
+        parkingsave
+        (id,
+        carid,
+        inspaceid,
+        savespaceid,
+        outspaceid,
+        vipsendtime,
+        vipappparkingtime,
+        inplacetime,
+        intime,
+        vipgettime,
+        vipappgettime,
+        outtime,
+        outplacetime,
+        gettime,
+        way
+        )
         VALUES
-            (#{id}, #{carId}
-            ,#{way}, #{inTime}, #{saveInPlaceTime}, #{outTime}
-            , #{outInPlaceTime}, #{saveSpaceId}, #{nature})
+        (
+        #{id},#{carId},#{inSpaceId},#{saveSpaceId}
+        ,#{outSpaceId},#{vipSendTime},#{vipAppParkingTime}
+        ,#{inPlaceTime},#{inTime},#{vipGetTime},#{vipAppGetTime}
+        ,#{outTime},#{outPlaceTime},#{getTime},#{way}
+        )
     </insert>
-    
-    <update id="update" parameterType="com.znck.entity.ParkingSaveEntity" >
-       UPDATE 
-            parkingsave 
-       SET 
-        carid = #{carId},
-        way = #{way},
-        intime = #{inTime},
-        outtime = #{outTime},
-        outinplacetime = #{outInPlaceTime},
-        savespaceid = #{saveSpaceId},
-        saveinplacetime = #{saveInPlaceTime},
-        nature = #{nature}
-       WHERE 
-            id = #{id}
-    </update>
-    
-    <delete id="delete" parameterType="String" >
-       DELETE FROM
-             parkingsave 
-       WHERE 
-             id =#{id}
-    </delete>
 
+    <update id="update" parameterType="com.znck.entity.ParkingSaveEntity" >
+        UPDATE
+        parkingsave
+        SET
+        carid = #{id},
+        inspaceid = #{inSpaceId},
+        nowspaceid = #{nowSapceId},
+        savespaceid = #{saveSpaceId},
+        outspaceid = #{outSpaceId},
+        vipsendtime = #{vipSendTime},
+        vipappparkingtime = #{vipAppParkingTime},
+        inplacetime = #{inPlaceTime},
+        intime = #{inTime},
+        vipgettime = #{vipGetTime},
+        vipappgettime = #{vipAppGetTime},
+        outtime = #{outTime},
+        outplacetime = #{outPlaceTime},
+        gettime = #{getTime},
+        nature = #{nature},
+        way = #{way}
+        WHERE
+        id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="String" >
+        DELETE FROM
+        parking
+        WHERE
+        id =#{id}
+    </delete>
 </mapper>

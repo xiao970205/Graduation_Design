@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.znck.entity.CarEntity;
 import com.znck.entity.ContrastEntity;
 import com.znck.entity.UserEntity;
-import com.znck.service.AllParkingService2;
+import com.znck.service.AllParkingService;
 import com.znck.service.AllService;
 
 /**
@@ -38,7 +38,7 @@ public class HelloController {
 	private AllService allService;
 	
 	@Autowired
-	private AllParkingService2 allparkingService2;
+	private AllParkingService allparkingService;
 
 	@RequestMapping("/adminLanding")
 	@ResponseBody
@@ -53,54 +53,69 @@ public class HelloController {
 
 	@RequestMapping("/changePassword")
 	@ResponseBody
-	public String changePassword(@RequestBody UserEntity data) {
-		return allService.changePassword(data);
+	public String changePassword(@RequestBody UserEntity data,HttpServletRequest request) {
+		String phone = ((UserEntity)request.getSession().getAttribute("user")).getPhone();
+		String password = data.getPassword();
+		return allService.changePassword(phone,password);
 	}
 
 	@RequestMapping("/changePhone")
 	@ResponseBody
-	public String changePhone(@RequestBody UserEntity data) {
-		return allService.changePhone(data);
+	public String changePhone(@RequestBody UserEntity data,HttpServletRequest request) {
+		String phone = ((UserEntity)request.getSession().getAttribute("user")).getPhone();
+		String newPhone = data.getPhone();
+		request.getSession().removeAttribute("user");
+		return allService.changePhone(phone,newPhone);
 	}
 
 	@RequestMapping("/changeEmail")
 	@ResponseBody
-	public String changeEmail(@RequestBody UserEntity data) {
-		return allService.changeEmail(data);
+	public String changeEmail(@RequestBody UserEntity data,HttpServletRequest request) {
+		String phone = ((UserEntity)request.getSession().getAttribute("user")).getPhone();
+		String email = data.getEmail();
+		return allService.changeEmail(phone,email);
 	}
 
 	@RequestMapping("/changeSensitiveMessage")
 	@ResponseBody
-	public String changeSensitiveMessage(@RequestBody UserEntity data) {
-		return allService.changeSensitiveMessage(data);
+	public String changeSensitiveMessage(@RequestBody UserEntity data,HttpServletRequest request) {
+		String phone = ((UserEntity)request.getSession().getAttribute("user")).getPhone();
+		String realName = data.getRealName();
+		String idCard = data.getId();
+		return allService.changeSensitiveMessage(phone,realName,idCard);
 	}
 
 	@RequestMapping("/changeGeneralInfo")
 	@ResponseBody
-	public String changeGeneralInfo(@RequestBody UserEntity data) {
-		return allService.changeGeneralInfo(data);
+	public String changeGeneralInfo(@RequestBody UserEntity data,HttpServletRequest request) {
+		String phone = ((UserEntity)request.getSession().getAttribute("user")).getPhone();
+		String nickName = data.getNickName();
+		return allService.changeGeneralInfo(phone,nickName);
 	}
 
 	@RequestMapping("/addUserSensitiveInfo")
 	@ResponseBody
-	public String addUserSensitiveInfo(@RequestBody UserEntity data) {
-		System.out.println(666);
-		allService.addUserSensitiveInfo(data);
-
+	public String addUserSensitiveInfo(@RequestBody UserEntity data,HttpServletRequest request) {
+		String phone = ((UserEntity)request.getSession().getAttribute("user")).getPhone();
+		String realName = data.getRealName();
+		String idCard = data.getIdCard();
+		allService.addUserSensitiveInfo(phone,realName,idCard);
 		return "true";
 	}
 
 	@RequestMapping("/sendVerificationCode")
 	@ResponseBody
-	public String sendVerificationCode(@RequestBody UserEntity data){
-		allService.sendVerificationCode(data);
+	public String sendVerificationCode(HttpServletRequest request){
+		String phone = ((UserEntity)request.getSession().getAttribute("user")).getPhone();
+		allService.sendVerificationCode(phone);
 		return "true";
 	}
 
 	@RequestMapping("/activeVerificationCode")
 	@ResponseBody
-	public String activeVerificationCode(@RequestBody UserEntity data){
-		allService.activeVerificationCode(data);
+	public String activeVerificationCode(@RequestBody UserEntity data,HttpServletRequest request){
+		String phone = ((UserEntity)request.getSession().getAttribute("user")).getPhone();
+		allService.activeVerificationCode(data.getId(),phone);
 		return "true";
 	}
 
@@ -205,28 +220,35 @@ public class HelloController {
 	public String vipAppSaveCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
 		String carId = data.getId();
 		String appTime = data.getRealName();
-		return allparkingService2.vipAppSaveCar(carId,appTime);
+		return allparkingService.vipAppSaveCar(carId,appTime);
 	}
 	
 	@RequestMapping("/saveCar")
 	@ResponseBody
 	public String saveCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
 		String carId = data.getId();
-		return allparkingService2.saveCar(carId);
+		return allparkingService.saveCar(carId);
 	}
 
 	@RequestMapping("/vipSaveCar")
 	@ResponseBody
 	public void vipSaveCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
 		String carId = data.getId();
-		allparkingService2.vipSaveCar(carId);
+		allparkingService.vipSaveCar(carId);
 	}
 
 	@RequestMapping("/vipCancelSaveCar")
 	@ResponseBody
 	public void vipCancelSaveCar(@RequestBody ContrastEntity data) throws InterruptedException {
 		String carId = data.getId();
-		allparkingService2.vipCancelSaveCar(carId);
+		allparkingService.vipCancelSaveCar(carId);
+	}
+
+	@RequestMapping("/vipCancelTakeOutCar")
+	@ResponseBody
+	public void vipCancelTakeOutCar(@RequestBody ContrastEntity data) throws InterruptedException {
+		String carId = data.getId();
+		allparkingService.vipCancelTakeOutCar(carId);
 	}
 
 	@RequestMapping("/vipTakeOutCar")
@@ -234,22 +256,21 @@ public class HelloController {
 	public void vipTakeOutCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
 		String carId = data.getId();
 		String appTime = data.getRealName();
-		allparkingService2.vipTakeOutCar(carId,appTime);
+		allparkingService.vipTakeOutCar(carId,appTime);
 	}
 
 	@RequestMapping("/vipTakeOutCarNow")
 	@ResponseBody
 	public void vipTakeOutCarNow(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
 		String carId = data.getId();
-		allparkingService2.vipTakeOutCarNow(carId);
+		allparkingService.vipTakeOutCarNow(carId);
 	}
 
 	@RequestMapping("/takeOutCar")
 	@ResponseBody
 	public String takeOutCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
 		String carId = data.getId();
-		allparkingService2.takeOutCar(carId);
-		System.out.println(carId);
+		allparkingService.takeOutCar(carId);
 		return "true";
 	}
 
@@ -257,7 +278,7 @@ public class HelloController {
 	@ResponseBody
 	public String getCar(@RequestBody ContrastEntity data) throws ParseException, InterruptedException {
 		String carId = data.getId();
-		allparkingService2.getCar(carId);
+		allparkingService.getCar(carId);
 		return "true";
 	}
 

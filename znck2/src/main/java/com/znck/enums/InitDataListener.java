@@ -12,11 +12,8 @@ import org.springframework.web.context.ServletContextAware;
 
 import com.mysql.cj.util.StringUtils;
 import com.znck.entity.ParkingEntity;
-import com.znck.entity.PublicMethods;
 import com.znck.entity.SpaceEntity;
-import com.znck.entity2.ParkingEntity2;
 import com.znck.service.ParkingServiceImpl;
-import com.znck.service.ParkingServiceImpl2;
 import com.znck.service.SpaceServiceImpl;
 
 /**
@@ -34,17 +31,12 @@ public class InitDataListener implements InitializingBean, ServletContextAware {
 
 	public static String lockForSpace;
 
-	public static List<ParkingEntity> parkings;
-
 	public static List<SpaceEntity> spaces;
 	
-	public static List<ParkingEntity2> parkings2;
+	public static List<ParkingEntity> parkings2;
 
 	@Autowired
 	private ParkingServiceImpl parkingServiceImpl;
-
-	@Autowired
-	private ParkingServiceImpl2 parkingServiceImpl2;
 
 	@Autowired
 	private SpaceServiceImpl spaceServiceImpl;
@@ -60,12 +52,12 @@ public class InitDataListener implements InitializingBean, ServletContextAware {
 				space.setWeight(22, 9, 5);
 				spaces.add(space);
 			});
-			parkings2 = parkingServiceImpl2.getAll();
+			parkings2 = parkingServiceImpl.getAll();
 			if(parkings2 == null){
-				parkings2 = new ArrayList<ParkingEntity2>();
+				parkings2 = new ArrayList<ParkingEntity>();
 			}
 			if(parkings2.size()==0){
-				parkings2 = new ArrayList<ParkingEntity2>();
+				parkings2 = new ArrayList<ParkingEntity>();
 			}
 			this.offclock("0");
 			System.out.println("项目启动中，静态变量解锁");

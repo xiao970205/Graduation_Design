@@ -19,7 +19,6 @@ import com.znck.entity.PhoneActiveEntity;
 import com.znck.entity.PublicMethods;
 import com.znck.entity.UserEntity;
 import com.znck.entity.VipEntity;
-import com.znck.entity2.ParkingEntity2;
 import com.znck.enums.InitDataListener;
 
 /**
@@ -100,28 +99,28 @@ public class AllService {
 		return userServiceImpl.getUserByPhone(phone);
 	}
 
-	public String changePhone(UserEntity data) {
-		UserEntity user = userServiceImpl.getUserByPhone(data.getId());
-		user.setPhone(data.getPhone());
+	public String changePhone(String oldPhone,String newPhone) {
+		UserEntity user = userServiceImpl.getUserByPhone(oldPhone);
+		user.setPhone(newPhone);
 		user.setPhoneNature("0");
 		user = changeUserNature(user);
 		userServiceImpl.update(user);
 		return "true";
 	}
 
-	public String changeEmail(UserEntity data) {
-		UserEntity user = userServiceImpl.getUserByPhone(data.getId());
-		user.setEmail(data.getEmail());
+	public String changeEmail(String phone ,String email) {
+		UserEntity user = userServiceImpl.getUserByPhone(phone);
+		user.setEmail(email);
 		user.setEmailNature("0");
 		user = changeUserNature(user);
 		userServiceImpl.update(user);
 		return "true";
 	}
 
-	public String changeSensitiveMessage(UserEntity data) {
-		UserEntity user = userServiceImpl.getUserByPhone(data.getId());
-		user.setRealName(data.getRealName());
-		user.setIdCard(data.getId());
+	public String changeSensitiveMessage(String phone,String realName,String idCard) {
+		UserEntity user = userServiceImpl.getUserByPhone(phone);
+		user.setRealName(realName);
+		user.setIdCard(idCard);
 		user = changeUserNature(user);
 		userServiceImpl.update(user);
 		return "true";
@@ -132,7 +131,7 @@ public class AllService {
 		List<CarEntity> allCarByUserId = new ArrayList<CarEntity>();
 		allCarByUserIdWithOutNature.forEach(car -> {
 			CarEntity carWithNature = car;
-			List<ParkingEntity2> parkings = InitDataListener.parkings2.stream()
+			List<ParkingEntity> parkings = InitDataListener.parkings2.stream()
 					.filter(pa -> pa.getCarId().equals(car.getId())).collect(Collectors.toList());
 			if (parkings.size() == 0) {
 				carWithNature.setNature(null);
@@ -225,19 +224,16 @@ public class AllService {
 		emailActiveServiceImpl.delete(code);
 	}
 
-	public void sendVerificationCode(UserEntity user) {
-		String phone = user.getPhone();
+	public void sendVerificationCode(String phone) {
 		int code = (int) ((Math.random() * 9 + 1) * 1000);
-		user = userServiceImpl.getUserByPhone(phone);
+		UserEntity user = userServiceImpl.getUserByPhone(phone);
 		PhoneActiveEntity phoneActive = new PhoneActiveEntity(PublicMethods.getId(), user.getId(), code + "");
 		phoneActiveServiceImpl.insert(phoneActive);
 		// 需要发送验证码接口
 	}
 
-	public String activeVerificationCode(UserEntity data) {
+	public String activeVerificationCode(String code,String phone) {
 		// TODO Auto-generated method stub
-		String code = data.getId();
-		String phone = data.getPhone();
 		UserEntity user = userServiceImpl.getUserByPhone(phone);
 		List<PhoneActiveEntity> codes = phoneActiveServiceImpl.getPhoneActiveByUserPhone(phone);
 		for (PhoneActiveEntity cod : codes) {
@@ -275,25 +271,25 @@ public class AllService {
 		return user;
 	}
 
-	public void addUserSensitiveInfo(UserEntity user) {
-		UserEntity oldUser = userServiceImpl.getUserByPhone(user.getPhone());
-		oldUser.setRealName(user.getRealName());
-		oldUser.setIdCard(user.getIdCard());
+	public void addUserSensitiveInfo(String phone,String realName,String idCard) {
+		UserEntity oldUser = userServiceImpl.getUserByPhone(phone);
+		oldUser.setRealName(realName);
+		oldUser.setIdCard(idCard);
 		oldUser = changeUserNature(oldUser);
 		userServiceImpl.update(oldUser);
 	}
 
-	public String changeGeneralInfo(UserEntity user) {
-		UserEntity oldUser = userServiceImpl.getUserByPhone(user.getPhone());
-		oldUser.setNickName(user.getNickName());
+	public String changeGeneralInfo(String phone,String nickName) {
+		UserEntity oldUser = userServiceImpl.getUserByPhone(phone);
+		oldUser.setNickName(nickName);
 		userServiceImpl.update(oldUser);
 		return "true";
 	}
 
-	public String changePassword(UserEntity data) {
+	public String changePassword(String phone,String password) {
 		// TODO Auto-generated method stub
-		UserEntity user = userServiceImpl.getUserByPhone(data.getPhone());
-		user.setPassword(data.getPassword());
+		UserEntity user = userServiceImpl.getUserByPhone(phone);
+		user.setPassword(password);
 		userServiceImpl.update(user);
 		return "true";
 	}

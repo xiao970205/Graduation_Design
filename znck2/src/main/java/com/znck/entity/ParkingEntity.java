@@ -5,184 +5,285 @@ import java.util.Date;
 
 /**
  * 
- * ParkingEntity
- * 
  * @author 肖舒翔
+ * 2019-04-09
  * @version 1.0
- *
+ * 第三个版本的停车类
  */
 public class ParkingEntity {
-    private static final long serialVersionUID = 1L;
-    private String id;
-    private String carId;
-    private String nowSpaceId;
-    private String fetureSpaceId;
-    private Date inTime;
-    private Date outTime;
-    private String nature;
-    private String way;
 
-    private Date saveInPlaceTime;
+	private static final long serialVersionUID = 1L;
 
-    private Date outInPlaceTime;
+	private String id;
 
-    private String saveSpaceId;
+	private String carId;
 
-    private String nature2;
+	private String inSpaceId;
 
-    public ParkingEntity() {
-        super();
-    }
+	private String nowSpaceId;
 
-    public int getInTimeSizeInt(){
-        return (int)this.inTime.getTime();
-    }
-    
-    public int getOutTimeSizeInt(){
-        return (int)this.outTime.getTime();
-    }
-    
-    public ParkingEntity(String id,String carId,String nowSpaceId,String fetureSpaceId,Date inTime,Date outTime,String nature,String way,String saveSpaceId){
-        this.id = id;
-        this.carId = carId;
-        this.nowSpaceId = nowSpaceId;
-        this.fetureSpaceId = fetureSpaceId;
-        this.inTime = inTime;
-        this.outTime = outTime;
-        this.nature = nature;
-        this.way = way;
-        this.saveSpaceId = saveSpaceId;
-    }
-    
-    public ParkingEntity(String id, String carId, String nowSpaceId, String fetureSpaceId, Date inTime, Date outTime,
-        String nature) {
-        super();
-        this.id = id;
-        this.carId = carId;
-        this.nowSpaceId = nowSpaceId;
-        this.fetureSpaceId = fetureSpaceId;
-        this.inTime = inTime;
-        this.outTime = outTime;
-        this.nature = nature;
-    }
+	private String saveSpaceId;
 
-    @Override
-    public String toString() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS");
-        String inTime = null;
-        String outTime = null;
-        if (this.inTime == null) {
-            inTime = "null";
-        } else {
-            inTime = format.format(this.inTime);
-        }
-        if (this.outTime == null) {
-            outTime = "null";
-        } else {
-            outTime = format.format(this.inTime);
-        }
-        return "Id: " + this.id + " ,CarId:" + this.carId + ", NowSpaceId:" + this.nowSpaceId + " ,inTime:" + inTime
-            + ", OutTime:" + outTime + " ,nature" + this.nature;
-    }
+	private String outSpaceId;
 
-    public String getId() {
-        return id;
-    }
+	private Date vipSendTime;
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	private Date vipAppParkingTime;
 
-    public String getCarId() {
-        return carId;
-    }
+	private Date inPlaceTime;
 
-    public void setCarId(String carId) {
-        this.carId = carId;
-    }
+	private Date inTime;
 
-    public String getNowSpaceId() {
-        return nowSpaceId;
-    }
+	private Date vipGetTime;
 
-    public void setNowSpaceId(String nowSpaceId) {
-        this.nowSpaceId = nowSpaceId;
-    }
+	private Date vipAppGetTime;
 
-    public String getFetureSpaceId() {
-        return fetureSpaceId;
-    }
+	private Date outTime;
 
-    public void setFetureSpaceId(String fetureSpaceId) {
-        this.fetureSpaceId = fetureSpaceId;
-    }
+	private Date outPlaceTime;
 
-    public Date getInTime() {
-        return inTime;
-    }
+	private Date getTime;
 
-    public void setInTime(Date inTime) {
-        this.inTime = inTime;
-    }
+	private String nature;
 
-    public Date getOutTime() {
-        return outTime;
-    }
+	private String way;
 
-    public void setOutTime(Date outTime) {
-        this.outTime = outTime;
-    }
+	public int getOutTimeForSort() {
+		return (int) this.getOutTime().getTime();
+	}
 
-    public String getNature() {
-        return nature;
-    }
+	public int getInPlaceTimeForSort() {
+		return (int) this.getInPlaceTime().getTime();
+	}
 
-    public void setNature(String nature) {
-        this.nature = nature;
-    }
+	public int getVipAppGetTimeForSort() {
+		return (int) this.vipAppGetTime.getTime();
+	}
 
-    public String getWay() {
-        return way;
-    }
+	public int getVipSendTimeForSort() {
+		return (int) this.vipSendTime.getTime();
+	}
 
-    public void setWay(String way) {
-        this.way = way;
-    }
+	public ParkingEntity() {
+		super();
+	}
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
+	public void addWay(String way) {
+		setWay(this.getWay() + way);
+	}
 
-    public Date getSaveInPlaceTime() {
-        return saveInPlaceTime;
-    }
+	public ParkingEntity(String id, String carId, String inSpaceId, String nowSpaceId, String saveSpaceId,
+			String outSpaceId, Date vipSendTime, Date vipAppParkingTime, Date inPlaceTime, Date inTime, Date vipGetTime,
+			Date vipAppGetTime, Date outTime, Date outPlaceTime, Date getTime, String nature, String way) {
+		this.id = id;
+		this.carId = carId;
+		this.inSpaceId = inSpaceId;
 
-    public void setSaveInPlaceTime(Date saveInPlaceTime) {
-        this.saveInPlaceTime = saveInPlaceTime;
-    }
+		this.nowSpaceId = nowSpaceId;
+		this.saveSpaceId = saveSpaceId;
+		this.outSpaceId = outSpaceId;
 
-    public Date getOutInPlaceTime() {
-        return outInPlaceTime;
-    }
+		this.vipSendTime = vipSendTime;
+		this.vipAppParkingTime = vipAppParkingTime;
+		this.inPlaceTime = inPlaceTime;
 
-    public void setOutInPlaceTime(Date outInPlaceTime) {
-        this.outInPlaceTime = outInPlaceTime;
-    }
+		this.inTime = inTime;
+		this.vipGetTime = vipGetTime;
+		this.vipAppGetTime = vipAppGetTime;
 
-    public String getSaveSpaceId() {
-        return saveSpaceId;
-    }
+		this.outTime = outTime;
+		this.outPlaceTime = outPlaceTime;
+		this.getTime = getTime;
 
-    public void setSaveSpaceId(String saveSpaceId) {
-        this.saveSpaceId = saveSpaceId;
-    }
+		this.nature = nature;
+		this.way = way;
+	}
 
-    public String getNature2() {
-        return nature2;
-    }
+	@Override
+	public String toString() {
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS");
+		String vipSendTime = "null";
+		if (this.vipSendTime != null) {
+			vipSendTime = format.format(this.vipSendTime);
+		}
+		String vipAppParkingTime = "null";
+		if (this.vipAppParkingTime != null) {
+			vipAppParkingTime = format.format(this.vipAppParkingTime);
+		}
+		String inPlaceTime = "null";
+		if (this.inPlaceTime != null) {
+			inPlaceTime = format.format(this.inPlaceTime);
+		}
+		String inTime = "null";
+		if (this.inTime != null) {
+			inTime = format.format(this.inTime);
+		}
+		String vipGetTime = "null";
+		if (this.vipGetTime != null) {
+			vipGetTime = format.format(this.vipGetTime);
+		}
+		String vipAppGetTime = "null";
+		if (this.vipAppGetTime != null) {
+			vipAppGetTime = format.format(this.vipAppGetTime);
+		}
+		String outTime = "null";
+		if (this.outTime != null) {
+			outTime = format.format(this.outTime);
+		}
+		String outPlaceTime = "null";
+		if (this.outPlaceTime != null) {
+			outPlaceTime = format.format(this.outPlaceTime);
+		}
+		String getTime = "null";
+		if (this.getTime != null) {
+			getTime = format.format(this.getTime);
+		}
+		return "id: " + this.getId() + ", carId: " + this.getCarId() + ",inSpaceId: " + this.getInSpaceId()
+				+ ",nowSpaceId: " + this.getNowSapceId() + ",saveSpaceId: " + this.saveSpaceId + ",outSpaceId: "
+				+ this.outSpaceId + ",vipSendTime: " + vipSendTime + ",vipAppParkingTime: " + vipAppParkingTime
+				+ ",inPlaceTime: " + inPlaceTime + ",inTime: " + inTime + ",vipGetTime: " + vipGetTime
+				+ ",vipAppGetTime: " + vipAppGetTime + ",outTime: " + outTime + ",outPlaceTime: " + outPlaceTime
+				+ ",getTime: " + getTime + ",nature: " + this.nature + ",way: " + this.way;
+	}
 
-    public void setNature2(String nature2) {
-        this.nature2 = nature2;
-    }
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getCarId() {
+		return carId;
+	}
+
+	public void setCarId(String carId) {
+		this.carId = carId;
+	}
+
+	public String getInSpaceId() {
+		return inSpaceId;
+	}
+
+	public void setInSpaceId(String inSpaceId) {
+		this.inSpaceId = inSpaceId;
+	}
+
+	public String getNowSapceId() {
+		return nowSpaceId;
+	}
+
+	public void setNowSapceId(String nowSapceId) {
+		this.nowSpaceId = nowSapceId;
+	}
+
+	public String getSaveSpaceId() {
+		return saveSpaceId;
+	}
+
+	public void setSaveSpaceId(String saveSpaceId) {
+		this.saveSpaceId = saveSpaceId;
+	}
+
+	public String getOutSpaceId() {
+		return outSpaceId;
+	}
+
+	public void setOutSpaceId(String outSpaceId) {
+		this.outSpaceId = outSpaceId;
+	}
+
+	public Date getVipSendTime() {
+		return vipSendTime;
+	}
+
+	public void setVipSendTime(Date vipSendTime) {
+		this.vipSendTime = vipSendTime;
+	}
+
+	public Date getVipAppParkingTime() {
+		return vipAppParkingTime;
+	}
+
+	public void setVipAppParkingTime(Date vipAppParkingTime) {
+		this.vipAppParkingTime = vipAppParkingTime;
+	}
+
+	public Date getInPlaceTime() {
+		return inPlaceTime;
+	}
+
+	public void setInPlaceTime(Date inPlaceTime) {
+		this.inPlaceTime = inPlaceTime;
+	}
+
+	public Date getInTime() {
+		return inTime;
+	}
+
+	public void setInTime(Date inTime) {
+		this.inTime = inTime;
+	}
+
+	public Date getVipGetTime() {
+		return vipGetTime;
+	}
+
+	public void setVipGetTime(Date vipGetTime) {
+		this.vipGetTime = vipGetTime;
+	}
+
+	public Date getVipAppGetTime() {
+		return vipAppGetTime;
+	}
+
+	public void setVipAppGetTime(Date vipAppGetTime) {
+		this.vipAppGetTime = vipAppGetTime;
+	}
+
+	public Date getOutTime() {
+		return outTime;
+	}
+
+	public void setOutTime(Date outTime) {
+		this.outTime = outTime;
+	}
+
+	public Date getOutPlaceTime() {
+		return outPlaceTime;
+	}
+
+	public void setOutPlaceTime(Date outPlaceTime) {
+		this.outPlaceTime = outPlaceTime;
+	}
+
+	public Date getGetTime() {
+		return getTime;
+	}
+
+	public void setGetTime(Date getTime) {
+		this.getTime = getTime;
+	}
+
+	public String getNature() {
+		return nature;
+	}
+
+	public void setNature(String nature) {
+		this.nature = nature;
+	}
+
+	public String getWay() {
+		return way;
+	}
+
+	public void setWay(String way) {
+		this.way = way;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 }
