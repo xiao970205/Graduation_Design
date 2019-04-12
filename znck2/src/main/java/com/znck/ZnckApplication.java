@@ -19,9 +19,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @MapperScan("com.znck.mapper")
 @EnableScheduling
-@ServletComponentScan 
+@ServletComponentScan
 @EnableCaching
-@EnableAsync
+@EnableAsync   
 public class ZnckApplication {
 
 

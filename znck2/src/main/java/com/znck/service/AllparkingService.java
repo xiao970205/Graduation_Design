@@ -10,30 +10,20 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import com.sun.org.apache.xml.internal.security.Init;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mysql.cj.util.StringUtils;
-import com.znck.entity.ParkingEntity;
-import com.znck.entity.ParkingSaveEntity;
 import com.znck.entity.PublicMethods;
 import com.znck.entity.SpaceEntity;
+import com.znck.entity2.ParkingEntity2;
 import com.znck.enums.InitDataListener;
 
-/**
- * 所有停车的服务层
- *    
- * @author 肖舒翔
- * 2019-04-09
- * @version 1.0
- */
 @Service
-public class AllParkingService {
+public class AllParkingService2 {
 	@Autowired
 	private ContrastServiceImpl contrastServiceImpl;
-	
-	@Autowired
-	private ParkingSaveServiceImpl parkingSaveServiceImpl;
 
 	private final static String ENTRANCE = "入口";
 
@@ -69,8 +59,7 @@ public class AllParkingService {
 				InitDataListener.lockForSpace = threadId;
 			}
 			Thread.sleep(100);
-			
-		} while (!(threadId.equals(InitDataListener.lockForParking) & threadId.equals(InitDataListener.lockForSpace)));
+		} while (!(InitDataListener.lockForParking.equals(threadId) & InitDataListener.lockForSpace.equals(threadId)));
 	}
 
 	public void offclock(String threadId) {
@@ -92,7 +81,7 @@ public class AllParkingService {
 		String threadId = PublicMethods.getId();
 		onclock(threadId);
 		// 从静态变量中获得数据
-		List<ParkingEntity> parkings = InitDataListener.parkings2;
+		List<ParkingEntity2> parkings = InitDataListener.parkings2;
 		List<SpaceEntity> spaces = InitDataListener.spaces;
 		// 获得车位，若没有车位则返回没有车位
 		List<SpaceEntity> spacesForFeture = spaces.stream()
@@ -112,26 +101,28 @@ public class AllParkingService {
 		// 更新空间列表，锁定空间
 		SpaceEntity spaceForSave = spacesForFeture.get(0);
 		spaceForSave.setNature(contrastServiceImpl.getContrastByRealName(GARAGE_TAKE_UP).getId());
+		spaceForSave.setCarId(carId);
 		SpaceEntity spaceForApp = spacesForApp.get(0);
+		spaceForApp.setCarId(carId);
 		spaceForApp.setNature(contrastServiceImpl.getContrastByRealName(BUFFER_TAKE_UP).getId());
 		Collections.replaceAll(spaces, spacesForFeture.get(0), spaceForSave);
 		Collections.replaceAll(spaces, spacesForApp.get(0), spaceForApp);
 		// 新建停车信息
-		ParkingEntity parkingEntity = new ParkingEntity();
-		parkingEntity.setId(PublicMethods.getId());
-		parkingEntity.setCarId(carId);
-		parkingEntity.setInSpaceId(spaceForApp.getId());
-		parkingEntity.setNowSapceId(null);
-		parkingEntity.setSaveSpaceId(spaceForSave.getId());
+		ParkingEntity2 parkingEntity2 = new ParkingEntity2();
+		parkingEntity2.setId(PublicMethods.getId());
+		parkingEntity2.setCarId(carId);
+		parkingEntity2.setInSpaceId(spaceForApp.getId());
+		parkingEntity2.setNowSapceId(null);
+		parkingEntity2.setSaveSpaceId(spaceForSave.getId());
 		Random r = new Random();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
 		ParsePosition pos = new ParsePosition(0);
 		Date vipAppParkingTime = formatter.parse(vipAppParingTimeByString + " " + (r.nextInt(899) + 100), pos);
-		parkingEntity.setVipAppParkingTime(vipAppParkingTime);
-		parkingEntity.setVipSendTime(PublicMethods.getDate());
-		parkingEntity.setNature(contrastServiceImpl.getContrastByRealName(VIP_WAIT_USER_PARKING).getId());
-		parkingEntity.setWay("");
-		parkings.add(parkingEntity);
+		parkingEntity2.setVipAppParkingTime(vipAppParkingTime);
+		parkingEntity2.setVipSendTime(PublicMethods.getDate());
+		parkingEntity2.setNature(contrastServiceImpl.getContrastByRealName(VIP_WAIT_USER_PARKING).getId());
+		parkingEntity2.setWay("");
+		parkings.add(parkingEntity2);
 		InitDataListener.parkings2 = parkings;
 		InitDataListener.spaces = spaces;
 		offclock(threadId);
@@ -154,11 +145,11 @@ public class AllParkingService {
 		String threadId = PublicMethods.getId();
 		onclock(threadId);
 		// 从静态变量中获得数据
-		List<ParkingEntity> parkings = InitDataListener.parkings2;
+		List<ParkingEntity2> parkings = InitDataListener.parkings2;
 		List<SpaceEntity> spaces = InitDataListener.spaces;
-		ParkingEntity parkingOld = parkings.stream().filter(parking -> parking.getCarId().equals(carId))
+		ParkingEntity2 parkingOld = parkings.stream().filter(parking -> parking.getCarId().equals(carId))
 				.collect(Collectors.toList()).get(0);
-		ParkingEntity parking = parkingOld;
+		ParkingEntity2 parking = parkingOld;
 		SpaceEntity spaceForAppOld = spaces.stream().filter(space -> space.getId().equals(parking.getInSpaceId()))
 				.collect(Collectors.toList()).get(0);
 		SpaceEntity spaceForApp = spaceForAppOld;
@@ -194,7 +185,7 @@ public class AllParkingService {
 		String threadId = PublicMethods.getId();
 		onclock(threadId);
 		// 从静态变量中获得数据
-		List<ParkingEntity> parkings = InitDataListener.parkings2;
+		List<ParkingEntity2> parkings = InitDataListener.parkings2;
 		List<SpaceEntity> spaces = InitDataListener.spaces;
 		// 获得车位，若没有车位则返回没有车位
 		List<SpaceEntity> spacesForFeture = spaces.stream()
@@ -215,7 +206,7 @@ public class AllParkingService {
 		SpaceEntity saveSpace = saveSpaceOld;
 		saveSpace.setNature(contrastServiceImpl.getContrastByRealName(GARAGE_TAKE_UP).getId());
 		Collections.replaceAll(spaces, saveSpaceOld, saveSpace);
-		ParkingEntity parking = new ParkingEntity();
+		ParkingEntity2 parking = new ParkingEntity2();
 		parking.setId(PublicMethods.getId());
 		parking.setCarId(carId);
 		parking.setInSpaceId(inSpace.getId());
@@ -242,7 +233,7 @@ public class AllParkingService {
 	public String vipTakeOutCar(String carId, String getOutTimeString) throws InterruptedException, ParseException {
 		String clockId = PublicMethods.getId();
 		onclock(clockId);
-		List<ParkingEntity> parkings = InitDataListener.parkings2;
+		List<ParkingEntity2> parkings = InitDataListener.parkings2;
 		List<SpaceEntity> spaces = InitDataListener.spaces;
 		// 获得缓冲区，没有缓冲区则返回请选择普通停车方法
 
@@ -253,9 +244,9 @@ public class AllParkingService {
 			return "缓冲区已满，请选择普通取车方法";
 		}
 		// 获得基本数据
-		ParkingEntity oldParking = parkings.stream().filter(parking -> parking.getCarId().equals(carId))
+		ParkingEntity2 oldParking = parkings.stream().filter(parking -> parking.getCarId().equals(carId))
 				.collect(Collectors.toList()).get(0);
-		ParkingEntity parking = oldParking;
+		ParkingEntity2 parking = oldParking;
 		SpaceEntity appGetSpaceOld = spacesForAppGet.get(0);
 		SpaceEntity appGetSpace = appGetSpaceOld;
 		Random r = new Random();
@@ -289,11 +280,11 @@ public class AllParkingService {
 		String clockId = PublicMethods.getId();
 		onclock(clockId);
 		// 获得数据
-		List<ParkingEntity> parkings = InitDataListener.parkings2;
+		List<ParkingEntity2> parkings = InitDataListener.parkings2;
 		List<SpaceEntity> spaces = InitDataListener.spaces;
-		ParkingEntity parkingOld = parkings.stream().filter(parking -> parking.getCarId().equals(carId))
+		ParkingEntity2 parkingOld = parkings.stream().filter(parking -> parking.getCarId().equals(carId))
 				.collect(Collectors.toList()).get(0);
-		ParkingEntity parking = parkingOld;
+		ParkingEntity2 parking = parkingOld;
 		// 修改数据
 		parking.setOutSpaceId(spaces.stream()
 				.filter(space -> space.getNature().equals(contrastServiceImpl.getContrastByRealName(EXPORT).getId()))
@@ -315,11 +306,13 @@ public class AllParkingService {
 	public void getCar(String carId) throws InterruptedException, ParseException {
 		String clockId = PublicMethods.getId();
 		onclock(clockId);
-		List<ParkingEntity> parkings = InitDataListener.parkings2;
-		ParkingEntity parkingOld = parkings.stream().filter(parking -> parking.getCarId().equals(carId)).collect(Collectors.toList()).get(0);
-		ParkingEntity parking = parkingOld;
+
+		List<ParkingEntity2> parkings = InitDataListener.parkings2;
+		ParkingEntity2 parkingOld = parkings.stream().filter(parking -> parking.getCarId().equals(carId)).collect(Collectors.toList()).get(0);
+		ParkingEntity2 parking = parkingOld;
 		parking.setGetTime(PublicMethods.getDate());
-		parkingSaveServiceImpl.insert(new ParkingSaveEntity(parking));
+//		ParkingSaveEntity2 parkingSave = new ParkingSaveEntity2(parking);
+//		parkingSaveServiceImpl.insert(parkingSave);
 		InitDataListener.parkings2.remove(parkingOld);
 		offclock(clockId);
 	}
@@ -331,7 +324,7 @@ public class AllParkingService {
 	public void vipCancelSaveCar(String carId) throws InterruptedException {
 		String clockId = PublicMethods.getId();
 		onclock(clockId);
-		ParkingEntity removeParking = InitDataListener.parkings2.stream().filter(parking -> parking.getCarId().equals(carId)).collect(Collectors.toList()).get(0);
+		ParkingEntity2 removeParking = InitDataListener.parkings2.stream().filter(parking -> parking.getCarId().equals(carId)).collect(Collectors.toList()).get(0);
 		SpaceEntity spaceForAppOld = InitDataListener.spaces.stream().filter(space -> space.getId().equals(removeParking.getInSpaceId())).collect(Collectors.toList()).get(0);
 		SpaceEntity spaceForSaveOld = InitDataListener.spaces.stream().filter(space -> space.getId().equals(removeParking.getSaveSpaceId())).collect(Collectors.toList()).get(0);
 		SpaceEntity spaceForApp = spaceForAppOld;
@@ -347,30 +340,7 @@ public class AllParkingService {
 		InitDataListener.parkings2.remove(removeParking);
 		offclock(clockId);
 	}
-	
-	public void vipCancelTakeOutCar(String carId) throws InterruptedException {
-		String clockId = PublicMethods.getId();
-		onclock(clockId);
-		ParkingEntity parkingOld = InitDataListener.parkings2.stream().filter(parking -> parking.getCarId().equals(carId)).collect(Collectors.toList()).get(0);
-		ParkingEntity parkingNew = parkingOld;
-		SpaceEntity spaceForAppOld = InitDataListener.spaces.stream().filter(space -> space.getId().equals(parkingOld.getOutSpaceId())).collect(Collectors.toList()).get(0);
-		SpaceEntity spaceForApp = spaceForAppOld;
-		
-		parkingNew.setNature(contrastServiceImpl.getContrastByRealName(IN_THE_PARKING).getId());
-		parkingNew.setOutSpaceId(null);
-		parkingNew.setVipGetTime(null);
-		parkingNew.setVipAppGetTime(null);
-		spaceForApp.setCarId(null);
-		spaceForApp.setNature(contrastServiceImpl.getContrastByRealName(BUFFER_VACANCY).getId());
-		List<ParkingEntity> parkingEntitys = InitDataListener.parkings2;
-		List<SpaceEntity> spaces = InitDataListener.spaces;
-		Collections.replaceAll(parkingEntitys, parkingOld, parkingNew);
-		Collections.replaceAll(spaces,spaceForAppOld,spaceForApp);
-		InitDataListener.parkings2 = parkingEntitys;
-		InitDataListener.spaces = spaces;
-		offclock(clockId);
-	}
-	
+
 	/**
 	 * vip用户立即取车方法
 	 * @param carId
@@ -378,9 +348,9 @@ public class AllParkingService {
 	public void vipTakeOutCarNow(String carId) throws ParseException, InterruptedException {
 		String clockId = PublicMethods.getId();
 		onclock(clockId);
-		ParkingEntity parkingOld = InitDataListener.parkings2.stream().filter(parking -> parking.getCarId().equals(carId)).collect(Collectors.toList()).get(0);
-		List<ParkingEntity> parkings = InitDataListener.parkings2;
-		ParkingEntity parking = parkingOld;
+		ParkingEntity2 parkingOld = InitDataListener.parkings2.stream().filter(parking -> parking.getCarId().equals(carId)).collect(Collectors.toList()).get(0);
+		List<ParkingEntity2> parkings = InitDataListener.parkings2;
+		ParkingEntity2 parking = parkingOld;
 		// 修改数据
 		parking.setOutTime(PublicMethods.getDate());
 		parking.setNature(contrastServiceImpl.getContrastByRealName(VIP_GETCAR).getId());
