@@ -24,7 +24,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAsync
 public class ZnckApplication {
 
-
+  
 	public static void main(String[] args) {
 		SpringApplication.run(ZnckApplication.class, args);
 	}
