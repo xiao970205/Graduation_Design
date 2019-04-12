@@ -22,19 +22,20 @@
 				} else {
 					$.ajax({
 						type : 'POST',
-						dataType : 'json',
+						dataType : 'text',
 						url : getProjectName() + "/" + 'registPhone',
 						contentType : 'application/json;charset=UTF-8',
 						data : JSON.stringify({
 							"phone" : phone
 						}),
 						success : function(data) {
-							alert("注册成功！初始密码为 123456 ，即将返回登陆界面进行登陆");
-							window.location.href = getProjectName() + "/"
-									+ "jumpToUrl?url=user/index";
-						},
-						error : function() {
-							alert("电话已被注册！");
+							if(data == "true"){
+								alert("注册成功！初始密码为 123456 ，即将返回登陆界面进行登陆");
+								window.location.href = getProjectName() + "/"
+										+ "jumpToUrl?url=user/index";
+							}else{
+								alert("电话已被注册！");
+							}
 						}
 					});
 				}

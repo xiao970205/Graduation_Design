@@ -1,8 +1,5 @@
 package com.znck.entity;
 
-import com.mysql.cj.util.StringUtils;
-import com.znck.enums.InitDataListener;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

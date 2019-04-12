@@ -1,0 +1,178 @@
+用户修改密码方法：
+/changePassword
+input: 	{"password":password};
+output:	"true";
+
+用户更换手机方法
+/changePhone
+input:	{"phone":phone};
+output:	"true";
+
+用户修改邮箱方法
+/chanEmail
+input:	{"email":eamil};
+output:	"true";
+
+修改个人敏感信息方法
+/changeSensitiveMessage
+input:	{"realName":realName,"idCard":idCard};
+output:	"true";
+
+修改个人一般信息方法（一半用于修改昵称）
+/changeGeneralInfo
+input:	{"nickName":nickName}
+output:	"true"
+
+增加个人敏感信息方法
+/addUserSensitiveInfo
+input:	{"realName":realName,"idCard":idCard};
+output:	"true";
+
+发送验证码方法
+/sendVerificationCode
+input:	null;
+output:	true;
+
+手机验证码验证方法
+activeVerificationCode
+input:	{"id":code};
+output:	"true";
+false:	"false";
+
+手机注册方法
+registPhone
+input:	{"phone":phone};
+output:	"true";
+false:	"false";
+
+获得用户数据方法：
+getUserByPhone
+input:	null;
+output:	{
+			"nickName":nickName,
+			"password":password,
+			"realName":realName,
+			"idCard":idCard,
+			"phone":phone,
+			"phoneNature":phoneNature,
+			"email":email,
+			"emailNature":emailNature,
+			"nature":nature
+		};
+
+成为vip
+toBeVip
+input:	null;
+output:	"true";
+
+获得用户所有的车辆信息
+getUserCars
+input:	null;
+output:	{
+			{
+				"id"	 :	id,
+				"carCard":	carCard;
+				"carName":	carName;
+				"carInfo":	carInfo,
+				"nature" :	nature
+			},
+			{
+				"id"	 :	id,
+				"carCard":	carCard;
+				"carName":	carName;
+				"carInfo":	carInfo,
+				"nature" :	nature
+			}
+		};
+
+通过车辆id获得车辆信息
+getCarById
+input:	{"id":carId};
+output:	{
+			"carCard":carCard,
+			"carName":carName,
+			"carInfo":carInfo
+		};
+
+通过车辆id删除车辆
+deleteCarById
+input:	{"id":carId};
+output:	"true";
+
+登陆
+landing
+input:	{"phone":phone,"password":password};
+output:	"true";
+false"	null;
+
+存储新车辆
+saveNewCar
+input:	{
+			"carCard":carCard,
+			"carInfo":carInfo,
+			"carName";carName
+		};
+output:	"true"
+
+车辆修改
+updateCar
+input:	{
+			"id":carId,
+			"carCard":carCard,
+			"carInfo":carInfo,
+			"carName":carName
+		};
+output: "true"
+
+邮箱激活
+sendEmailForActive
+input:	{"email":email}
+output:	"true"
+false:	"false"
+
+会员预约停车
+说明：在车库外界，预约停车时间，然后在时间内使用“会员停车”功能完成停车。
+vipAppSaveCar
+input:	{"id":carId,"realName":appTime};
+		//appTime格式：yyyy-MM-dd HH:mm:ss
+		//例子：2019-04-11 23:23:00
+output:	"恭喜！停车成功。";
+false:	"没有车位，请等待车位";
+false:	"缓冲区已满，请选择普通停车方法";
+
+普通停车
+saveCar
+input:	{"id":carId};
+output:	"停车成功";
+false:	"没有车位，请等待车位";
+
+会员停车
+vipSaveCar
+input:	{"id":carId}
+
+会员取消预约停车
+vipCancelSaveCar
+input: {"id":carId}
+
+会员预约取车
+说明：预约时间是车辆开始从车位开往缓冲区的时间。
+vipTakeOutCar
+input:	{"id":carId,realName:"appTime"}
+
+vipCancelTakeOutCar
+说明：取消预约取车
+input:	{"id":carId}
+
+现在立即会员取车
+vipTakeOutCarNow
+input:	{"id":carId}
+
+取车方法
+说明：从车库开始取车
+takeOutCar
+input:	{"id":carId}
+
+取走车辆方法
+说明：从出口或者缓冲区开走车辆的方法
+getCar
+input:	{"id":carCard}

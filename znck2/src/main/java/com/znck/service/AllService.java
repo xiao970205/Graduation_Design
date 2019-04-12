@@ -65,13 +65,12 @@ public class AllService {
 		return contrastEntity;
 	}
 
-	public ContrastEntity regist(UserEntity data) {
-		String phone = data.getPhone();
+	public String regist(String phone) {
 		ContrastEntity contrast = new ContrastEntity();
 		System.out.println(phone);
 		if (userServiceImpl.getUserByPhone(phone) != null) {
 			// 已注册
-			contrast=null;
+			return "true";
 		} else {
 			// 未注册
 			UserEntity user = new UserEntity();
@@ -88,7 +87,7 @@ public class AllService {
 			EmailActiveEntity emailActiveEntity = new EmailActiveEntity(PublicMethods.getId(), user.getId());
 			emailActiveServiceImpl.insert(emailActiveEntity);
 		}
-		return contrast;
+		return "false";
 	}
 
 	public UserEntity landing(UserEntity massage) {
@@ -141,17 +140,21 @@ public class AllService {
 								.collect(Collectors.toList()).get(0).getNature())
 						.getRealName());
 			}
+			carWithNature.setUserId(null);
 			allCarByUserId.add(carWithNature);
 		});
 		return allCarByUserId;
 	}
 
-	public CarEntity getCarById(CarEntity data) {
-		return carServiceImpl.getOne(data.getId());
+	public CarEntity getCarById(String carId) {
+		CarEntity carEntity = carServiceImpl.getOne(carId);
+		carEntity.setUserId(null);
+		carEntity.setId(null);
+		return carEntity;
 	}
 
-	public void deleteCarById(CarEntity data) {
-		carServiceImpl.delete(data.getId());
+	public void deleteCarById(String carId) {
+		carServiceImpl.delete(carId);
 	}
 
 	public void saveNewCarByUserPhone(CarEntity carEntity,String userId) {
@@ -160,12 +163,14 @@ public class AllService {
 		carServiceImpl.insert(carEntity);
 	}
 
-	public void updateCar(CarEntity car,String userId) {
-		car.setUserId(userId);
-		this.carServiceImpl.update(car);
+	public void updateCar(CarEntity newCar) {
+		CarEntity oldCar = carServiceImpl.getOne(newCar.getId());
+		newCar.setUserId(oldCar.getUserId());
+		newCar.setNature(oldCar.getNature());
+		this.carServiceImpl.update(newCar);
 	}
 
-	public UserEntity toBeVip(String userId) {
+	public String toBeVip(String userId) {
 		// TODO Auto-generated method stub
 		UserEntity user = userServiceImpl.getOne(userId);
 		VipEntity vip = vipActiveServiceImpl.getVipByUserId(user.getId());
@@ -195,23 +200,20 @@ public class AllService {
 			System.out.println(false);
 		}
 		userServiceImpl.update(user);
-		return user;
+		return "true";
 	}
 
-	public ContrastEntity sendEmailForActive(String email,String phone) {
-		ContrastEntity contrast = new ContrastEntity();
+	public String sendEmailForActive(String email,String phone) {
 		if (userServiceImpl.getUserByEmail(email).size() != 0) {
-			contrast.setRealName("false");
-			return contrast;
+			return "false";
 		}
-		contrast.setRealName("true");
 		UserEntity user = userServiceImpl.getUserByPhone(phone);
 		userServiceImpl.update(user);
 		EmailActiveEntity emailActiveEntity = emailActiveServiceImpl.getEmailActiveByUserId(user.getId());
 		String info = "<html><head></head><body><h1>这是一封激活邮件,激活请点击以下链接</h1><h3><a href='http://localhost:8080/znck/activeEmail?code="
 				+ emailActiveEntity.getId() + "&email=" + email + "'>点击激活</href></h3></body></html>";
 		mailServiceImpl.sendHtmlMailByThread("1037426886@qq.com", email, "智能车库邮件激活", info);
-		return contrast;
+		return "true";
 	}
 
 	public void activeEmail(String code, String email) {

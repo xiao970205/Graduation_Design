@@ -121,19 +121,21 @@ public class HelloController {
 
 	@RequestMapping("/registPhone")
 	@ResponseBody
-	public ContrastEntity registPhone(@RequestBody UserEntity data) {
-		return allService.regist(data);
+	public String registPhone(@RequestBody UserEntity data) {
+		return allService.regist(data.getPhone());
 	}
 
 	@RequestMapping("/getUserByPhone")
 	@ResponseBody
 	public UserEntity getUserByPhone(HttpServletRequest request) {
-		return allService.getUserByPhone(((UserEntity)request.getSession().getAttribute("user")).getPhone());
+		UserEntity userEntity = allService.getUserByPhone(((UserEntity)request.getSession().getAttribute("user")).getPhone());
+		userEntity.setId(null);
+		return userEntity;
 	}
 
 	@RequestMapping("/toBeVip")
 	@ResponseBody
-	public UserEntity toBeVip(HttpServletRequest request) {
+	public String toBeVip(HttpServletRequest request) {
 		String userId = ((UserEntity)request.getSession().getAttribute("user")).getId();
 		return allService.toBeVip(userId);
 	}
@@ -148,25 +150,28 @@ public class HelloController {
 	@RequestMapping("/getCarById")
 	@ResponseBody
 	public CarEntity getCarById(@RequestBody CarEntity data) {
-		return allService.getCarById(data);
+		String carId = data.getId();
+		return allService.getCarById(carId);
 	}
 
 	@RequestMapping("/deleteCarById")
 	@ResponseBody
 	public boolean deleteCarById(@RequestBody CarEntity data) {
-		allService.deleteCarById(data);
+		allService.deleteCarById(data.getId());
 		return true;
 	}
 
 	@RequestMapping("/landing")
 	@ResponseBody
-	public UserEntity landing(@RequestBody UserEntity data, HttpServletRequest request) {
+	public String landing(@RequestBody UserEntity data, HttpServletRequest request) {
 		HttpSession session = request.getSession();
 		UserEntity user = allService.landing(data);
 		if (user != null) {
 			session.setAttribute("user", user);
+			return "true";
+		}else {
+			return null;
 		}
-		return user;
 	}
 
 
@@ -181,8 +186,7 @@ public class HelloController {
 	@RequestMapping("/updateCar")
 	@ResponseBody
 	public String updateCar(@RequestBody CarEntity data,HttpServletRequest request) {
-		String userId = ((UserEntity)request.getSession().getAttribute("user")).getId();
-		this.allService.updateCar(data, userId);
+		this.allService.updateCar(data);
 		return "true";
 	}
 
@@ -204,7 +208,7 @@ public class HelloController {
 
 	@RequestMapping("/sendEmailForActive")
 	@ResponseBody
-	public ContrastEntity sendEmailForActive(@RequestBody UserEntity data,HttpServletRequest request) {
+	public String sendEmailForActive(@RequestBody UserEntity data,HttpServletRequest request) {
 		String phone = ((UserEntity)request.getSession().getAttribute("user")).getPhone();
 		return allService.sendEmailForActive(data.getEmail(),phone);
 	}

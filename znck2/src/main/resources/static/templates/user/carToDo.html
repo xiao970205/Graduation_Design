@@ -227,6 +227,7 @@
       }
       var carId = $("#carId").val();
       var appTime = vipAppSaveCarTime.split("T")[0]+" " +vipAppSaveCarTime.split("T")[1]+":00";
+      alert(appTime);
       $.ajax({
           async:false,
           type:'POST',

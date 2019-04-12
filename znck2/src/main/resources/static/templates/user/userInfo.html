@@ -234,12 +234,17 @@
 		$.ajax({
 			async : false,
 			type : 'POST',
-			dataType : 'json',
+			dataType : 'text',
 			url : urlForServer,
 			contentType : 'application/json;charset=UTF-8',
 			data : JSON.stringify(jsonInfo),
 			success : function(data) {
-				window.location.href = urlForJump;
+				if(data == "true"){
+					alert("成功！");
+					window.location.href = urlForJump;
+				}else{
+					alert("失败！");					
+				}
 			}
 		});
 	});

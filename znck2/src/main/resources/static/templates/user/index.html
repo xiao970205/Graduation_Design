@@ -40,17 +40,17 @@
   		}else{
   		    $.ajax({
   		        type:'POST',
-                dataType:'json',
+                dataType:'text',
                 url:getUrl()+'landing',
                 contentType:'application/json;charset=UTF-8',
                 data:JSON.stringify({"phone":userName,"password":password}),
                 success:function(data){
+                	if(isNullOrUndefined(data)){
+                		alert("登陆失败！请检查用户名或密码");
+                		return;
+                	}
                     window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/hello";
-                },
-                error: function(){
-                    alert("登陆失败！请检查用户名或密码");
                 }
-                
   		    });
   		}
   	})
