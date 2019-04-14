@@ -2,15 +2,15 @@ package com.znck.service;
 
 import java.util.List;
 
+import com.znck.service.serviceImpl.ParkingSaveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.znck.entity.ParkingSaveEntity;
 import com.znck.mapper.ParkingSaveMapper;
-import com.znck.service.serviceimpl.ParkingSaveService;
 
 @Service
-public class ParkingSaveServiceImpl implements ParkingSaveService{
+public class ParkingSaveServiceImpl implements ParkingSaveService {
 	
 	@Autowired
     private ParkingSaveMapper parkingSaveMapper;

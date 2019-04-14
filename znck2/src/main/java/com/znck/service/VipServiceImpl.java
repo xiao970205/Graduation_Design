@@ -2,12 +2,12 @@ package com.znck.service;
 
 import java.util.List;
 
+import com.znck.service.serviceImpl.VipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.znck.entity.VipEntity;
 import com.znck.mapper.VipMapper;
-import com.znck.service.serviceimpl.VipService;
 
 /**
  * vip激活放弃service

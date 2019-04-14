@@ -1,6 +1,7 @@
 package com.znck.web;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.znck.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,10 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.znck.entity.CarEntity;
-import com.znck.entity.ContrastEntity;
-import com.znck.entity.UserEntity;
-import com.znck.service.AllParkingService;
+import com.znck.service.AllparkingService;
 import com.znck.service.AllService;
 
 /**
@@ -38,7 +37,17 @@ public class HelloController {
 	private AllService allService;
 	
 	@Autowired
-	private AllParkingService allparkingService;
+	private AllparkingService allparkingService;
+
+	@RequestMapping("/getExitCode")
+	@ResponseBody
+	public String getExitCode() throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh") ; //使用了默认的格式创建了一个日期格式化对象。
+		String time = dateFormat.format(PublicMethods.getDate()); //可以把日期转换转指定格式的字符串
+		time = time + "|" + "exit";
+		String code = AesUtil.encrypt(time,"1234567812345678");
+		return code;
+	}
 
 	@RequestMapping("/adminLanding")
 	@ResponseBody

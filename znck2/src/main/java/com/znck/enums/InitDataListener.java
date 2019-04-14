@@ -33,7 +33,7 @@ public class InitDataListener implements InitializingBean, ServletContextAware {
 
 	public static List<SpaceEntity> spaces;
 	
-	public static List<ParkingEntity> parkings2;
+	public static List<ParkingEntity> parkings;
 
 	@Autowired
 	private ParkingServiceImpl parkingServiceImpl;
@@ -52,12 +52,12 @@ public class InitDataListener implements InitializingBean, ServletContextAware {
 				space.setWeight(22, 9, 5);
 				spaces.add(space);
 			});
-			parkings2 = parkingServiceImpl.getAll();
-			if(parkings2 == null){
-				parkings2 = new ArrayList<ParkingEntity>();
+			parkings = parkingServiceImpl.getAll();
+			if(parkings == null){
+				parkings = new ArrayList<ParkingEntity>();
 			}
-			if(parkings2.size()==0){
-				parkings2 = new ArrayList<ParkingEntity>();
+			if(parkings.size()==0){
+				parkings = new ArrayList<ParkingEntity>();
 			}
 			this.offclock("0");
 			System.out.println("项目启动中，静态变量解锁");

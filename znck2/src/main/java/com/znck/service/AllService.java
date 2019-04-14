@@ -130,13 +130,13 @@ public class AllService {
 		List<CarEntity> allCarByUserId = new ArrayList<CarEntity>();
 		allCarByUserIdWithOutNature.forEach(car -> {
 			CarEntity carWithNature = car;
-			List<ParkingEntity> parkings = InitDataListener.parkings2.stream()
+			List<ParkingEntity> parkings = InitDataListener.parkings.stream()
 					.filter(pa -> pa.getCarId().equals(car.getId())).collect(Collectors.toList());
 			if (parkings.size() == 0) {
 				carWithNature.setNature(null);
 			} else {
 				carWithNature.setNature(contrastServiceImpl
-						.getOne(InitDataListener.parkings2.stream().filter(pa -> pa.getCarId().equals(car.getId()))
+						.getOne(InitDataListener.parkings.stream().filter(pa -> pa.getCarId().equals(car.getId()))
 								.collect(Collectors.toList()).get(0).getNature())
 						.getRealName());
 			}

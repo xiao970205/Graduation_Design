@@ -8,6 +8,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import static org.springframework.boot.SpringApplication.*;
+
 /**
  * 
  * ZnckApplication
@@ -26,6 +28,6 @@ public class ZnckApplication {
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(ZnckApplication.class, args);
+		run(ZnckApplication.class, args);
 	}
 }

@@ -2,12 +2,12 @@ package com.znck.service;
 
 import java.util.List;
 
+import com.znck.service.serviceImpl.PhoneActiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.znck.entity.PhoneActiveEntity;
 import com.znck.mapper.PhoneActiveMapper;
-import com.znck.service.serviceimpl.PhoneActiveService;
 
 /**
  * 手机激活service

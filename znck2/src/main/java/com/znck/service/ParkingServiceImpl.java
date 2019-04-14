@@ -2,12 +2,12 @@ package com.znck.service;
 
 import java.util.List;
 
+import com.znck.service.serviceImpl.ParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.znck.entity.ParkingEntity;
 import com.znck.mapper.ParkingMapper;
-import com.znck.service.serviceimpl.ParkingService;
 
 /**
  * 服务层

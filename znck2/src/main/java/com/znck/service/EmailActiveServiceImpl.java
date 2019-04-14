@@ -2,12 +2,12 @@ package com.znck.service;
 
 import java.util.List;
 
+import com.znck.service.serviceImpl.EmailActiveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.znck.entity.EmailActiveEntity;
 import com.znck.mapper.EmailActiveMapper;
-import com.znck.service.serviceimpl.EmailActiveService;
 
 /**
  * 邮箱激活方法

@@ -1,4 +1,4 @@
-package com.znck.service.serviceimpl;
+package com.znck.service.serviceImpl;
 
 import java.util.List;
 

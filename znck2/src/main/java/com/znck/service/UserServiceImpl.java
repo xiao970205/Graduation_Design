@@ -2,12 +2,12 @@ package com.znck.service;
 
 import java.util.List;
 
+import com.znck.service.serviceImpl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.znck.entity.UserEntity;
 import com.znck.mapper.UserMapper;
-import com.znck.service.serviceimpl.UserService;
 
 /**
  * 

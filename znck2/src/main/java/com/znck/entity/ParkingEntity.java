@@ -99,51 +99,56 @@ public class ParkingEntity {
 		this.way = way;
 	}
 
+	public ParkingEntity(String id,String carId,String inSpaceId
+				,String nowSpaceId,String saveSpaceId,Date vipAppParkingTime
+				,Date vipSendTime,String nature,String way){
+		this.id = id;
+		this.carId = carId;
+		this.inSpaceId = inSpaceId;
+		this.nowSpaceId = nowSpaceId;
+		this.saveSpaceId = saveSpaceId;
+		this.vipAppParkingTime = vipAppParkingTime;
+		this.vipSendTime = vipSendTime;
+		this.nature = nature;
+		this.way = way;
+	}
+
+	public ParkingEntity(String id,String carId,String inSpaceId
+			,String nowSpaceId,String saveSpaceId,Date inPlaceTime
+			,String nature,String way){
+		this.id = id;
+		this.carId = carId;
+		this.inSpaceId = inSpaceId;
+		this.nowSpaceId = nowSpaceId;
+		this.saveSpaceId = saveSpaceId;
+		this.inPlaceTime = inPlaceTime;
+		this.nature = nature;
+		this.way = way;
+	}
+
+	private String getNullDateOrDateToString(Date date){
+		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS");
+		if (date != null) {
+			return format.format(date);
+		}else{
+			return "null";
+		}
+	}
+
 	@Override
 	public String toString() {
-		SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd-HH:mm:ss:SSS");
-		String vipSendTime = "null";
-		if (this.vipSendTime != null) {
-			vipSendTime = format.format(this.vipSendTime);
-		}
-		String vipAppParkingTime = "null";
-		if (this.vipAppParkingTime != null) {
-			vipAppParkingTime = format.format(this.vipAppParkingTime);
-		}
-		String inPlaceTime = "null";
-		if (this.inPlaceTime != null) {
-			inPlaceTime = format.format(this.inPlaceTime);
-		}
-		String inTime = "null";
-		if (this.inTime != null) {
-			inTime = format.format(this.inTime);
-		}
-		String vipGetTime = "null";
-		if (this.vipGetTime != null) {
-			vipGetTime = format.format(this.vipGetTime);
-		}
-		String vipAppGetTime = "null";
-		if (this.vipAppGetTime != null) {
-			vipAppGetTime = format.format(this.vipAppGetTime);
-		}
-		String outTime = "null";
-		if (this.outTime != null) {
-			outTime = format.format(this.outTime);
-		}
-		String outPlaceTime = "null";
-		if (this.outPlaceTime != null) {
-			outPlaceTime = format.format(this.outPlaceTime);
-		}
-		String getTime = "null";
-		if (this.getTime != null) {
-			getTime = format.format(this.getTime);
-		}
 		return "id: " + this.getId() + ", carId: " + this.getCarId() + ",inSpaceId: " + this.getInSpaceId()
-				+ ",nowSpaceId: " + this.getNowSapceId() + ",saveSpaceId: " + this.saveSpaceId + ",outSpaceId: "
-				+ this.outSpaceId + ",vipSendTime: " + vipSendTime + ",vipAppParkingTime: " + vipAppParkingTime
-				+ ",inPlaceTime: " + inPlaceTime + ",inTime: " + inTime + ",vipGetTime: " + vipGetTime
-				+ ",vipAppGetTime: " + vipAppGetTime + ",outTime: " + outTime + ",outPlaceTime: " + outPlaceTime
-				+ ",getTime: " + getTime + ",nature: " + this.nature + ",way: " + this.way;
+				+ ",nowSpaceId: " + this.getNowSapceId() + ",saveSpaceId: " + this.saveSpaceId + ",outSpaceId: " + this.outSpaceId
+				+ ",vipSendTime: " + getNullDateOrDateToString(this.vipSendTime)
+				+ ",vipAppParkingTime: " + getNullDateOrDateToString(this.vipAppParkingTime)
+				+ ",inPlaceTime: " + getNullDateOrDateToString(this.inPlaceTime)
+				+ ",inTime: " + getNullDateOrDateToString(this.inTime)
+				+ ",vipGetTime: " + getNullDateOrDateToString(this.vipGetTime)
+				+ ",vipAppGetTime: " + getNullDateOrDateToString(this.vipAppGetTime)
+				+ ",outTime: " + getNullDateOrDateToString(this.outTime)
+				+ ",outPlaceTime: " + getNullDateOrDateToString(this.outPlaceTime)
+				+ ",getTime: " + getNullDateOrDateToString(this.getTime)
+				+ ",nature: " + this.nature + ",way: " + this.way;
 	}
 
 	public String getId() {
