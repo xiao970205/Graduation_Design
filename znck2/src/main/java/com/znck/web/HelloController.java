@@ -39,16 +39,36 @@ public class HelloController {
 	@Autowired
 	private AllparkingService allparkingService;
 
+	public String verifyQrCode(@RequestBody ContrastEntity data) {
+		String code = AesUtil.decrypt(data.getRealName(), "1234567812345678");
+		String place = data.getId();
+		String[] places = place.split("|");
+		if(places[1].equals(code.split("|")[1])) {
+			
+		}else {
+			return "false";
+		}
+		return "true";
+	}
+	
 	@RequestMapping("/getExitCode")
 	@ResponseBody
 	public String getExitCode() throws ParseException {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh") ; //使用了默认的格式创建了一个日期格式化对象。
-		String time = dateFormat.format(PublicMethods.getDate()); //可以把日期转换转指定格式的字符串
-		time = time + "|" + "exit";
-		String code = AesUtil.encrypt(time,"1234567812345678");
-		return code;
+		return allService.getCode("|exit");
+	}
+	
+	@RequestMapping("getEntranceCode")
+	@ResponseBody
+	public String getEntranceCode() throws ParseException {
+		return allService.getCode("|entrance");
 	}
 
+	@RequestMapping("getBufferCode")
+	@ResponseBody
+	public String getBufferCode(@RequestBody UserEntity data) throws ParseException {
+		return allService.getBufferCode(data);
+	}
+	
 	@RequestMapping("/adminLanding")
 	@ResponseBody
 	public ContrastEntity adminLanding(@RequestBody UserEntity data, HttpServletRequest request) {

@@ -16,6 +16,9 @@ public class CarEntity {
     private String carInfo;
     private String nature;
 
+    private String carInSpace;
+    private String carOutSpace;
+    
     public CarEntity() {
         super();
     }
@@ -86,5 +89,21 @@ public class CarEntity {
     public void setNature(String nature) {
         this.nature = nature;
     }
+
+	public String getCarInSpace() {
+		return carInSpace;
+	}
+
+	public void setCarInSpace(String carInSpace) {
+		this.carInSpace = carInSpace;
+	}
+
+	public String getCarOutSpace() {
+		return carOutSpace;
+	}
+
+	public void setCarOutSpace(String carOutSpace) {
+		this.carOutSpace = carOutSpace;
+	}
 
 }

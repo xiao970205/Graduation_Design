@@ -1,26 +1,69 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<html xml:lang="ko" lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Javascript 二维码生成库：QRCode</title>
+    <title>智能车库-缓冲区二维码</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="http://static.runoob.com/assets/qrcode/qrcode.min.js"></script>
+    <script type="text/javascript" src="../user/js/jquery.js"></script>
+    <script type="text/javascript" src="../user/js/publicFunction.js"></script>
 </head>
 <body>
+<input type = "text" id = "code"/>
+<input type = "button" value = "确定" id = "getCode"/>
 <div id="qrcode" style="width:100px; height:100px; margin-top:15px;"></div>
-
-<script type="text/javascript">
-    var qrcode = new QRCode(document.getElementById("qrcode"), {
-        width : 100,
-        height : 100
-    });
-
-    function makeCode () {
-        qrcode.makeCode("fuck");
-    }
-
-    makeCode();
-</script>
 </body>
+<script type="text/javascript">
+    $(function() {
+        $.ajax({
+            async:false,
+            type:'POST',
+            dataType:'text',
+            url:getUrl()+'/getExitCode',
+            contentType:'application/json;charset=UTF-8',
+            data:null,
+            success:function(data){
+            	if(data == "false"){
+            		alert("数据错误！");
+            		return;
+            	}
+                alert(data);
+                var qrcode = new QRCode(document.getElementById("qrcode"), {
+                    width : 100,
+                    height : 100
+                });
+                qrcode.makeCode(data);
+            }
+        });
+    });
+    
+    $("#getCode").click(function(){
+    	var code = $("#code").val;
+    	if(isNullOrUndefined(code)){
+    		alert("不可为空！");
+    		return ;
+    	}
+    	$.ajax({
+            async:false,
+            type:'POST',
+            dataType:'text',
+            url:getUrl()+'/getExitCode',
+            contentType:'application/json;charset=UTF-8',
+            data:JSON.stringify({"id":code}),
+            success:function(data){
+            	if(data == "false"){
+            		alert("数据错误！");
+            		return;
+            	}
+                alert(data);
+                var qrcode = new QRCode(document.getElementById("qrcode"), {
+                    width : 100,
+                    height : 100
+                });
+                qrcode.makeCode(data);
+            }
+        });
+    });
+</script>
 </html>
