@@ -54,11 +54,11 @@ public class AllParkingServiceForRuning {
 
 	private final static int SIZETWENTYTWO = 22;
 
-	private final static String x = "x";
+	private final static String X = "x";
 
-	private final static String y = "y";
+	private final static String Y = "y";
 
-	private final static String z = "z";
+	private final static String Z = "z";
 	
 	private final static String BUFFER_VACANCY = "缓冲区-空置";
 	
@@ -170,7 +170,7 @@ public class AllParkingServiceForRuning {
 		SpaceEntity fetureSpace = allParkingModle.getSpaceById(parking.getSaveSpaceId());
 		final Map<String, Integer> nextSpaceMap = this.getNextSpaceWhenSavingCar(nowSpace.getX(), nowSpace.getY(),
 				nowSpace.getZ(), fetureSpace.getX(), fetureSpace.getY(), fetureSpace.getZ());
-		SpaceEntity nextSpace = allParkingModle.getSpaceByXYZ(nextSpaceMap.get(x),nextSpaceMap.get(y),nextSpaceMap.get(z));
+		SpaceEntity nextSpace = allParkingModle.getSpaceByXYZ(nextSpaceMap.get(X),nextSpaceMap.get(Y),nextSpaceMap.get(Z));
 		if (StringUtils.isNullOrEmpty(nextSpace.getCarId())) {
 			nextSpace.setCarId(parking.getCarId());
 			nowSpace.setCarId(null);
@@ -233,7 +233,7 @@ public class AllParkingServiceForRuning {
 		SpaceEntity fetureSpace = allParkingModle.getBufferOrFeture(EXPORT);
 		final Map<String, Integer> nextSpaceMap = this.getNextSpaceWhenTakingOutCar(nowSpace.getX(), nowSpace.getY(),
 				nowSpace.getZ(), fetureSpace.getX(), fetureSpace.getY(), fetureSpace.getZ());
-		SpaceEntity nextSpace = allParkingModle.getSpaceByXYZ(nextSpaceMap.get(x),nextSpaceMap.get(y),nextSpaceMap.get(z));
+		SpaceEntity nextSpace = allParkingModle.getSpaceByXYZ(nextSpaceMap.get(X),nextSpaceMap.get(Y),nextSpaceMap.get(Z));
 		if (StringUtils.isNullOrEmpty(nextSpace.getCarId())) {
 			nowSpace.setCarId(null);
 			if (allParkingModle.nextSpaceIsFetureSpace(nextSpaceMap,fetureSpace)) {

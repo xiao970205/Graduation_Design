@@ -1,7 +1,7 @@
 package com.znck.web;
 
 import com.znck.entity.*;
-import com.znck.service.AllAndroidService;
+import com.znck.service.serviceImpl.AllAndroidForChenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,157 +12,158 @@ import java.text.ParseException;
 
 @Controller
 public class AndroidController {
+
     @Autowired
-    private AllAndroidService allAndroidService;
+    private AllAndroidForChenService allAndroidForChenService;
 
     @RequestMapping("/Android/landing")
     @ResponseBody
-    public AndroidData landing(@RequestBody AndroidData data) throws ParseException {
-        return allAndroidService.landing(data);
+    public BaseBean landing(@RequestBody BaseBean data) throws ParseException {
+        return allAndroidForChenService.landing(data);
     }
 
     @RequestMapping("/Android/changePassword")
     @ResponseBody
-    public AndroidData changePassword(@RequestBody AndroidData data) throws ParseException {
-        return allAndroidService.changePassword(data);
+    public BaseBean changePassword(@RequestBody BaseBean data) throws ParseException {
+        return allAndroidForChenService.changePassword(data);
     }
 
     @RequestMapping("/Android/changePhone")
     @ResponseBody
-    public AndroidData changePhone(@RequestBody AndroidData data) throws ParseException {
-        return allAndroidService.changePhone(data);
+    public BaseBean changePhone(@RequestBody BaseBean data) throws ParseException {
+        return allAndroidForChenService.changePhone(data);
     }
 
     @RequestMapping("/Android/changeEmail")
     @ResponseBody
-    public AndroidData changeEmail(@RequestBody AndroidData data) throws ParseException {
-        return allAndroidService.changeEmail(data);
+    public BaseBean changeEmail(@RequestBody BaseBean data) throws ParseException {
+        return allAndroidForChenService.changeEmail(data);
     }
 
     @RequestMapping("/Android/changeSensitiveMessage")
     @ResponseBody
-    public AndroidData changeSensitiveMessage(@RequestBody AndroidData data) throws ParseException {
-        return allAndroidService.changeSensitiveMessage(data);
+    public BaseBean changeSensitiveMessage(@RequestBody BaseBean data) throws ParseException {
+        return allAndroidForChenService.changeSensitiveMessage(data);
     }
 
     @RequestMapping("/Android/changeGeneralInfo")
     @ResponseBody
-    public AndroidData changeGeneralInfo(@RequestBody AndroidData data) throws ParseException {
-        return allAndroidService.changeGeneralInfo(data);
+    public BaseBean changeGeneralInfo(@RequestBody BaseBean data) throws ParseException {
+        return allAndroidForChenService.changeGeneralInfo(data);
     }
 
     @RequestMapping("/Android/addUserSensitiveInfo")
     @ResponseBody
-    public AndroidData addUserSensitiveInfo(@RequestBody AndroidData data) throws ParseException {
-        return allAndroidService.addUserSensitiveInfo(data);
+    public BaseBean addUserSensitiveInfo(@RequestBody BaseBean data) throws ParseException {
+        return allAndroidForChenService.addUserSensitiveInfo(data);
     }
 
     @RequestMapping("/Android/sendVerificationCode")
     @ResponseBody
-    public AndroidData sendVerificationCode(@RequestBody AndroidData data) throws ParseException {
-        return allAndroidService.sendVerificationCode(data);
+    public BaseBean sendVerificationCode(@RequestBody BaseBean data) throws ParseException {
+        return allAndroidForChenService.sendVerificationCode(data);
     }
 
     @RequestMapping("/Android/activeVerificationCode")
     @ResponseBody
-    public AndroidData activeVerificationCode(@RequestBody AndroidData data) throws ParseException {
-        return allAndroidService.activeVerificationCode(data);
+    public BaseBean activeVerificationCode(@RequestBody BaseBean data) throws ParseException {
+        return allAndroidForChenService.activeVerificationCode(data);
     }
 
     @RequestMapping("/Android/registPhone")
     @ResponseBody
-    public AndroidData registPhone(@RequestBody AndroidData data) {
-        return allAndroidService.regist(data);
+    public BaseBean registPhone(@RequestBody BaseBean data) {
+        return allAndroidForChenService.regist(data);
     }
 
 
     @RequestMapping("/Android/toBeVip")
     @ResponseBody
-    public AndroidData toBeVip(@RequestBody AndroidData data) throws ParseException  {
-        return allAndroidService.toBeVip(data);
+    public BaseBean toBeVip(@RequestBody BaseBean data) throws ParseException  {
+        return allAndroidForChenService.toBeVip(data);
     }
 
     @RequestMapping("/Android/getCarById")
     @ResponseBody
-    public AndroidData getCarById(@RequestBody AndroidData data) throws ParseException  {
-        return allAndroidService.getCarById(data);
+    public BaseBean getCarById(@RequestBody BaseBean data) throws ParseException  {
+        return allAndroidForChenService.getCarById(data);
     }
 
     @RequestMapping("/Android/deleteCarById")
     @ResponseBody
-    public AndroidData deleteCarById(@RequestBody AndroidData data) throws ParseException  {
-        return allAndroidService.deleteCarById(data);
+    public BaseBean deleteCarById(@RequestBody BaseBean data) throws ParseException  {
+        return allAndroidForChenService.deleteCarById(data);
     }
 
     @RequestMapping("/Android/saveNewCar")
     @ResponseBody
-    public AndroidData saveNewCar(@RequestBody AndroidData data) throws ParseException  {
-        return this.allAndroidService.saveNewCarByUserPhone(data);
+    public BaseBean saveNewCar(@RequestBody BaseBean data) throws ParseException  {
+        return this.allAndroidForChenService.saveNewCarByUserPhone(data);
     }
 
     @RequestMapping("/Android/updateCar")
     @ResponseBody
-    public AndroidData updateCar(@RequestBody AndroidData data) throws ParseException  {
-        return this.allAndroidService.updateCar(data);
+    public BaseBean updateCar(@RequestBody BaseBean data) throws ParseException  {
+        return this.allAndroidForChenService.updateCar(data);
     }
 
     @RequestMapping("/Android/sendEmailForActive")
     @ResponseBody
-    public AndroidData sendEmailForActive(@RequestBody AndroidData data) throws ParseException  {
-        return allAndroidService.sendEmailForActive(data);
+    public BaseBean sendEmailForActive(@RequestBody BaseBean data) throws ParseException  {
+        return allAndroidForChenService.sendEmailForActive(data);
     }
 
     @RequestMapping("/Android/vipAppSaveCar")
     @ResponseBody
-    public AndroidData vipAppSaveCar(@RequestBody AndroidData data) throws ParseException, InterruptedException {
-        return allAndroidService.vipAppSaveCar(data);
+    public BaseBean vipAppSaveCar(@RequestBody BaseBean data) throws ParseException, InterruptedException {
+        return allAndroidForChenService.vipAppSaveCar(data);
     }
 
     @RequestMapping("/Android/saveCar")
     @ResponseBody
-    public AndroidData saveCar(@RequestBody AndroidData data) throws ParseException, InterruptedException {
-        return allAndroidService.saveCar(data);
+    public BaseBean saveCar(@RequestBody BaseBean data) throws ParseException, InterruptedException {
+        return allAndroidForChenService.saveCar(data);
     }
 
     @RequestMapping("/Android/vipSaveCar")
     @ResponseBody
-    public AndroidData vipSaveCar(@RequestBody AndroidData data) throws ParseException, InterruptedException {
-        return allAndroidService.vipSaveCar(data);
+    public BaseBean vipSaveCar(@RequestBody BaseBean data) throws ParseException, InterruptedException {
+        return allAndroidForChenService.vipSaveCar(data);
     }
 
     @RequestMapping("/Android/vipCancelSaveCar")
     @ResponseBody
-    public AndroidData vipCancelSaveCar(@RequestBody AndroidData data) throws InterruptedException, ParseException {
-        return allAndroidService.vipCancelSaveCar(data);
+    public BaseBean vipCancelSaveCar(@RequestBody BaseBean data) throws InterruptedException, ParseException {
+        return allAndroidForChenService.vipCancelSaveCar(data);
     }
 
     @RequestMapping("/Android/vipCancelTakeOutCar")
     @ResponseBody
-    public AndroidData vipCancelTakeOutCar(@RequestBody AndroidData data) throws InterruptedException, ParseException {
-        return allAndroidService.vipCancelTakeOutCar(data);
+    public BaseBean vipCancelTakeOutCar(@RequestBody BaseBean data) throws InterruptedException, ParseException {
+        return allAndroidForChenService.vipCancelTakeOutCar(data);
     }
 
     @RequestMapping("/Android/vipTakeOutCar")
     @ResponseBody
-    public AndroidData vipTakeOutCar(@RequestBody AndroidData data) throws ParseException, InterruptedException {
-        return allAndroidService.vipTakeOutCar(data);
+    public BaseBean vipTakeOutCar(@RequestBody BaseBean data) throws ParseException, InterruptedException {
+        return allAndroidForChenService.vipTakeOutCar(data);
     }
 
     @RequestMapping("/Android/vipTakeOutCarNow")
     @ResponseBody
-    public AndroidData vipTakeOutCarNow(@RequestBody AndroidData data) throws ParseException, InterruptedException {
-        return allAndroidService.vipTakeOutCarNow(data);
+    public BaseBean vipTakeOutCarNow(@RequestBody BaseBean data) throws ParseException, InterruptedException {
+        return allAndroidForChenService.vipTakeOutCarNow(data);
     }
 
     @RequestMapping("/Android/takeOutCar")
     @ResponseBody
-    public AndroidData takeOutCar(@RequestBody AndroidData data) throws ParseException, InterruptedException {
-        return allAndroidService.takeOutCar(data);
+    public BaseBean takeOutCar(@RequestBody BaseBean data) throws ParseException, InterruptedException {
+        return allAndroidForChenService.takeOutCar(data);
     }
 
     @RequestMapping("/Android/getCar")
     @ResponseBody
-    public AndroidData getCar(@RequestBody AndroidData data) throws ParseException, InterruptedException {
-        return allAndroidService.getCar(data);
+    public BaseBean getCar(@RequestBody BaseBean data) throws ParseException, InterruptedException {
+        return allAndroidForChenService.getCar(data);
     }
 }

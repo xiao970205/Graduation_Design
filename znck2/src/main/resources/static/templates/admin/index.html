@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>车库监控</title>
+    <title>肖舒翔2019毕业设计</title>
     <link href="css/common.css" rel="stylesheet">
     <script src="scripts/Plugin/jquery-3.3.1.min.js"></script>
     <script src="scripts/Plugin/echarts.min.js"></script>
@@ -17,10 +17,10 @@
 <header class="header left">
     <div class="left nav">
         <ul>
-            <li class="nav_active"><i class="nav_1"></i><a href="index.html">采集概况</a> </li>
+            <li class="nav_active"><i class="nav_1"></i><a href="index.html">车库概况</a> </li>
             <li><i class="nav_2"></i><a href="quota.html">指标分析</a> </li>
-            <li><i class="nav_3"></i><a href="trend.html">趋势分析</a> </li>
-            <li><i class="nav_4"></i><a href="chronic.html">慢病病人列表</a> </li>
+            <li><i class="nav_3"></i><a href="trend.html">用户列表</a> </li>
+            <li><i class="nav_4"></i><a href="chronic.html">当前停车列表</a> </li>
             </ul>
     </div>
     <div class="header_center left" style="position:relative">
@@ -59,14 +59,14 @@
             <div class="con_div_text01 left">
                 <img src="images/info_3.png" class="left text01_img"/>
                 <div class="left text01_div">
-                    <p>总门诊数(人)</p>
+                    <p>总停车数（车）</p>
                     <p class="sky">12356</p>
                 </div>
             </div>
             <div class="con_div_text01 right">
                 <img src="images/info_4.png" class="left text01_img"/>
                 <div class="left text01_div">
-                    <p>当月门诊数(人)</p>
+                    <p>当月停车数(车)</p>
                     <p class="sky">12356</p>
                 </div>
             </div>
@@ -76,14 +76,14 @@
             <div class="con_div_text01 left">
                 <img src="images/info_5.png" class="left text01_img"/>
                 <div class="left text01_div">
-                    <p>总住院数(人)</p>
+                    <p>总用户数(人)</p>
                     <p class="org">12356</p>
                 </div>
             </div>
             <div class="con_div_text01 right">
                 <img src="images/info_6.png" class="left text01_img"/>
                 <div class="left text01_div">
-                    <p>当月住院数(人)</p>
+                    <p>当前会员数(人)</p>
                     <p class="org">12356</p>
                 </div>
             </div>
@@ -93,17 +93,17 @@
     <div class="div_any">
         <div class="left div_any01">
             <div class="div_any_child">
-                <div class="div_any_title"><img src="images/title_1.png">各医院采集数据量</div>
+                <div class="div_any_title"><img src="images/title_1.png">各车库采集数据量</div>
                 <p id="pieChart1" class="p_chart"></p>
             </div>
             <div class="div_any_child">
-                <div class="div_any_title"><img src="images/title_2.png">各医院门诊住院费用</div>
+                <div class="div_any_title"><img src="images/title_2.png">各车库会员比例</div>
                 <p id="histogramChart" class="p_chart"></p>
             </div>
         </div>
         <div class="div_any02 left ">
             <div class="div_any_child div_height">
-                <div class="div_any_title any_title_width"><img src="images/title_0.png">厦门市地图 </div>
+                <div class="div_any_title any_title_width"><img src="images/title_0.png">车库地图 </div>
                 <div id="mapChart" style="width:97.5%;height:95%;display: inline-block;padding-left: 1.25%;padding-top:2.2%"></div>
             </div>
         </div>
@@ -113,7 +113,7 @@
                 <p id="lineChart" class="p_chart"></p>
             </div>
             <div class="div_any_child">
-                <div class="div_any_title"><img src="images/title_4.png">就诊人数(当日)</div>
+                <div class="div_any_title"><img src="images/title_4.png">停车数量（当日）</div>
                 <p id="lineChart2" class="p_chart"></p>
             </div>
         </div>

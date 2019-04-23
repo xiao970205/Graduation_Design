@@ -314,23 +314,23 @@ public class AllService {
 	}
 	
 	public String getBufferCode(UserEntity userEntity) throws ParseException {
-		String BufferId = userEntity.getId();
-		SpaceEntity buffer = spaceServiceImpl.getOne(BufferId);
+		String bufferId = userEntity.getId();
+		SpaceEntity buffer = spaceServiceImpl.getOne(bufferId);
 		if(buffer == null) {
 			return "false";
 		}
 		if(buffer.getNature().equals(contrastServiceImpl.getContrastByRealName("缓冲区-占用").getId())) {
-			return getCode("|buffer|"+BufferId);
+			return getCode("|buffer|"+bufferId);
 		}
 		if(buffer.getNature().equals(contrastServiceImpl.getContrastByRealName("缓冲区-空置").getId())) {
-			return getCode("|buffer|"+BufferId);
+			return getCode("|buffer|"+bufferId);
 		}
 		return "false";
 	}
 	
 	public String getCode(String input) throws ParseException {
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh") ; //使用了默认的格式创建了一个日期格式化对象。
-		String time = dateFormat.format(PublicMethods.getDate()); //可以把日期转换转指定格式的字符串
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh") ;
+		String time = dateFormat.format(PublicMethods.getDate());
 		time = time + input;
 		String code = AesUtil.encrypt(time,"1234567812345678");
 		return code;

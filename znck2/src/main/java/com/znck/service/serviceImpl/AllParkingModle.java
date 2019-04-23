@@ -14,16 +14,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * @author 肖舒翔
+ */
 @Service
 public class AllParkingModle {
     @Autowired
     private ContrastServiceImpl contrastServiceImpl;
 
-    private final static String x = "x";
+    private final static String X = "x";
 
-    private final static String y = "y";
+    private final static String Y = "y";
 
-    private final static String z = "z";
+    private final static String Z = "z";
 
     public ParkingEntity getPakringByCarId(String carId){
         return InitDataListener.parkings.stream().filter(parking -> parking.getCarId().equals(carId)).collect(Collectors.toList()).get(0);
@@ -107,7 +110,7 @@ public class AllParkingModle {
     }
 
     public boolean nextSpaceIsFetureSpace(Map<String, Integer> nextSpaceMap,SpaceEntity fetureSpace){
-        return nextSpaceMap.get(x) == fetureSpace.getX() && nextSpaceMap.get(y) == fetureSpace.getY()
-                && nextSpaceMap.get(z) == fetureSpace.getZ();
+        return nextSpaceMap.get(X) == fetureSpace.getX() && nextSpaceMap.get(Y) == fetureSpace.getY()
+                && nextSpaceMap.get(Z) == fetureSpace.getZ();
     }
 }
