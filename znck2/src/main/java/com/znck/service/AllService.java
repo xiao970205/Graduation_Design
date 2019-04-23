@@ -90,6 +90,7 @@ public class AllService {
 		return "false";
 	}
 
+
 	public UserEntity landing(UserEntity massage) {
 		return userServiceImpl.findByUserNameAndPassword(massage.getPhone(), massage.getPassword());
 	}
