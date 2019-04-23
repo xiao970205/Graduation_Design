@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xml:lang="ko" lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Javascript 二维码生成库：QRCode</title>
+    <title>智能车库-出口二维码</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
     <script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
@@ -14,7 +14,6 @@
 </body>
 <script type="text/javascript">
     $(function() {
-        alert(getUrl());
         $.ajax({
             async:false,
             type:'POST',
@@ -23,6 +22,10 @@
             contentType:'application/json;charset=UTF-8',
             data:null,
             success:function(data){
+            	if(data == "false"){
+            		alert("数据错误！");
+            		return;
+            	}
                 alert(data);
                 var qrcode = new QRCode(document.getElementById("qrcode"), {
                     width : 100,

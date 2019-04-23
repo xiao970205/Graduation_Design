@@ -1,5 +1,7 @@
 package com.znck.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,6 +19,7 @@ import com.znck.entity.EmailActiveEntity;
 import com.znck.entity.ParkingEntity;
 import com.znck.entity.PhoneActiveEntity;
 import com.znck.entity.PublicMethods;
+import com.znck.entity.SpaceEntity;
 import com.znck.entity.UserEntity;
 import com.znck.entity.VipEntity;
 import com.znck.enums.InitDataListener;
@@ -52,6 +55,9 @@ public class AllService {
 
 	@Autowired
 	private MailServiceImpl mailServiceImpl;
+	
+	@Autowired
+	private SpaceServiceImpl spaceServiceImpl;
 
 	public ContrastEntity adminLanding(UserEntity data) {
 		ContrastEntity contrastEntity = new ContrastEntity();
@@ -140,6 +146,12 @@ public class AllService {
 						.getOne(InitDataListener.parkings.stream().filter(pa -> pa.getCarId().equals(car.getId()))
 								.collect(Collectors.toList()).get(0).getNature())
 						.getRealName());
+				if(carWithNature.getNature().equals(contrastServiceImpl.getContrastByRealName("等待用户停车中").getId())) {
+					carWithNature.setCarInSpace(parkings.get(0).getInSpaceId());
+				}
+				if(carWithNature.getNature().equals(contrastServiceImpl.getContrastByRealName("等待用户取车中").getId())) {
+					carWithNature.setCarInSpace(parkings.get(0).getOutSpaceId());
+				}
 			}
 			carWithNature.setUserId(null);
 			allCarByUserId.add(carWithNature);
@@ -300,4 +312,40 @@ public class AllService {
 	public void endVip() {
 		vipActiveServiceImpl.deleteNowBiggerEndDate();
 	}
+	
+	public String getBufferCode(UserEntity userEntity) throws ParseException {
+		String BufferId = userEntity.getId();
+		SpaceEntity buffer = spaceServiceImpl.getOne(BufferId);
+		if(buffer == null) {
+			return "false";
+		}
+		if(buffer.getNature().equals(contrastServiceImpl.getContrastByRealName("缓冲区-占用").getId())) {
+			return getCode("|buffer|"+BufferId);
+		}
+		if(buffer.getNature().equals(contrastServiceImpl.getContrastByRealName("缓冲区-空置").getId())) {
+			return getCode("|buffer|"+BufferId);
+		}
+		return "false";
+	}
+	
+	public String getCode(String input) throws ParseException {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh") ; //使用了默认的格式创建了一个日期格式化对象。
+		String time = dateFormat.format(PublicMethods.getDate()); //可以把日期转换转指定格式的字符串
+		time = time + input;
+		String code = AesUtil.encrypt(time,"1234567812345678");
+		return code;
+	}
+	
+	public String[] getDecryptInfos(String orgainInfo) {
+		String info = "";
+		try {
+			info = AesUtil.encrypt(orgainInfo, "1234567812345678");
+		}catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return null;
+		}
+		return info.split("|");
+	}
+	
 }

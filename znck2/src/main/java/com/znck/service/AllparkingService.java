@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.mysql.cj.util.StringUtils;
 import com.znck.entity.PublicMethods;
 import com.znck.entity.SpaceEntity;
+import com.znck.entity.UserEntity;
 import com.znck.enums.InitDataListener;
 
 @Service

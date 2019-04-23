@@ -119,6 +119,7 @@
 				//取消停车
 				htmlForOneDiv = '<input type = "button" id = "vipSaveCar" class = "clickToDo" value = "vip确认停车"/>'
 					+'<input type = "button" id = "vipCancelSaveCar" class = "clickToDo" value = "取消停车"/>'
+					+'<p>停车地点：'+carMassage[i].carInSpace+'</p>';
 			}else if(nature == 'vip预约取车中'){
 				//取消取车
 				//立即取车
@@ -134,6 +135,7 @@
 			}else if(nature == '等待用户取车中'){
 				//确认取车取车
 				htmlForOneDiv = '<input type = "button" id = "getCar" class = "clickToDo" value = "我已到达指定位置，可以取车"/>'
+					+'<p>取车地点：'+carMassage[i].carOutSpace+'</p>';
 			}else {
 				//vip停车中
 				//vip取车中
@@ -198,6 +200,10 @@
             return;
         }
         window.location.href=getProjectName()+"/"+"jumpToUrl?url=user/carToDo&carId="+carId+"&nature="+toDo;
+	};
+	
+	function getCarBufferId(carId){
+		
 	}
 </script>
 </html>
