@@ -23,8 +23,8 @@ public class Scheduler2Task {
 
 	@Scheduled(fixedRate = 500)
 	public void reportCurrentTime() throws ParseException, InterruptedException {
-		allParkingServiceForRuning.parkingRun();
-		allParkingServiceForRuning.showInfo();
+//		allParkingServiceForRuning.parkingRun();
+//		allParkingServiceForRuning.showInfo();
 	}
 
 	@Autowired
