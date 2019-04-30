@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.znck.entity.BaseBean;
 import com.znck.entity.ParkingSaveEntity;
 import com.znck.entity.PublicMethods;
 import com.znck.entity.UserEntity;

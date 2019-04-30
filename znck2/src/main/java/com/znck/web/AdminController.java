@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSONObject;
+import com.znck.entity.BaseBean;
+import com.znck.entity.CarEntity;
 import com.znck.service.AllAdminService;
 
 /**
@@ -24,7 +26,12 @@ public class AdminController {
 	@RequestMapping("/admin/getPage1")
 	@ResponseBody
 	public JSONObject getExitCode() throws ParseException {
-		JSONObject o = allAdminService.getPage1();
+		JSONObject o = new JSONObject();
 		return o;
+	}
+	
+	@RequestMapping("/admin/test")
+	public String userIndex() {
+		return "admin/test";
 	}
 }

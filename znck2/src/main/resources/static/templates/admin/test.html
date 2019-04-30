@@ -1,27 +1,29 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8">
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/publicFunction.js"></script>
-  </head>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript" th:src="@{/templates/admin/js/jquery.js}"></script>
+<script type="text/javascript"
+	th:src="@{/templates/admin/js/publicFunction.js}"></script>
+</head>
 <body>
-	<button id = "zc">sd</button>
-	<p id = "test1">665556</p>
+	<button id="zc">sd</button>
+	<p id="test1">665556</p>
 </body>
 <script type="text/javascript">
-    $("#zc").click(function() {
-    	$.ajax({
-            async:false,
-            type:'POST',
-            dataType:'json',
-            url:getUrl()+'admin/getPage1',
-            contentType:'application/json;charset=UTF-8',
-            data:null,
-            success:function(data){
-            	alert(data);
-            	$("#test1").text(JSON.parse(data));
-            }
-        });
-    })
-  </script>
+	$("#zc").click(function() {
+		$.ajax({
+			async : false,
+			type : 'POST',
+			dataType : 'json',
+			url : getUrl() + 'admin/getPage1',
+			contentType : 'application/json;charset=UTF-8',
+			data : null,
+			success : function(data) {
+				alert(data);
+				alert(JSON.stringify(data));
+				//$("#test1").text(JSON.parse(data));
+			}
+		});
+	})
+</script>
 </html>
