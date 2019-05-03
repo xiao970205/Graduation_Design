@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.alibaba.fastjson.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSONObject;
@@ -24,16 +26,83 @@ import com.znck.enums.InitDataListener;
  */
 @Service
 public class AllAdminService {
+	@Autowired
 	private ContrastServiceImpl contrastService;
 
+	@Autowired
 	private ParkingSaveServiceImpl parkingSaveServiceImpl;
+
+	@Autowired
+	private UserServiceImpl userServiceImpl;
 	
 	public JSONObject getPage1() {
 		List<ParkingSaveEntity> parkingSaveEntities = parkingSaveServiceImpl.getAll();
-		JSONObject data = new JSONObject();
-		return data;
+		JSONObject o = new JSONObject();
+		return o;
 	}
-	
+
+	public BaseBean getPage1Info(){
+		BaseBean<JSONObject> baseBean = new BaseBean<JSONObject>();
+		JSONObject json = new JSONObject();
+		List<ParkingSaveEntity> parkingSaveEntities = parkingSaveServiceImpl.getAll();
+		List<UserEntity> userEntities = userServiceImpl.getAll();
+		//采集数据总量
+		json.put("cjsjzl",getAllDataNumbser(parkingSaveEntities,userEntities));
+		//当月采集数据量
+		json.put("dycjsjl",getThisMonthData(parkingSaveEntities));
+		//总停车数
+		json.put("ztcs",getAllParkingNumber(parkingSaveEntities));
+		//当月停车数
+		json.put("dytcs",getThisMonthData(parkingSaveEntities));
+		//总用户人数
+		json.put("zyhrs",getAllUserNumber(userEntities));
+		//总会员数
+		json.put("zhys",getAllVipUserNumber(userEntities));
+
+		//各车库采集数据量
+		json.put("gckcjsjl",getGckCjl(parkingSaveEntities));
+
+		//各车库会员比例
+		json.put("gckhybl",getParkingUserOrVip(userEntities));
+
+		//获得数据采集条数(当日)
+		json.put("hdsjcjtsdr",getThisMonthData(parkingSaveEntities));
+
+		//停车数量(当日)
+		json.put("tcsl",getThisMonthData(parkingSaveEntities));
+
+		baseBean.setReturnContent(json);
+		return baseBean;
+	}
+
+	public BaseBean getPage2Info(){
+		BaseBean<JSONObject> baseBean = new BaseBean<JSONObject>();
+		JSONObject json = new JSONObject();
+		List<ParkingSaveEntity> parkingSaveEntities = parkingSaveServiceImpl.getAll();
+		List<UserEntity> userEntities = userServiceImpl.getAll();
+		//获得全年停车数量
+		json.put("qntcsl",getQnTcsl(parkingSaveEntities));
+
+		//获得当月停车数量
+		json.put("hddytcsl",getDyTcsl(parkingSaveEntities));
+
+		//获得全年会员停车数量
+		json.put("hdqntcsl",getQnTcsl(parkingSaveEntities));
+
+		//当月会员停车数量
+		json.put("dyhytcsl",getDyHyTcsl(parkingSaveEntities));
+
+		//会员存车占比
+		json.put("hycczb",getHyCcZb(parkingSaveEntities));
+
+		//会员取车占比
+		json.put("hyqczb",getHyQcZb(parkingSaveEntities));
+
+
+		baseBean.setReturnContent(json);
+		return baseBean;
+	}
+
 	/**
 	 * 采集数据总量，各车库数据采集量
 	 * 
@@ -84,6 +153,17 @@ public class AllAdminService {
 	}
 
 	/**
+	 * 各车库采集数据量
+	 * @param parkingSaveEntities
+	 * @return
+	 */
+	public JSONObject getGckCjl(List<ParkingSaveEntity> parkingSaveEntities){
+		JSONObject json = new JSONObject();
+		json.put("车库1",parkingSaveEntities.size());
+		return json;
+	}
+
+	/**
 	 * 获得当前会员人数
 	 * 
 	 * @param userEntities
@@ -100,15 +180,17 @@ public class AllAdminService {
 	 * @param userEntities
 	 * @return
 	 */
-	public Map<String, Integer> getParkingUserOrVip(List<UserEntity> userEntities) {
-		Map<String, Integer> returnMap = new HashMap<String, Integer>();
-		returnMap.put("0", userEntities.stream().filter(userEntity -> userEntity.getNature().equals("0"))
+	public JSONObject getParkingUserOrVip(List<UserEntity> userEntities) {
+		JSONObject json = new JSONObject();
+		JSONObject jsonCBl = new JSONObject();
+		jsonCBl.put("0",userEntities.stream().filter(userEntity -> userEntity.getNature().equals("0"))
 				.collect(Collectors.toList()).size());
-		returnMap.put("1", userEntities.stream().filter(userEntity -> userEntity.getNature().equals("1"))
+		jsonCBl.put("1",userEntities.stream().filter(userEntity -> userEntity.getNature().equals("1"))
 				.collect(Collectors.toList()).size());
-		returnMap.put("2", userEntities.stream().filter(userEntity -> userEntity.getNature().equals("2"))
+		jsonCBl.put("2",userEntities.stream().filter(userEntity -> userEntity.getNature().equals("2"))
 				.collect(Collectors.toList()).size());
-		return returnMap;
+		json.put("车库1",jsonCBl);
+		return json;
 	}
 
 	/**

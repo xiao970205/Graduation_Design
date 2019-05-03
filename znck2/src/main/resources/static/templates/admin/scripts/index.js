@@ -1,7 +1,5 @@
 var symptomName = last_month_day();
-
 $(function(){
-
 
   init();
   init2();
@@ -37,6 +35,7 @@ $(function(){
 })
 function init(){
   //地图
+
   var mapChart = echarts.init(document.getElementById('mapChart'));
   mapChart.setOption({
       bmap: {
@@ -85,7 +84,7 @@ function init(){
             color : '#ffffff',
 
         },
-         data : ['厦门第一医院','厦门中山医院','厦门中医院','厦门第五医院',],
+         data : ['车库2','车库1','车库3','厦门第五医院',],
     },
     tooltip : {
         trigger: 'item',
@@ -119,16 +118,15 @@ function init(){
                 }
             },
             data:[
-                {value:335, name:'厦门第一医院'},
-                {value:310, name:'厦门中山医院'},
-                {value:234, name:'厦门中医院'},
+                {value:335, name:'车库2'},
+                {value:310, name:'车库1'},
+                {value:234, name:'车库3'},
                 {value:135, name:'厦门第五医院'}
 
             ]
         }
     ]
     });
-
 
     var lineChart = echarts.init(document.getElementById('lineChart'));
     lineChart.setOption({
@@ -210,7 +208,7 @@ function init(){
         },
         series : [
           {
-              name:'厦门第一医院',
+              name:'车库',
               type:'line',
               smooth:true,
               itemStyle: {

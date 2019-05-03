@@ -1,15 +1,14 @@
-﻿<!DOCTYPE html>
-<html>
+﻿<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <title>3D立体车库后台监控管理系统</title>
     <meta name="viewport" content="width=device-width">
-    <link href="css/base.css" rel="stylesheet" type="text/css">
-    <link href="css/login.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript" src="ui/aes.js"></script>
-    <script type="text/javascript" src="ui/pad-zeropadding.js"></script>
-    <script type="text/javascript" src="ui/mode-ecb.js"></script>
+    <link th:href="@{../templates/admin/css/base.css}" rel="stylesheet" type="text/css">
+    <link th:href="@{../templates/admin/css/login.css}" rel="stylesheet" type="text/css">
+    <script type="text/javascript" th:src="@{../templates/admin/js/jquery.js}"></script>
+    <script type="text/javascript" th:src="@{../templates/admin/ui/aes.js}"></script>
+    <script type="text/javascript" th:src="@{../templates/admin/ui/pad-zeropadding.js}"></script>
+    <script type="text/javascript" th:src="@{../templates/admin/ui/mode-ecb.js}"></script>
   </head>
   <body>
     <div class="login">

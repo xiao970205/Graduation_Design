@@ -23,7 +23,7 @@
         id,carId,inSpaceId,saveSpaceId
         ,outSpaceId,vipSendTime,vipAppParkingTime,inPlaceTime
         ,inTime,vipGetTime,vipAppGetTime,outTime
-        ,outPlaceTime,getTime,nature,way
+        ,outPlaceTime,getTime,way
     </sql>
 
     <select id="getAll" resultMap="BaseResultMap"  >
